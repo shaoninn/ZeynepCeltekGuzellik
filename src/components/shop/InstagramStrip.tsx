@@ -23,7 +23,7 @@ export function InstagramStrip({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3">
           <div className="min-w-0">
             <h2 className="font-display text-xl sm:text-2xl font-bold text-white">
-              @zeynepceltekguzellik
+              @zeynepceltek_adana
             </h2>
             {hasLive ? (
               <p className="text-xs text-orange mt-1">Canlı Instagram feed</p>

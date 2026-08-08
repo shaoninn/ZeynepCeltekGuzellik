@@ -1,10 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { ArrowRight, Mail, MapPin, Phone, Clock } from "lucide-react";
+import { ArrowRight, MapPin, Phone, Clock } from "lucide-react";
 import { EditableText } from "@/components/editor/EditableText";
 import { EditableSectionShift } from "@/components/editor/EditableSectionShift";
-import { PHONE, EMAIL, ADDRESS, WORK_HOURS } from "@/lib/constants";
+import { PHONE, ADDRESS, WORK_HOURS } from "@/lib/constants";
 
 interface CTASectionProps {
   title?: string;
@@ -65,13 +65,6 @@ export function CTASection({
               >
                 <Phone size={16} className="mt-0.5 text-orange shrink-0" />
                 {PHONE}
-              </a>
-              <a
-                href={`mailto:${EMAIL}`}
-                className="flex items-start gap-3 text-sm text-white/85 hover:text-orange transition-colors break-all"
-              >
-                <Mail size={16} className="mt-0.5 text-orange shrink-0" />
-                {EMAIL}
               </a>
               <p className="flex items-start gap-3 text-sm text-white/85">
                 <MapPin size={16} className="mt-0.5 text-orange shrink-0" />

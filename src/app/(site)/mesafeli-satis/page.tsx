@@ -1,5 +1,5 @@
 import { LegalShell } from "@/components/legal/LegalShell";
-import { COMPANY } from "@/lib/legal";
+import { COMPANY, companyContactLine } from "@/lib/legal";
 
 export const metadata = {
   alternates: { canonical: "/mesafeli-satis" },
@@ -23,7 +23,7 @@ export default function DistanceSalesPage() {
         <br />
         {COMPANY.address}
         <br />
-        {COMPANY.email} · {COMPANY.phone}
+        {companyContactLine()}
       </p>
       <h2>Sözleşmenin konusu</h2>
       <p>

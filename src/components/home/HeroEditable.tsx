@@ -28,11 +28,11 @@ export function HeroEditable({
   const heroStats = heroStatsItems();
 
   return (
-    <section className="relative overflow-hidden bg-marble border-b border-border">
+    <section className="relative bg-marble border-b border-border">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_75%_45%,rgba(201,169,98,0.12),transparent_55%)]" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-6 xl:gap-10 items-center py-8 sm:py-10 lg:py-6 lg:min-h-[min(34rem,calc(100svh-4.5rem))]">
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] gap-8 lg:gap-6 xl:gap-8 items-center py-8 sm:py-10 lg:py-6 lg:min-h-[min(34rem,calc(100svh-4.5rem))]">
           <div className="relative z-10 order-2 lg:order-1 min-w-0">
             <EditableText
               contentKey="hero_subtitle"
@@ -101,31 +101,33 @@ export function HeroEditable({
           </div>
 
           <div className="relative order-1 lg:order-2 min-w-0 w-full">
-            <div className="relative mx-auto w-full max-w-[28rem] lg:max-w-none aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] lg:h-[min(36rem,calc(100svh-5.5rem))] lg:aspect-auto">
-              <div className="pointer-events-none absolute inset-[-4%] sm:inset-[-6%] rounded-full border border-orange/40" />
-              <div className="pointer-events-none absolute inset-[2%] rounded-full border border-orange/15" />
+            <div className="flex items-center justify-center lg:justify-end gap-3 xl:gap-5">
+              <div className="relative w-full max-w-[28rem] lg:max-w-[min(100%,26rem)] xl:max-w-[28rem] aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] lg:h-[min(36rem,calc(100svh-5.5rem))] lg:aspect-auto">
+                <div className="pointer-events-none absolute inset-[-4%] sm:inset-[-6%] rounded-full border border-orange/40" />
+                <div className="pointer-events-none absolute inset-[2%] rounded-full border border-orange/15" />
 
-              <div className="absolute inset-0 overflow-hidden rounded-full bg-card">
-                <EditableImage
-                  contentKey="hero_image"
-                  value={bg}
-                  fallback={DEFAULT_HERO_IMAGE}
-                  alt="Zeynep Çeltek Güzellik"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 90vw, 42vw"
-                  imgClassName="object-cover object-[center_20%]"
-                  help="Ana sayfa hero görseli"
-                />
+                <div className="absolute inset-0 overflow-hidden rounded-full bg-card">
+                  <EditableImage
+                    contentKey="hero_image"
+                    value={bg}
+                    fallback={DEFAULT_HERO_IMAGE}
+                    alt="Zeynep Çeltek Güzellik"
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 90vw, 42vw"
+                    imgClassName="object-cover object-[center_20%]"
+                    help="Ana sayfa hero görseli"
+                  />
+                </div>
               </div>
 
-              <ul className="hidden lg:flex absolute -right-1 xl:right-0 top-1/2 -translate-y-1/2 translate-x-full xl:translate-x-[70%] flex-col gap-5 pl-4">
+              <ul className="hidden lg:flex flex-col justify-center gap-6 shrink-0 pl-2 xl:pl-4 min-w-[5.5rem]">
                 {heroStats.map((s) => (
-                  <li key={s.label} className="text-left min-w-[4.5rem]">
-                    <p className="font-display text-orange text-lg font-semibold leading-none">
+                  <li key={s.label} className="text-left">
+                    <p className="font-display text-orange text-xl xl:text-2xl font-semibold leading-none">
                       {s.value}
                     </p>
-                    <p className="text-[10px] text-white/50 tracking-wider uppercase mt-1">
+                    <p className="text-[10px] text-cream/70 tracking-[0.14em] uppercase mt-1.5">
                       {s.label}
                     </p>
                   </li>
@@ -139,7 +141,7 @@ export function HeroEditable({
                   <p className="font-display text-orange text-sm font-semibold">
                     {s.value}
                   </p>
-                  <p className="text-[9px] text-white/45 uppercase tracking-wide">
+                  <p className="text-[9px] text-cream/65 uppercase tracking-wide">
                     {s.label}
                   </p>
                 </li>

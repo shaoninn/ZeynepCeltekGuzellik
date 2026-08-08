@@ -2,7 +2,7 @@ import {
   ADDRESS,
   EMAIL,
   GOOGLE_BUSINESS_URL,
-  INSTAGRAM,
+  INSTAGRAM_HANDLES,
   PHONE_RAW,
   SITE_NAME,
   SITE_TAGLINE,
@@ -27,7 +27,7 @@ export function localBusinessJsonLd() {
     description: SITE_TAGLINE,
     url,
     telephone: `+${PHONE_RAW}`,
-    email: EMAIL,
+    ...(EMAIL.trim() ? { email: EMAIL } : {}),
     image: `${url}/images/logo/logo.png`,
     logo: `${url}/images/logo/logo.png`,
     address: {
@@ -56,7 +56,10 @@ export function localBusinessJsonLd() {
       "@type": "AdministrativeArea",
       name: "Adana",
     },
-    sameAs: [INSTAGRAM, GOOGLE_BUSINESS_URL].filter(Boolean),
+    sameAs: [
+      ...INSTAGRAM_HANDLES.map((h) => h.href),
+      GOOGLE_BUSINESS_URL,
+    ].filter(Boolean),
     priceRange: "$$",
   };
 }

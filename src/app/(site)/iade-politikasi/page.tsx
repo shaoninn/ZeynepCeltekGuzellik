@@ -1,5 +1,5 @@
 import { LegalShell } from "@/components/legal/LegalShell";
-import { COMPANY } from "@/lib/legal";
+import { COMPANY, companyContactLine } from "@/lib/legal";
 
 export const metadata = {
   alternates: { canonical: "/iade-politikasi" },
@@ -30,13 +30,13 @@ export default function ReturnPolicyPage() {
       <h2>Standart ürün / paketler</h2>
       <p>
         Stoktan verilen (varsa) standart ürün veya hizmet paketlerinde,
-        kullanılmamış hallerde iade talepleri yazılı olarak {COMPANY.email}{" "}
-        adresine iletilmelidir. İnceleme sonrası süreç netleştirilir.
+        kullanılmamış hallerde iade talepleri yazılı olarak telefon / WhatsApp
+        üzerinden iletilmelidir. İnceleme sonrası süreç netleştirilir.
       </p>
       <h2>Başvuru</h2>
       <p>
         İade / iptal taleplerinizi randevu veya teklif referansınızla birlikte{" "}
-        {COMPANY.email} veya {COMPANY.phone} üzerinden iletin.
+        {companyContactLine()} üzerinden iletin.
       </p>
     </LegalShell>
   );

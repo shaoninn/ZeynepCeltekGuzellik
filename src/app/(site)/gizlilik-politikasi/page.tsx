@@ -1,3 +1,5 @@
+import { COMPANY, companyContactLine } from "@/lib/legal";
+
 export const metadata = {
   alternates: { canonical: "/gizlilik-politikasi" },
   title: "Gizlilik Politikası | Zeynep Çeltek Güzellik",
@@ -11,13 +13,14 @@ export default function PrivacyPage() {
           Gizlilik Politikası
         </h1>
         <p>
-          Zeynep Çeltek Güzellik olarak kişisel verilerinizin güvenliğine önem veriyoruz.
-          Bu politika, web sitemizi ziyaret ettiğinizde veya hizmetlerimizden
-          yararlandığınızda toplanan bilgilerin nasıl kullanıldığını açıklar.
+          {COMPANY.name} olarak kişisel verilerinizin güvenliğine önem
+          veriyoruz. Bu politika, web sitemizi ziyaret ettiğinizde veya
+          hizmetlerimizden yararlandığınızda toplanan bilgilerin nasıl
+          kullanıldığını açıklar.
         </p>
         <h2>Toplanan Bilgiler</h2>
         <p>
-          İletişim formu aracılığıyla ad, telefon, e-posta ve mesaj içeriği
+          İletişim formu aracılığıyla ad, telefon ve mesaj içeriği
           toplanabilir. Bu bilgiler yalnızca talebinizi yanıtlamak için
           kullanılır.
         </p>
@@ -28,7 +31,7 @@ export default function PrivacyPage() {
         </p>
         <h2>İletişim</h2>
         <p>
-          Gizlilik ile ilgili sorularınız için info@zeynepceltekguzellik.local adresinden
+          Gizlilik ile ilgili sorularınız için {companyContactLine()} üzerinden
           bize ulaşabilirsiniz.
         </p>
       </div>

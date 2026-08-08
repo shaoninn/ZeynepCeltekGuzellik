@@ -1,5 +1,5 @@
 import { SiteLink } from "@/components/ui/SiteLink";
-import { Camera, MapPin, Mail, Phone } from "lucide-react";
+import { Camera, MapPin, Phone } from "lucide-react";
 import {
   SITE_NAME,
   BRANCHES,
@@ -107,15 +107,6 @@ export function Footer({ settings, footerBlurb }: FooterProps) {
                   className="text-orange text-sm font-semibold hover:underline"
                 >
                   {settings.phone}
-                </a>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <Mail size={15} className="text-orange shrink-0 mt-0.5" />
-                <a
-                  href={`mailto:${settings.email}`}
-                  className="text-muted text-sm hover:text-orange transition-colors break-all"
-                >
-                  {settings.email}
                 </a>
               </li>
               <li className="flex items-start gap-2.5">

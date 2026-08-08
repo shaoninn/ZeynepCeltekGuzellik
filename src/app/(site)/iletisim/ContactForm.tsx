@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { SiteLink } from "@/components/ui/SiteLink";
-import { MapPin, Phone, Mail, Clock, ExternalLink } from "lucide-react";
+import { MapPin, Phone, Clock, ExternalLink } from "lucide-react";
 import type { SiteSettingsMap } from "@/lib/site";
 import {
   GOOGLE_MAPS_EMBED_QUERY,
@@ -49,7 +49,6 @@ export function ContactForm({
   const [form, setForm] = useState({
     name: "",
     phone: "",
-    email: "",
     subject: "Teklif",
     message: "",
     kvkkAccepted: false,
@@ -86,7 +85,7 @@ export function ContactForm({
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, email: "" }),
       });
 
       if (!res.ok) {
@@ -98,7 +97,6 @@ export function ContactForm({
       setForm({
         name: "",
         phone: "",
-        email: "",
         subject: "Teklif",
         message: "",
         kvkkAccepted: false,
@@ -171,16 +169,6 @@ export function ContactForm({
                   />
                 </a>
               </div>
-            </li>
-            <li className="flex gap-3">
-              <Mail size={18} className="text-orange flex-shrink-0" />
-              <EditableSetting
-                settingKey="email"
-                value={settings.email}
-                as="span"
-                className="text-sm text-muted hover:text-orange"
-                help="E-posta adresi"
-              />
             </li>
             <li className="flex gap-3">
               <Clock size={18} className="text-orange flex-shrink-0" />
@@ -257,18 +245,6 @@ export function ContactForm({
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
               className={fieldClass}
               required
-            />
-          </div>
-          <div>
-            <label className="block text-sm text-muted mb-1" htmlFor="c-email">
-              E-posta
-            </label>
-            <input
-              id="c-email"
-              type="email"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className={fieldClass}
             />
           </div>
           <div>

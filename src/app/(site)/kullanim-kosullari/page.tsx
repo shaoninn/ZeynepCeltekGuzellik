@@ -1,5 +1,5 @@
 import { LegalShell } from "@/components/legal/LegalShell";
-import { COMPANY } from "@/lib/legal";
+import { COMPANY, companyContactLine } from "@/lib/legal";
 
 export const metadata = {
   alternates: { canonical: "/kullanim-kosullari" },
@@ -47,7 +47,7 @@ export default function TermsPage() {
       </p>
       <h2>İletişim</h2>
       <p>
-        {COMPANY.email} · {COMPANY.phone}
+        {companyContactLine()}
         <br />
         {COMPANY.address}
       </p>

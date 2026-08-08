@@ -5,18 +5,22 @@ export const PHONE = "0 (534) 080 98 73";
 export const PHONE_RAW = "905340809873";
 export const PHONE_ALT = "";
 export const WHATSAPP_URL = `https://wa.me/${PHONE_RAW}`;
-export const EMAIL = "info@zeynepceltekguzellik.local";
+export const EMAIL = "";
 export const ADDRESS = "Adana — Özal & Gazi Paşa şubeleri";
 export const LOCATION_LABEL = "Adana";
 export const INSTAGRAM = "https://www.instagram.com/zeynepceltek_adana/";
 export const INSTAGRAM_HANDLES = [
   {
-    handle: "@zeynepceltek_t.ozel",
-    href: "https://www.instagram.com/zeynepceltek_t.ozel/",
-  },
-  {
     handle: "@zeynepceltek_adana",
     href: "https://www.instagram.com/zeynepceltek_adana/",
+  },
+  {
+    handle: "@zeynepceltek_t.ozal",
+    href: "https://www.instagram.com/zeynepceltek_t.ozal/",
+  },
+  {
+    handle: "@zeynepceltek_guzellik.kursu",
+    href: "https://www.instagram.com/zeynepceltek_guzellik.kursu/",
   },
 ] as const;
 /** Google İşletme Profili — domain ile birlikte sonra */

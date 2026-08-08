@@ -1,4 +1,5 @@
 import { LegalShell } from "@/components/legal/LegalShell";
+import { companyContactLine } from "@/lib/legal";
 import { COMPANY } from "@/lib/legal";
 
 export const metadata = {
@@ -42,7 +43,7 @@ export default function DeliveryPage() {
       </p>
       <h2>İletişim</h2>
       <p>
-        {COMPANY.phone} · {COMPANY.email}
+        {companyContactLine()}
       </p>
     </LegalShell>
   );

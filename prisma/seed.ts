@@ -4,6 +4,7 @@ import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { hashPassword } from "../src/lib/auth";
 import { CATEGORIES, CATALOG_PRODUCTS } from "../src/lib/constants";
 import { projectData } from "./projects-data";
+import { SAMPLE_BLOG_POSTS } from "./blog-data";
 import { resolveMysqlDatabaseUrl } from "../src/lib/db-url";
 
 if (
@@ -563,12 +564,12 @@ async function main() {
   await prisma.siteSetting.createMany({
     data: [
       { key: "phone", value: "0 (534) 080 98 73" },
-      { key: "email", value: "info@zeynepceltekguzellik.local" },
+      { key: "email", value: "" },
       {
         key: "address",
         value: "Adana — Özal & Gazi Paşa şubeleri",
       },
-      { key: "instagram", value: "https://www.instagram.com/" },
+      { key: "instagram", value: "https://www.instagram.com/zeynepceltek_adana/" },
       { key: "whatsapp", value: "905340809873" },
       { key: "location_label", value: "Adana" },
       { key: "google_reviews_url", value: "" },
@@ -581,41 +582,15 @@ async function main() {
   });
 
   await prisma.blogPost.createMany({
-    data: [
-      {
-        title: "Alex Lazer 3 Bölge Kampanyası",
-        slug: "alex-lazer-3-bolge-kampanyasi",
-        excerpt:
-          "Soğuk hava üflemeli Alex — 5 seans 3 bölge paketi hakkında kısa bilgilendirme.",
-        content:
-          "Bacak, kolaltı ve genital bölgeler için 5 seanslık Alex paketimiz güncel fiyat listemizde yer alıyor. Randevu için WhatsApp veya randevu sepetini kullanabilirsiniz.",
-        image: "/images/gallery/gallery-1.jpg",
-        isPublished: true,
-        publishedAt: new Date(),
-      },
-      {
-        title: "Cilt Bakımında Düzenli Randevunun Önemi",
-        slug: "cilt-bakiminda-duzenli-randevunun-onemi",
-        excerpt:
-          "Düzenli cilt bakımı ile cildiniz daha dengeli, nemli ve ışıltılı görünür.",
-        content:
-          "Cilt bakımı tek seferlik bir işlem değil; cilt tipinize uygun aralıklarla yapılan bir rutindir. Zeynep Çeltek Güzellik’te hijyenik ortamda kişiye özel protokollerle çalışıyoruz.",
-        image: "/images/products/cilt-bakimi/2.jpg",
-        isPublished: true,
-        publishedAt: new Date(),
-      },
-      {
-        title: "Lazer Epilasyonda Seans Planlaması",
-        slug: "lazer-epilasyonda-seans-planlamasi",
-        excerpt:
-          "Etkili sonuç için lazer epilasyon seansları düzenli aralıklarla planlanmalıdır.",
-        content:
-          "Lazer epilasyonda başarı; cilt tipi, kıl yapısı ve seans aralıklarına bağlıdır. Bayan ve erkek paket seçeneklerimiz için bizimle iletişime geçin.",
-        image: "/images/products/lazer-bayan/1.jpg",
-        isPublished: true,
-        publishedAt: new Date(),
-      },
-    ],
+    data: SAMPLE_BLOG_POSTS.map((post, i) => ({
+      title: post.title,
+      slug: post.slug,
+      excerpt: post.excerpt,
+      content: post.content,
+      image: post.image,
+      isPublished: true,
+      publishedAt: new Date(Date.now() - i * 86_400_000),
+    })),
   });
 
   console.log("Seed completed!");

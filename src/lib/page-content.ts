@@ -60,14 +60,30 @@ export async function loadAboutPageData(): Promise<AboutPageData> {
     headline:
       map.about_headline ||
       "GÜZELLİĞİ BİLİMLE,\nSANATA DÖNÜŞTÜRÜYORUZ",
-    intro: map.about_intro || "",
-    philosophy: map.about_philosophy || "",
-    mission: map.mission || "",
-    vision: map.vision || "",
+    intro:
+      map.about_intro ||
+      "Zeynep Çeltek Güzellik, Adana’da Özal ve Gazi Paşa şubelerinde cilt bakımı, lazer epilasyon ve bölgesel incelme hizmetleri sunar.\n\nAmacımız herkese aynı uygulamayı yapmak değil; cilt tipinize ve ihtiyacınıza uygun protokolü birlikte seçmek.",
+    philosophy:
+      map.about_philosophy ||
+      "Hijyen, şeffaflık ve kişiye özel bakım; her randevuda uyguladığımız somut kurallar.",
+    mission:
+      map.mission ||
+      "Misafirlerimizin kendilerini güvende ve özel hissettiği, hijyenik ve profesyonel bir güzellik deneyimi sunmak.",
+    vision:
+      map.vision ||
+      "Adana’da güvenilir güzellik bakımında referans salon olmak; kişiye özel protokollerle kalıcı memnuniyet yaratmak.",
     values: VALUE_DEFS.map((v) => ({
       key: v.key,
       title: titles[v.key] || v.fallbackTitle,
-      desc: map[v.key] || "",
+      desc:
+        map[v.key] ||
+        (v.key === "values_hygiene"
+          ? "Klinik standartlarda temiz uygulama alanı; steril protokoller."
+          : v.key === "values_products"
+            ? "Güncel fiyat listesiyle net bilgilendirme."
+            : v.key === "values_team"
+              ? "Deneyimli güzellik uzmanlarıyla kişiye özel uygulama."
+              : "Cilt ve ihtiyaca göre planlanan protokoller."),
     })),
     images: DEFAULT_ABOUT_IMAGES.map(
       (fallback, i) => map[`about_image_${i + 1}`] || fallback

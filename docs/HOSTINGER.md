@@ -106,7 +106,13 @@ Grafik düştükten sonra pool’u `3`’e çıkarabilirsin; limit yine kırmız
 
 ## DB bağlantı testi
 
-Deploy sonrası: `https://zeynepceltek.com/api/health`
+Deploy sonrası hizmetler boşsa (kategoriler var, ürün yok):
+
+```bash
+ALLOW_PROD_SEED=true npm run db:upsert:catalog
+```
+
+Bu komut siparişleri silmez; fiyat listesindeki hizmetleri + görselleri + misyon/vizyon metinlerini yazar.
 
 ### `database: down` + timeout
 

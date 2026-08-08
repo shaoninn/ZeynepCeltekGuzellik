@@ -1,5 +1,5 @@
 import { LegalShell } from "@/components/legal/LegalShell";
-import { COMPANY } from "@/lib/legal";
+import { COMPANY, companyContactLine } from "@/lib/legal";
 
 export const metadata = {
   alternates: { canonical: "/cerez-politikasi" },
@@ -41,7 +41,7 @@ export default function CookiePolicyPage() {
         etkileyebilir.
       </p>
       <h2>İletişim</h2>
-      <p>Sorularınız için {COMPANY.email}</p>
+      <p>Sorularınız için {companyContactLine()}</p>
     </LegalShell>
   );
 }

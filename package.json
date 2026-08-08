@@ -18,6 +18,8 @@
     "db:migrate:deploy": "prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts",
     "db:seed:editor": "tsx prisma/upsert-editor-content.ts",
+    "db:upsert:catalog": "tsx scripts/upsert-catalog.ts",
+    "db:upsert:blog": "tsx scripts/upsert-blog.ts",
     "db:setup": "prisma generate && prisma db push && tsx prisma/seed.ts",
     "postinstall": "prisma generate"
   },
