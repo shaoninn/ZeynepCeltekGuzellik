@@ -37,7 +37,7 @@ export default async function BlogPage() {
           title={map.blog_title || "Haberler & Yazılar"}
           intro={
             map.blog_intro ||
-            "Güzellik eğitimi, bakım teknikleri ve meslek hakkında bilgilendirici içerikler."
+            "Cilt bakımı, lazer epilasyon ve bölgesel incelme hakkında bilgilendirici yazılar."
           }
         />
 

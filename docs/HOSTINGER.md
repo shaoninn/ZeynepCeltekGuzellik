@@ -114,6 +114,8 @@ ALLOW_PROD_SEED=true npm run db:upsert:catalog
 
 Bu komut siparişleri silmez; fiyat listesindeki hizmetleri + görselleri + misyon/vizyon metinlerini yazar.
 
+**Önemli:** `/api/health` hâlâ `zc@127.0.0.1` gösteriyorsa Node env yanlış — site fallback’e düşer (`0 hizmet`). Panelde `MYSQL_HOST=srv1969.hstgr.io` ve doğru kullanıcı/şifreyi ayarla, Redeploy.
+
 ### `database: down` + timeout
 
 Node Web App ile MySQL **aynı localhost’ta değil**. Şunu yap:

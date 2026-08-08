@@ -59,12 +59,12 @@ export const metadata: Metadata = {
   // Per-page canonical only — never set "/" here (inherits to all routes).
   icons: {
     icon: [
-      { url: "/favicon.ico?v=2", sizes: "any" },
-      { url: "/icon.png?v=2", type: "image/png", sizes: "192x192" },
-      { url: "/favicon-32.png?v=2", type: "image/png", sizes: "32x32" },
+      { url: "/favicon.ico?v=3", sizes: "any" },
+      { url: "/icon.png?v=3", type: "image/png", sizes: "192x192" },
+      { url: "/favicon-32.png?v=3", type: "image/png", sizes: "32x32" },
     ],
-    apple: [{ url: "/apple-icon.png?v=2", sizes: "180x180" }],
-    shortcut: "/favicon.ico?v=2",
+    apple: [{ url: "/apple-icon.png?v=3", sizes: "180x180" }],
+    shortcut: "/favicon.ico?v=3",
   },
   openGraph: {
     title: "Zeynep Çeltek Güzellik | Adana Güzellik Salonu",

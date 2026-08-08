@@ -22,16 +22,32 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+import { getFallbackProductsByCategorySlug } from "@/lib/catalog-fallback";
+import { CATALOG_PRODUCTS } from "@/lib/constants";
+
+function getFallbackProductBySlug(slug: string) {
+  const meta = CATALOG_PRODUCTS.find((p) => p.slug === slug);
+  if (!meta) return null;
+  const list = getFallbackProductsByCategorySlug(meta.categorySlug);
+  return list.find((p) => p.slug === slug) ?? null;
+}
+
 const getProductBySlug = cache(async (slug: string) => {
-  return memoryCache(
-    `catalog:product:${slug}`,
-    () =>
-      prisma.product.findUnique({
-        where: { slug },
-        include: { category: true },
-      }),
-    { ttlMs: 60_000, skipEmpty: true }
-  );
+  try {
+    const row = await memoryCache(
+      `catalog:product:${slug}`,
+      () =>
+        prisma.product.findUnique({
+          where: { slug },
+          include: { category: true },
+        }),
+      { ttlMs: 60_000, skipEmpty: true }
+    );
+    if (row) return row;
+  } catch (error) {
+    console.error("[urun] getProductBySlug failed:", error);
+  }
+  return getFallbackProductBySlug(slug);
 });
 
 export async function generateMetadata({ params }: Props) {

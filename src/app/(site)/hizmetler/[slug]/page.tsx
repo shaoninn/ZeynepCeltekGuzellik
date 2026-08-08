@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { SiteLink } from "@/components/ui/SiteLink";
 import { getCategoryBySlug, getProductsByCategoryId } from "@/lib/catalog";
 import { categoryTitleFromSlug } from "@/lib/catalog-fallback";
-import { CatalogProductGrid } from "@/components/shop/CatalogProductGrid";
+import { CatalogProductGrid, type CatalogProduct } from "@/components/shop/CatalogProductGrid";
 import { EditableCategoryField } from "@/components/editor/EditableCategoryField";
 import { CatalogAdminHint } from "@/components/editor/CatalogAdminHint";
 
@@ -98,7 +98,7 @@ export default async function CategoryPage({ params }: Props) {
             </SiteLink>
           </div>
         ) : (
-          <CatalogProductGrid products={products} />
+          <CatalogProductGrid products={products as CatalogProduct[]} />
         )}
       </div>
     </section>

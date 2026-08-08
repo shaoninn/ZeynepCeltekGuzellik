@@ -12,6 +12,7 @@
     "start": "node scripts/start.mjs",
     "lint": "eslint",
     "optimize:images": "node scripts/optimize-images.mjs",
+    "make:favicon": "node scripts/make-favicon.mjs",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",

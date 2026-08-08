@@ -4,7 +4,12 @@ import { memoryCache, memoryCacheInvalidate } from "@/lib/memory-cache";
 import {
   getFallbackCategories,
   getFallbackCategoryBySlug,
+  getFallbackProductsByCategorySlug,
 } from "@/lib/catalog-fallback";
+import {
+  getFallbackBlogPostBySlug,
+  getFallbackBlogPosts,
+} from "@/lib/blog-fallback";
 
 const CATALOG_TTL_MS = 60_000;
 
@@ -159,13 +164,15 @@ export const getActiveCategories = cache(async () => {
 
 export const getPublishedPosts = cache(async () => {
   try {
-    return await memoryCache("catalog:blog", loadPublishedPosts, {
+    const rows = await memoryCache("catalog:blog", loadPublishedPosts, {
       ttlMs: CATALOG_TTL_MS,
       skipEmpty: true,
     });
+    if (rows.length === 0) return getFallbackBlogPosts();
+    return rows;
   } catch (error) {
     console.error("[catalog] getPublishedPosts failed:", error);
-    return [];
+    return getFallbackBlogPosts();
   }
 });
 
@@ -193,13 +200,21 @@ export const getMenuCategories = cache(async () => {
 
 export const getMenuPosts = cache(async () => {
   try {
-    return await memoryCache("catalog:blog:menu", loadMenuPosts, {
+    const rows = await memoryCache("catalog:blog:menu", loadMenuPosts, {
       ttlMs: CATALOG_TTL_MS,
       skipEmpty: true,
     });
+    if (rows.length === 0) {
+      return getFallbackBlogPosts()
+        .slice(0, 8)
+        .map((p) => ({ slug: p.slug, title: p.title }));
+    }
+    return rows;
   } catch (error) {
     console.error("[catalog] getMenuPosts failed:", error);
-    return [];
+    return getFallbackBlogPosts()
+      .slice(0, 8)
+      .map((p) => ({ slug: p.slug, title: p.title }));
   }
 });
 
@@ -236,7 +251,10 @@ export const getCategoryBySlug = cache(async (slug: string) => {
 });
 
 export async function getProductsByCategoryId(categoryId: string) {
-  if (categoryId.startsWith("fallback-")) return [];
+  if (categoryId.startsWith("fallback-")) {
+    const slug = categoryId.replace(/^fallback-/, "");
+    return getFallbackProductsByCategorySlug(slug);
+  }
   try {
     return await memoryCache(
       `catalog:products:${categoryId}`,
@@ -259,7 +277,12 @@ export async function getSimilarProducts(
   excludeId: string,
   take = 4
 ) {
-  if (categoryId.startsWith("fallback-")) return [];
+  if (categoryId.startsWith("fallback-")) {
+    const slug = categoryId.replace(/^fallback-/, "");
+    return getFallbackProductsByCategorySlug(slug)
+      .filter((p) => p.id !== excludeId)
+      .slice(0, take);
+  }
   try {
     return await memoryCache(
       `catalog:similar:${categoryId}:${excludeId}:${take}`,
@@ -284,15 +307,16 @@ export async function getSimilarProducts(
 
 export const getPostBySlug = cache(async (slug: string) => {
   try {
-    return await memoryCache(
+    const row = await memoryCache(
       `catalog:blog:${slug}`,
       () => prisma.blogPost.findUnique({ where: { slug } }),
       { ttlMs: CATALOG_TTL_MS, skipEmpty: true }
     );
+    if (row) return row;
   } catch (error) {
     console.error("[catalog] getPostBySlug failed:", error);
-    return null;
   }
+  return getFallbackBlogPostBySlug(slug);
 });
 
 export function invalidateCatalogMemoryCache(): void {
