@@ -1,0 +1,17 @@
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: zcroot
+      MYSQL_DATABASE: zeynepceltekguzellik
+      MYSQL_USER: zc
+      MYSQL_PASSWORD: zc
+    ports:
+      - "3306:3306"
+    volumes:
+      - zc_mysql_data:/var/lib/mysql
+    command: ["--default-authentication-plugin=mysql_native_password", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+
+volumes:
+  zc_mysql_data:

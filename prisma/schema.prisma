@@ -1,0 +1,205 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("ADMIN")
+  totpSecret   String?
+  totpEnabled  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?   @db.Text
+  icon        String?
+  image       String?   @db.Text
+  sortOrder   Int       @default(0)
+  isActive    Boolean   @default(true)
+  products    Product[]
+  projects    Project[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id              String    @id @default(cuid())
+  name            String
+  slug            String    @unique
+  description     String?   @db.Text
+  shortDesc       String?   @db.Text
+  price           Float     @default(0)
+  salePrice       Float?
+  image           String?   @db.Text
+  nightImage      String?   @db.Text
+  images          String    @default("[]") @db.Text
+  specs           String    @default("{}") @db.Text
+  sortOrder       Int       @default(0)
+  isActive        Boolean   @default(true)
+  inStock         Boolean   @default(true)
+  isFeatured      Boolean   @default(false)
+  badgeNew        Boolean   @default(false)
+  badgeBestseller Boolean   @default(false)
+  badgeSale       Boolean   @default(false)
+  shippingLabel   String?   @db.Text
+  campaignEndsAt  DateTime?
+  categoryId      String
+  category        Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  description String?   @db.Text
+  image       String?   @db.Text
+  imageBefore String?   @db.Text
+  images      String    @default("[]") @db.Text
+  location    String?
+  sortOrder   Int       @default(0)
+  isActive    Boolean   @default(true)
+  isFeatured  Boolean   @default(false)
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  excerpt     String?   @db.Text
+  content     String    @db.Text
+  image       String?   @db.Text
+  isPublished Boolean   @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model SiteContent {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  title     String?
+  content   String   @db.Text
+  updatedAt DateTime @updatedAt
+}
+
+model SiteSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String @db.Text
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  subject   String?
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String   @unique
+  email     String?
+  notes     String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id                   String      @id @default(cuid())
+  orderNo              String      @unique
+  name                 String
+  phone                String
+  email                String?
+  address              String?     @db.Text
+  note                 String?     @db.Text
+  source               String      @default("WEB")
+  status               String      @default("PENDING")
+  workflow             String      @default("INTAKE")
+  productionNotes      String?     @db.Text
+  productionFile       String?     @db.Text
+  paymentStatus        String      @default("UNPAID")
+  paymentProvider      String?
+  paymentRef           String?
+  invoiceNo            String?
+  mountAt              DateTime?
+  mountNote            String?     @db.Text
+  reminderAt           DateTime?
+  reminderSent         Boolean     @default(false)
+  manufacturerNotified Boolean     @default(false)
+  total                Float       @default(0)
+  customerId           String?
+  items                OrderItem[]
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+}
+
+model OrderItem {
+  id          String  @id @default(cuid())
+  orderId     String
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId   String?
+  productName String
+  productSlug String?
+  unitPrice   Float
+  quantity    Int     @default(1)
+  lineTotal   Float
+  widthCm     Float?
+  heightCm    Float?
+  color       String?
+  optionsNote String?
+}
+
+model MediaAsset {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String
+  alt       String?
+  mimeType  String?
+  size      Int?
+  createdAt DateTime @default(now())
+}
+
+model NavItem {
+  id        String   @id @default(cuid())
+  label     String
+  href      String
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actorEmail String?
+  action     String
+  entity     String?
+  entityId   String?
+  meta       String   @default("{}")
+  ip         String?
+  createdAt  DateTime @default(now())
+}
