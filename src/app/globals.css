@@ -175,8 +175,8 @@ main {
   -webkit-overflow-scrolling: touch;
 }
 
-img,
-video {
+img:not([class*="absolute"]):not([class*="h-full"]),
+video:not([class*="absolute"]):not([class*="h-full"]) {
   max-width: 100%;
   height: auto;
 }
@@ -335,11 +335,11 @@ video {
   background: var(--orange);
   color: #0a0a0a;
   font-weight: 700;
-  font-size: 0.875rem;
-  letter-spacing: 0.05em;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   border: none;
-  border-radius: 999px;
+  border-radius: 0.25rem;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -357,11 +357,11 @@ video {
   background: transparent;
   color: white;
   font-weight: 600;
-  font-size: 0.875rem;
-  letter-spacing: 0.05em;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   border: 1px solid rgba(201, 169, 98, 0.55);
-  border-radius: 999px;
+  border-radius: 0.25rem;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -370,6 +370,36 @@ video {
   border-color: var(--orange);
   color: var(--orange);
   background: rgba(201, 169, 98, 0.08);
+}
+
+.section-title {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.section-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+.section-ornament::before,
+.section-ornament::after {
+  content: "";
+  height: 1px;
+  width: 3.5rem;
+  background: rgba(201, 169, 98, 0.7);
+}
+
+.section-ornament-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  background: var(--orange);
+  transform: rotate(45deg);
 }
 
 .btn-primary,

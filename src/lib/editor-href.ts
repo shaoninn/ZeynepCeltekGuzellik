@@ -15,7 +15,8 @@ export function toEditorHref(href: string): string {
     href.startsWith("http") ||
     href.startsWith("mailto:") ||
     href.startsWith("tel:") ||
-    href.startsWith("#")
+    href.startsWith("#") ||
+    href.includes("/#")
   ) {
     return href;
   }

@@ -28,10 +28,10 @@ export type AboutPageData = {
 export function AboutPageView({ data }: { data: AboutPageData }) {
   return (
     <>
-      <section className="py-16 lg:py-24 bg-gradient-to-b from-black to-card">
+      <section className="py-12 sm:py-14 lg:py-16 bg-marble">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="text-orange text-xs font-semibold tracking-[0.3em] uppercase mb-2">
+            <p className="text-orange text-[11px] font-semibold tracking-[0.28em] uppercase mb-2">
               Hakkımızda
             </p>
             <EditableText
@@ -40,7 +40,7 @@ export function AboutPageView({ data }: { data: AboutPageData }) {
               as="h1"
               block
               multiline
-              className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 whitespace-pre-line"
+              className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-white mb-5 whitespace-pre-line"
               help="Hakkımızda ana başlık. Satır kırmak için Enter kullanın."
             />
             <EditableText

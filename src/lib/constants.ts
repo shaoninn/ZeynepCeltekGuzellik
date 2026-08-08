@@ -8,7 +8,17 @@ export const WHATSAPP_URL = `https://wa.me/${PHONE_RAW}`;
 export const EMAIL = "info@zeynepceltekguzellik.local";
 export const ADDRESS = "Adana — Özal & Gazi Paşa şubeleri";
 export const LOCATION_LABEL = "Adana";
-export const INSTAGRAM = "https://www.instagram.com/";
+export const INSTAGRAM = "https://www.instagram.com/zeynepceltek_adana/";
+export const INSTAGRAM_HANDLES = [
+  {
+    handle: "@zeynepceltek_t.ozel",
+    href: "https://www.instagram.com/zeynepceltek_t.ozel/",
+  },
+  {
+    handle: "@zeynepceltek_adana",
+    href: "https://www.instagram.com/zeynepceltek_adana/",
+  },
+] as const;
 /** Google İşletme Profili — domain ile birlikte sonra */
 export const GOOGLE_BUSINESS_URL = "";
 export const GOOGLE_MAPS_EMBED_QUERY = "Zeynep Çeltek Güzellik, Adana";
@@ -36,8 +46,8 @@ export const LEGAL_LINKS = [
 export const PRIMARY_NAV_HREFS = [
   "/",
   "/hizmetler",
-  "/projeler",
-  "/blog",
+  "/#paketler",
+  "/#kampanyalar",
   "/hakkimizda",
   "/iletisim",
 ] as const;
@@ -45,8 +55,8 @@ export const PRIMARY_NAV_HREFS = [
 export const PRIMARY_NAV_LINKS = [
   { href: "/", label: "ANA SAYFA" },
   { href: "/hizmetler", label: "HİZMETLERİMİZ" },
-  { href: "/projeler", label: "PAKETLER" },
-  { href: "/blog", label: "KAMPANYALAR" },
+  { href: "/#paketler", label: "PAKETLER" },
+  { href: "/#kampanyalar", label: "KAMPANYALAR" },
   { href: "/hakkimizda", label: "HAKKIMIZDA" },
   { href: "/iletisim", label: "İLETİŞİM" },
 ] as const;
@@ -54,11 +64,57 @@ export const PRIMARY_NAV_LINKS = [
 export const NAV_LINKS = [
   { href: "/", label: "ANA SAYFA" },
   { href: "/hizmetler", label: "HİZMETLERİMİZ" },
-  { href: "/projeler", label: "PAKETLER" },
-  { href: "/blog", label: "KAMPANYALAR" },
+  { href: "/#paketler", label: "PAKETLER" },
+  { href: "/#kampanyalar", label: "KAMPANYALAR" },
   { href: "/hakkimizda", label: "HAKKIMIZDA" },
   { href: "/iletisim", label: "İLETİŞİM" },
   { href: "/sepet", label: "RANDEVU SEPETİ" },
+] as const;
+
+/** Ana sayfa popüler hizmet ikon sırası (mockup) */
+export const POPULAR_SERVICES = [
+  {
+    name: "Eğitimlerimiz",
+    slug: "cilt-bakimi",
+    href: "/hizmetler",
+    description: "Uzman kadro ile uygulamalı güzellik eğitimleri.",
+    icon: "graduation",
+  },
+  {
+    name: "İnceleme",
+    slug: "cilt-bakimi",
+    href: "/iletisim",
+    description: "Ücretsiz cilt ve ihtiyaç analizi.",
+    icon: "search",
+  },
+  {
+    name: "Cilt Bakımı",
+    slug: "cilt-bakimi",
+    href: "/hizmetler/cilt-bakimi",
+    description: "Hydrafacial, medikal bakım ve onarım.",
+    icon: "droplet",
+  },
+  {
+    name: "Yüz-Boyun Toparlama",
+    slug: "cilt-bakimi",
+    href: "/hizmetler/cilt-bakimi",
+    description: "Mikroplus ile yüz ve boyun toparlama.",
+    icon: "sparkles",
+  },
+  {
+    name: "Lazer Epilasyon",
+    slug: "lazer-bayan",
+    href: "/hizmetler/lazer-bayan",
+    description: "Bayan ve erkek lazer paketleri.",
+    icon: "zap",
+  },
+  {
+    name: "Bölgesel İncelme",
+    slug: "bolgesel-incelme",
+    href: "/hizmetler/bolgesel-incelme",
+    description: "G5, Emslim, heykeltıraş ve G8.",
+    icon: "waves",
+  },
 ] as const;
 
 export const VALUE_PROPS = [
@@ -88,21 +144,21 @@ export const FEATURE_BAR = [
   {
     icon: "search",
     title: "UZMAN KADRO",
-    desc: "Alanında deneyimli güzellik uzmanları.",
+    desc: "Deneyimli güzellik uzmanları.",
   },
   {
     icon: "design",
-    title: "KİŞİYE ÖZEL",
-    desc: "Cilt ve ihtiyaca göre planlanan uygulamalar.",
+    title: "GÜVENLİ & HİJYENİK",
+    desc: "Klinik standartlarda steril ortam.",
   },
   {
     icon: "production",
-    title: "HİJYEN STANDARTI",
-    desc: "Steril ortam ve güvenilir ürünler.",
+    title: "KİŞİYE ÖZEL ÇÖZÜMLER",
+    desc: "İhtiyaca göre planlanan protokoller.",
   },
   {
     icon: "support",
-    title: "MEMNUNİYET",
+    title: "MEMNUNİYET GARANTİSİ",
     desc: "Her seans sonrası takip ve destek.",
   },
 ] as const;
@@ -507,18 +563,22 @@ export const CATALOG_PRODUCTS: {
 
 export const PACKAGES = [
   {
-    id: "karbon-3",
-    name: "Karbon 3",
+    id: "baslangic",
+    name: "Başlangıç Paketi",
     price: 2750,
+    sessions: "TOPLAM 3 SEANS",
     featured: false,
+    image: "/images/products/cilt-bakimi/1.jpg",
     items: ["3 seans karbon maske", "Cilt temizliği", "Randevu planı"],
   },
   {
     id: "guzellik-paketi",
     name: "Güzellik Paketi",
     price: 8000,
+    sessions: "TOPLAM 10 SEANS",
     featured: true,
     badge: "En Çok Tercih Edilen",
+    image: "/images/products/cilt-bakimi/2.jpg",
     items: [
       "10 seans yüz-boyun toparlama",
       "Mikroplus işlemi",
@@ -526,21 +586,21 @@ export const PACKAGES = [
     ],
   },
   {
-    id: "lazer-3bolge",
-    name: "Lazer 3 Bölge",
-    price: 2000,
+    id: "vip",
+    name: "VIP Paket",
+    price: 4500,
+    sessions: "TOPLAM 5 SEANS",
     featured: false,
-    items: ["8 seans 3 bölge lazer", "Bayan paket", "Seans takibi"],
+    image: "/images/products/cilt-bakimi/4.jpg",
+    items: ["5 seans karbon maske", "Cilt bakımı", "Seans takibi"],
   },
   {
-    id: "alex-3-10",
-    name: "Alex 3 Bölge 10",
-    price: 8000,
+    id: "lazer",
+    name: "Lazer Paket",
+    price: 2000,
+    sessions: "8 SEANS · 3 BÖLGE",
     featured: false,
-    items: [
-      "Soğuk hava üflemeli Alex",
-      "Bacak + kolaltı + genital",
-      "10 seans",
-    ],
+    image: "/images/products/lazer-bayan/1.jpg",
+    items: ["8 seans 3 bölge lazer", "Bayan paket", "Seans takibi"],
   },
 ] as const;

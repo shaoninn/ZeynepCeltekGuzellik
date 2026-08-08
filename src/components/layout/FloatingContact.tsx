@@ -21,22 +21,24 @@ export function FloatingContact({ phone, whatsappUrl }: FloatingContactProps) {
   );
 
   return (
-    <div className="fixed z-40 flex flex-col gap-2 bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-[max(1.25rem,env(safe-area-inset-right))]">
+    <div className="fixed z-40 flex flex-col items-end gap-2 bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))]">
       <a
         href={telHref(phone)}
-        className="w-12 h-12 flex items-center justify-center rounded-full bg-card border border-border text-orange hover:border-orange transition-colors md:hidden"
+        className="w-11 h-11 flex items-center justify-center rounded-full bg-card border border-border text-orange hover:border-orange transition-colors md:hidden"
         aria-label={`Ara: ${phone}`}
       >
-        <Phone size={20} />
+        <Phone size={18} />
       </a>
       <a
         href={`${whatsappUrl}?text=${waText}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-14 h-14 flex items-center justify-center rounded-full bg-[#25D366] text-white hover:brightness-110 transition-colors shadow-lg"
-        aria-label="WhatsApp ile yazın"
+        className="inline-flex items-center gap-2.5 rounded-sm bg-orange text-ink pl-3.5 pr-4 py-3 text-xs font-bold tracking-wide uppercase shadow-[0_12px_40px_rgba(0,0,0,0.45)] hover:bg-orange-dark transition-colors"
+        aria-label="WhatsApp ile iletişime geç"
       >
-        <WhatsAppIcon size={28} />
+        <WhatsAppIcon size={18} />
+        <span className="hidden sm:inline">WhatsApp ile İletişime Geç</span>
+        <span className="sm:hidden">WhatsApp</span>
       </a>
     </div>
   );

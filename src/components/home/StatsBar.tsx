@@ -20,28 +20,27 @@ export function StatsBar({
   const list = items && items.length > 0 ? items : [...STATS];
 
   return (
-    <section className="relative py-16 lg:py-20 bg-marble overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_80%_50%,rgba(201,169,98,0.1),transparent_55%)]" />
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 items-center">
-          <div className="grid grid-cols-2 gap-8 lg:gap-10">
+    <section className="bg-cream text-ink py-6 sm:py-7">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 flex-1">
             {list.map((stat, index) => {
               const n = index + 1;
               return (
-                <div key={`stat-${n}`} className="min-w-0">
+                <div key={`stat-${n}`} className="min-w-0 text-center sm:text-left">
                   <EditableText
                     contentKey={`stat_${n}_value`}
                     value={stat.value}
                     as="p"
-                    className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-orange mb-2"
+                    className="font-display text-2xl sm:text-3xl font-semibold text-orange mb-0.5"
                     help={`İstatistik ${n} değeri`}
                   />
                   <EditableText
                     contentKey={`stat_${n}_label`}
                     value={stat.label}
                     as="p"
-                    className="text-xs sm:text-sm text-muted tracking-wider uppercase"
-                    help={`İstatistik ${n} etiketi`}
+                    className="text-[11px] text-ink/55 tracking-wide uppercase"
+                    help={`İstatistik ${n} etiket`}
                   />
                 </div>
               );
@@ -51,8 +50,9 @@ export function StatsBar({
             contentKey="stats_script"
             value={scriptText}
             as="p"
-            className="font-script text-orange text-2xl sm:text-3xl lg:text-4xl leading-snug text-right lg:pl-8"
-            help="İstatistik bölümü dekoratif yazı"
+            block
+            className="font-script text-orange text-2xl sm:text-3xl italic text-center lg:text-right lg:max-w-xs shrink-0"
+            help="İstatistik bandı script yazısı"
           />
         </div>
       </div>

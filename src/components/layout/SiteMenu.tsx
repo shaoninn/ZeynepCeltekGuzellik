@@ -35,14 +35,13 @@ const PRIMARY_SET = new Set<string>(PRIMARY_NAV_HREFS);
 /** Header dışı + alt menülü sayfalar (masaüstü menü). */
 const DRAWER_LINKS: { href: string; label: string; sub?: SubPanel }[] = [
   { href: "/hizmetler", label: "Hizmetlerimiz", sub: "categories" },
-  { href: "/projeler", label: "Paketler / Galeri", sub: "projects" },
-  { href: "/blog", label: "Kampanyalar", sub: "blog" },
-  { href: "/tekliflerim", label: "Randevularım" },
-  { href: "/sepet", label: "Randevu Sepeti" },
-  { href: "/odeme", label: "Ödeme" },
-  { href: "/hizmet-bolgeleri", label: "Hizmet Bölgeleri" },
-  { href: "/hakkimizda", label: "Salon" },
+  { href: "/#paketler", label: "Paketler" },
+  { href: "/#kampanyalar", label: "Kampanyalar" },
+  { href: "/hakkimizda", label: "Hakkımızda" },
   { href: "/iletisim", label: "İletişim" },
+  { href: "/sepet", label: "Randevu Sepeti" },
+  { href: "/projeler", label: "Galeri", sub: "projects" },
+  { href: "/blog", label: "Blog", sub: "blog" },
   { href: "#legal", label: "Kurumsal / Yasal", sub: "legal" },
 ];
 

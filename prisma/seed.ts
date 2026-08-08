@@ -94,7 +94,7 @@ const siteContent = [
     key: "hero_body",
     title: "Hero Açıklama",
     content:
-      "Kişiye özel cilt bakımı, lazer epilasyon ve bölgesel incelme çözümleriyle Adana’da yanınızdayız. Uzman kadromuzla güzelliğinize değer katıyoruz.",
+      "Kişiye özel çözümler ve uzman kadromuzla güzelliğinize değer katıyoruz. Cilt bakımı, lazer epilasyon ve bölgesel incelmede Adana’da yanınızdayız.",
   },
   {
     key: "hero_image",
@@ -448,8 +448,8 @@ const siteContent = [
 const navItems = [
   { label: "ANA SAYFA", href: "/", sortOrder: 0 },
   { label: "HİZMETLERİMİZ", href: "/hizmetler", sortOrder: 1 },
-  { label: "PAKETLER", href: "/projeler", sortOrder: 2 },
-  { label: "KAMPANYALAR", href: "/blog", sortOrder: 3 },
+  { label: "PAKETLER", href: "/#paketler", sortOrder: 2 },
+  { label: "KAMPANYALAR", href: "/#kampanyalar", sortOrder: 3 },
   { label: "HAKKIMIZDA", href: "/hakkimizda", sortOrder: 4 },
   { label: "İLETİŞİM", href: "/iletisim", sortOrder: 5 },
 ];
