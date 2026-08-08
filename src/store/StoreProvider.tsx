@@ -12,6 +12,7 @@ function CartHydration() {
   return null;
 }
 
+/** Site-wide: Header cart badge + product add-to-cart need shared store. */
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   return (
     <Provider store={store}>

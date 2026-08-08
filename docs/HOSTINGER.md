@@ -30,7 +30,7 @@ hPanel → **Websites → Add website → Node.js Web App**
 |---------|--------|
 | `NODE_ENV` | **`production`** (tam küçük harf; `development` yazma) |
 | `JWT_SECRET` | ≥32 karakter rastgele secret |
-| `NEXT_PUBLIC_SITE_URL` | `https://SENIN-DOMAININ.com` |
+| `NEXT_PUBLIC_SITE_URL` | `https://zeynepceltek.com` |
 | `MYSQL_USER` | Hostinger MySQL kullanıcı adı |
 | `MYSQL_PASSWORD` | Hostinger MySQL şifresi |
 | `MYSQL_HOST` | hPanel → Uzak MySQL hostname (`srv….hstgr.io`; `localhost` değil) |
@@ -38,6 +38,7 @@ hPanel → **Websites → Add website → Node.js Web App**
 | `MYSQL_DATABASE` | Hostinger veritabanı adı |
 | `MYSQL_POOL_SIZE` | Normal: `3` · Limit baskısı: `1` |
 | `MYSQL_SERIALIZE` | Limit baskısında: `1` (pool=1 ile birlikte) |
+| `HEALTH_TOKEN` | Opsiyonel; set edilirse `/api/health` token ister |
 
 **Not:** Remote MySQL’de kullanıcı için `%` (Any Host) izni açık olmalı. `DATABASE_URL` satırı ekleme.
 
@@ -89,7 +90,7 @@ Grafik düştükten sonra pool’u `3`’e çıkarabilirsin; limit yine kırmız
 
 ## DB bağlantı testi
 
-Deploy sonrası: `https://SENIN-DOMAININ.com/api/health`
+Deploy sonrası: `https://zeynepceltek.com/api/health`
 
 ### `database: down` + timeout
 

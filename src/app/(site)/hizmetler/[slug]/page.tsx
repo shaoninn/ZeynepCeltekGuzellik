@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { SiteLink } from "@/components/ui/SiteLink";
-import { prisma } from "@/lib/db";
-import { getCategoryBySlug } from "@/lib/catalog";
+import { getCategoryBySlug, getProductsByCategoryId } from "@/lib/catalog";
 import { categoryTitleFromSlug } from "@/lib/catalog-fallback";
 import { CatalogProductGrid } from "@/components/shop/CatalogProductGrid";
 import { EditableCategoryField } from "@/components/editor/EditableCategoryField";
@@ -37,19 +36,7 @@ export default async function CategoryPage({ params }: Props) {
   const category = await getCategoryBySlug(slug);
   if (!category || !category.isActive) notFound();
 
-  const products = await (async () => {
-    if (category.id.startsWith("fallback-")) return [];
-    try {
-      return await prisma.product.findMany({
-        where: { categoryId: category.id, isActive: true },
-        orderBy: { sortOrder: "asc" },
-        include: { category: true },
-      });
-    } catch (error) {
-      console.error("[hizmetler/slug] products failed:", error);
-      return [];
-    }
-  })();
+  const products = await getProductsByCategoryId(category.id);
 
   const desc = category.description || "";
 

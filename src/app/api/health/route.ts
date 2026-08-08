@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import mariadb from "mariadb";
 import type { Connection } from "mariadb";
 import { mysqlConnectionSummary, resolveMysqlPoolConfig } from "@/lib/db-url";
@@ -6,11 +6,51 @@ import { mysqlConnectionSummary, resolveMysqlPoolConfig } from "@/lib/db-url";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
+const WINDOW_MS = 60_000;
+const MAX_HITS = 12;
+const hitsByIp = new Map<string, number[]>();
+
+function clientIp(req: NextRequest): string {
+  return (
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-real-ip") ||
+    "unknown"
+  );
+}
+
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const prev = hitsByIp.get(ip) ?? [];
+  const recent = prev.filter((t) => now - t < WINDOW_MS);
+  if (recent.length >= MAX_HITS) {
+    hitsByIp.set(ip, recent);
+    return true;
+  }
+  recent.push(now);
+  hitsByIp.set(ip, recent);
+  return false;
+}
+
 /**
  * Direct TCP probe (bypasses Prisma pool) so Hostinger hostname issues are clear.
- * Open: https://example.com/api/health
+ * Optional: ?token=HEALTH_TOKEN or Authorization: Bearer … when HEALTH_TOKEN is set.
  */
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const secret = process.env.HEALTH_TOKEN?.trim();
+  if (secret) {
+    const q = req.nextUrl.searchParams.get("token");
+    const auth = req.headers.get("authorization");
+    const bearer = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+    if (q !== secret && bearer !== secret) {
+      return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+    }
+  } else if (rateLimited(clientIp(req))) {
+    return NextResponse.json(
+      { error: "rate_limited", hint: "En fazla 12 istek / dakika. HEALTH_TOKEN ile kilitleyin." },
+      { status: 429 }
+    );
+  }
+
   let target = "unresolved";
   try {
     target = mysqlConnectionSummary();

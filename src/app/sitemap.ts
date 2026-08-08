@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/db";
+import { memoryCache } from "@/lib/memory-cache";
 import { getSiteUrl } from "@/lib/seo";
 
-/** Hostinger build ortamında MySQL yok; runtime’da üretilsin. */
-export const dynamic = "force-dynamic";
+/** Cached sitemap — avoid force-dynamic crawler storms on Hostinger. */
+export const revalidate = 3600;
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+async function buildSitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl();
   const now = new Date();
 
@@ -87,4 +88,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("sitemap: DB unavailable, returning static routes only", error);
     return staticRoutes;
   }
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  return memoryCache("sitemap:full", buildSitemap, {
+    ttlMs: 3_600_000,
+    skipEmpty: true,
+  });
 }

@@ -5,9 +5,9 @@ import { StoreProvider } from "@/store/StoreProvider";
 import { getNavLinks, getSiteSettings } from "@/lib/site";
 import { getContentMap } from "@/lib/site-content";
 import {
-  getActiveCategories,
   getFeaturedProjects,
-  getPublishedPosts,
+  getMenuCategories,
+  getMenuPosts,
 } from "@/lib/catalog";
 
 /** ISR: HTML + data cache ~60s; editor/admin saves call revalidatePath. */
@@ -23,9 +23,9 @@ export default async function SiteLayout({
       getSiteSettings(),
       getNavLinks(),
       getContentMap(["footer_blurb"]),
-      getActiveCategories(),
+      getMenuCategories(),
       getFeaturedProjects(),
-      getPublishedPosts(),
+      getMenuPosts(),
     ]);
 
   const menuCategories = categories.map((c) => ({
@@ -36,7 +36,7 @@ export default async function SiteLayout({
     href: `/projeler/${p.slug}`,
     label: p.title,
   }));
-  const menuPosts = posts.slice(0, 8).map((p) => ({
+  const menuPosts = posts.map((p) => ({
     href: `/blog/${p.slug}`,
     label: p.title,
   }));

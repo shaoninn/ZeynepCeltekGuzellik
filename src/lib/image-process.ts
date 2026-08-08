@@ -65,7 +65,7 @@ export async function processUploadImage(
     return { bytes, mime: "image/png", ext: "png" };
   }
 
-  const maxEdge = opts.maxEdge ?? 2000;
+  const maxEdge = opts.maxEdge ?? 1600;
   const pipeline = sharp(bytes, { failOn: "none" })
     .rotate()
     .resize({
@@ -75,6 +75,22 @@ export async function processUploadImage(
       withoutEnlargement: true,
     });
 
-  const webp = await pipeline.webp({ quality: 82, effort: 4 }).toBuffer();
+  const webp = await pipeline.webp({ quality: 80, effort: 2 }).toBuffer();
   return { bytes: webp, mime: "image/webp", ext: "webp" };
+}
+
+/** Serialize sharp work so Hostinger RAM doesn't spike on parallel uploads. */
+let uploadQueue: Promise<unknown> = Promise.resolve();
+
+export function processUploadImageQueued(
+  input: Buffer,
+  opts: { removeBg?: boolean; maxEdge?: number } = {}
+): Promise<ProcessedImage> {
+  const run = () => processUploadImage(input, opts);
+  const next = uploadQueue.then(run, run);
+  uploadQueue = next.then(
+    () => undefined,
+    () => undefined
+  );
+  return next;
 }

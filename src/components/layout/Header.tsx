@@ -43,22 +43,31 @@ export function Header({
 }: HeaderProps) {
   const pathname = usePathname();
   const primaryNav = resolvePrimaryNav(navLinks);
+  const editorMode = pathname.startsWith("/duzenle");
+
+  const logo = (
+    <span className="inline-flex origin-left max-sm:scale-[0.9]">
+      <Logo size="md" />
+    </span>
+  );
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-3 h-14 sm:h-16">
           <div className="min-w-0 shrink">
-            <EditableLayoutBox
-              settingKey="layout_logo"
-              value={settings.layoutLogo}
-              label="Logo"
-              maxOffset={60}
-            >
-              <span className="inline-flex origin-left max-sm:scale-[0.9]">
-                <Logo size="md" />
-              </span>
-            </EditableLayoutBox>
+            {editorMode ? (
+              <EditableLayoutBox
+                settingKey="layout_logo"
+                value={settings.layoutLogo}
+                label="Logo"
+                maxOffset={60}
+              >
+                {logo}
+              </EditableLayoutBox>
+            ) : (
+              logo
+            )}
           </div>
 
           <nav className="hidden lg:flex items-center gap-0.5 flex-1 justify-center min-w-0 px-2">

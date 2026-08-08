@@ -1,16 +1,21 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { Calendar, ShoppingCart } from "lucide-react";
 import { SiteLink } from "@/components/ui/SiteLink";
 import { useAppSelector } from "@/store/hooks";
 import { selectCartCount } from "@/store/cartSlice";
-import { CartToast } from "@/components/shop/CartToast";
 import {
   SiteMenu,
   type MenuCategoryItem,
   type MenuLinkItem,
 } from "@/components/layout/SiteMenu";
 import type { NavLinkItem } from "@/lib/site";
+
+const CartToast = dynamic(
+  () => import("@/components/shop/CartToast").then((m) => m.CartToast),
+  { ssr: false }
+);
 
 interface HeaderClientProps {
   navLinks: NavLinkItem[];

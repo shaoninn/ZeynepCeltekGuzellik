@@ -8,9 +8,9 @@ import { getNavLinks, getSiteSettings } from "@/lib/site";
 import { getContentMap } from "@/lib/site-content";
 import { mapNavToEditor, toEditorHref } from "@/lib/editor-href";
 import {
-  getActiveCategories,
   getFeaturedProjects,
-  getPublishedPosts,
+  getMenuCategories,
+  getMenuPosts,
 } from "@/lib/catalog";
 
 export const dynamic = "force-dynamic";
@@ -31,9 +31,9 @@ export default async function EditorLayout({
       getSiteSettings(),
       getNavLinks(),
       getContentMap(["footer_blurb"]),
-      getActiveCategories(),
+      getMenuCategories(),
       getFeaturedProjects(),
-      getPublishedPosts(),
+      getMenuPosts(),
     ]);
   const editorNav = mapNavToEditor(navLinks);
   const menuCategories = categories.map((c) => ({
@@ -44,7 +44,7 @@ export default async function EditorLayout({
     href: toEditorHref(`/projeler/${p.slug}`),
     label: p.title,
   }));
-  const menuPosts = posts.slice(0, 8).map((p) => ({
+  const menuPosts = posts.map((p) => ({
     href: toEditorHref(`/blog/${p.slug}`),
     label: p.title,
   }));

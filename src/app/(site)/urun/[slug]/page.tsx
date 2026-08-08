@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import { SiteLink } from "@/components/ui/SiteLink";
 import { prisma } from "@/lib/db";
+import { getSimilarProducts } from "@/lib/catalog";
 import { memoryCache } from "@/lib/memory-cache";
 import { formatPrice, parseJsonArray, parseJsonObject } from "@/lib/utils";
 import { ProductConfigurator } from "@/components/shop/ProductConfigurator";
@@ -74,22 +75,7 @@ export default async function ProductPage({ params }: Props) {
       ? product.salePrice
       : product.price;
 
-  const similar = await (async () => {
-    try {
-      return await prisma.product.findMany({
-        where: {
-          categoryId: product.categoryId,
-          isActive: true,
-          id: { not: product.id },
-        },
-        include: { category: true },
-        orderBy: { sortOrder: "asc" },
-        take: 4,
-      });
-    } catch {
-      return [];
-    }
-  })();
+  const similar = await getSimilarProducts(product.categoryId, product.id, 4);
 
   return (
     <section className="py-16 lg:py-24">

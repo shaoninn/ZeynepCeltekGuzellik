@@ -23,12 +23,16 @@ export async function getContentTitles(
   keys: string[]
 ): Promise<Record<string, string>> {
   try {
-    const rows = await prisma.siteContent.findMany({
-      where: { key: { in: keys } },
-      select: { key: true, title: true },
-    });
-    return Object.fromEntries(
-      rows.map((r) => [r.key, r.title || ""])
+    return await memoryCache(
+      `content-titles:${keys.slice().sort().join(",")}`,
+      async () => {
+        const rows = await prisma.siteContent.findMany({
+          where: { key: { in: keys } },
+          select: { key: true, title: true },
+        });
+        return Object.fromEntries(rows.map((r) => [r.key, r.title || ""]));
+      },
+      { ttlMs: 60_000, skipEmpty: false }
     );
   } catch {
     return {};

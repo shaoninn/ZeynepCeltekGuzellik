@@ -1,7 +1,7 @@
 import { CartPage } from "@/components/shop/CartPage";
 import { getSiteSettings } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata = {
   alternates: { canonical: "/sepet" },

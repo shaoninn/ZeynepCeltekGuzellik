@@ -43,10 +43,28 @@ async function loadActiveCategories() {
   });
 }
 
+/** Menu / chrome: slug+name only — no product _count. */
+async function loadMenuCategories() {
+  return prisma.category.findMany({
+    where: { isActive: true },
+    orderBy: { sortOrder: "asc" },
+    select: { slug: true, name: true },
+  });
+}
+
 async function loadPublishedPosts() {
   return prisma.blogPost.findMany({
     where: { isPublished: true },
     orderBy: { publishedAt: "desc" },
+  });
+}
+
+async function loadMenuPosts() {
+  return prisma.blogPost.findMany({
+    where: { isPublished: true },
+    orderBy: { publishedAt: "desc" },
+    take: 8,
+    select: { slug: true, title: true },
   });
 }
 
@@ -151,6 +169,40 @@ export const getPublishedPosts = cache(async () => {
   }
 });
 
+export const getMenuCategories = cache(async () => {
+  try {
+    const rows = await memoryCache("catalog:categories:menu", loadMenuCategories, {
+      ttlMs: CATALOG_TTL_MS,
+      skipEmpty: true,
+    });
+    if (rows.length === 0) {
+      return getFallbackCategories().map((c) => ({
+        slug: c.slug,
+        name: c.name,
+      }));
+    }
+    return rows;
+  } catch (error) {
+    console.error("[catalog] getMenuCategories failed:", error);
+    return getFallbackCategories().map((c) => ({
+      slug: c.slug,
+      name: c.name,
+    }));
+  }
+});
+
+export const getMenuPosts = cache(async () => {
+  try {
+    return await memoryCache("catalog:blog:menu", loadMenuPosts, {
+      ttlMs: CATALOG_TTL_MS,
+      skipEmpty: true,
+    });
+  } catch (error) {
+    console.error("[catalog] getMenuPosts failed:", error);
+    return [];
+  }
+});
+
 export const getProjectBySlug = cache(async (slug: string) => {
   try {
     return await memoryCache(
@@ -192,11 +244,40 @@ export async function getProductsByCategoryId(categoryId: string) {
         prisma.product.findMany({
           where: { categoryId, isActive: true },
           orderBy: { sortOrder: "asc" },
+          include: { category: true },
         }),
       { ttlMs: CATALOG_TTL_MS, skipEmpty: true }
     );
   } catch (error) {
     console.error("[catalog] getProductsByCategoryId failed:", error);
+    return [];
+  }
+}
+
+export async function getSimilarProducts(
+  categoryId: string,
+  excludeId: string,
+  take = 4
+) {
+  if (categoryId.startsWith("fallback-")) return [];
+  try {
+    return await memoryCache(
+      `catalog:similar:${categoryId}:${excludeId}:${take}`,
+      () =>
+        prisma.product.findMany({
+          where: {
+            categoryId,
+            isActive: true,
+            id: { not: excludeId },
+          },
+          include: { category: true },
+          orderBy: { sortOrder: "asc" },
+          take,
+        }),
+      { ttlMs: CATALOG_TTL_MS, skipEmpty: true }
+    );
+  } catch (error) {
+    console.error("[catalog] getSimilarProducts failed:", error);
     return [];
   }
 }

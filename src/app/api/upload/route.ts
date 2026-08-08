@@ -4,7 +4,7 @@ import { requireAdmin, isUnauthorized } from "@/lib/api";
 import { deleteUpload, storeUpload } from "@/lib/storage";
 import { writeAuditLog } from "@/lib/audit";
 import { clientIp } from "@/lib/rate-limit";
-import { processUploadImage } from "@/lib/image-process";
+import { processUploadImageQueued } from "@/lib/image-process";
 
 const MAX_SIZE = 8 * 1024 * 1024;
 
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
 
     if (!skipConvert) {
       try {
-        const processed = await processUploadImage(bytes, { removeBg });
+        const processed = await processUploadImageQueued(bytes, { removeBg });
         outBytes = Buffer.from(processed.bytes);
         outMime = processed.mime;
         outExt = processed.ext;
