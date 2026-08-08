@@ -19,6 +19,22 @@ hPanel → **Websites → Add website → Node.js Web App**
 | Build | `npm run build` |
 | Start | `npm run start` |
 | Output | `.next` |
+| **Max Processes** (Deployments → Settings) | **`1`** (Hostinger Business ortak 120 limit) |
+
+**Kritik:** Hesapta 3 site varsa 120 işlem + 60 giriş işlemi **ortaktır**. Node.js sürekli süreç tutar; Max Processes > 1 veya `npm run dev` limiti hızla doldurur.
+
+## Hostinger destek checklist (işlem limiti)
+
+1. `NODE_ENV=production` · Start = `npm run start` (**dev değil**)
+2. Deployments → **Max Processes = 1** → Redeploy
+3. Eski / kullanılmayan Node deployment’ları sil veya durdur
+4. Cron / uptime bot `/api/health`’i dakikada 1’den sık vurma; istersen `HEALTH_TOKEN` koy
+5. MySQL: `srv….hstgr.io` + doğru user/şifre (`zc@127.0.0.1` değil)
+6. Limit baskısında: `MYSQL_POOL_SIZE=1` + `MYSQL_SERIALIZE=1`
+7. Diğer 2 PHP sitesinde cache aç, gereksiz eklenti/cron kapat
+8. Hangi site şişiriyor belirsizse: siteleri sırayla geçici kapatıp Resources grafiğini karşılaştır
+
+Kod tarafında zaten: ISR, prefetch kapalı, lean home, sitemap cache, health rate-limit, start’ta `npx` yok.
 
 ## Ortam değişkenleri (Hostinger paneli)
 
