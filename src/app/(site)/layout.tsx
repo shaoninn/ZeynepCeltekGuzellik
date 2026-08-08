@@ -5,9 +5,9 @@ import { StoreProvider } from "@/store/StoreProvider";
 import { getNavLinks, getSiteSettings } from "@/lib/site";
 import { getContentMap } from "@/lib/site-content";
 import {
-  getFeaturedProjects,
   getMenuCategories,
   getMenuPosts,
+  getMenuProjects,
 } from "@/lib/catalog";
 
 /** ISR: HTML + data cache ~60s; editor/admin saves call revalidatePath. */
@@ -24,7 +24,7 @@ export default async function SiteLayout({
       getNavLinks(),
       getContentMap(["footer_blurb"]),
       getMenuCategories(),
-      getFeaturedProjects(),
+      getMenuProjects(),
       getMenuPosts(),
     ]);
 
@@ -32,7 +32,7 @@ export default async function SiteLayout({
     href: `/hizmetler/${c.slug}`,
     label: c.name,
   }));
-  const menuProjects = projects.slice(0, 12).map((p) => ({
+  const menuProjects = projects.map((p) => ({
     href: `/projeler/${p.slug}`,
     label: p.title,
   }));

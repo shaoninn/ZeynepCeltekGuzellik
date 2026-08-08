@@ -38,6 +38,9 @@ const staticAssetCache = [
 const nextConfig = {
   poweredByHeader: false,
   compress: true,
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
+  },
   // Hostinger: runtime /_next/image sharp often 404s / spikes CPU.
   // Serve originals + pre-baked WebP from scripts/optimize-images.mjs.
   images: {
@@ -69,6 +72,10 @@ const nextConfig = {
         headers: staticAssetCache,
       },
       {
+        source: "/favicon-32.png",
+        headers: staticAssetCache,
+      },
+      {
         source: "/icon.png",
         headers: staticAssetCache,
       },
@@ -76,23 +83,19 @@ const nextConfig = {
         source: "/apple-icon.png",
         headers: staticAssetCache,
       },
-    ];
-  },
-  async redirects() {
-    // Single hop: legacy apex typos / trailing host variants handled in middleware.
-    return [
       {
-        source: "/index.html",
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/index.php",
-        destination: "/",
-        permanent: true,
+        source: "/robots.txt",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400",
+          },
+        ],
       },
     ];
   },
+  // No app-level redirects for index.html/php — Hostinger already does
+  // http→https (and optionally www). Extra hops hurt Lighthouse "redirects".
 };
 
 export default nextConfig;

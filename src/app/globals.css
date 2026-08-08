@@ -57,6 +57,21 @@ body {
   text-size-adjust: 100%;
 }
 
+/* Avoid iOS zoom-on-focus; keep tap targets usable on narrow screens */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+@media (max-width: 639px) {
+  .btn-primary,
+  .btn-outline {
+    min-height: 2.75rem;
+    justify-content: center;
+  }
+}
+
 #main-content,
 main {
   overflow-x: clip;

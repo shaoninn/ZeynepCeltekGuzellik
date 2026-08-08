@@ -34,9 +34,25 @@ async function loadActiveProjects() {
 async function loadFeaturedProjects() {
   return prisma.project.findMany({
     where: { isActive: true, isFeatured: true },
-    include: { category: true },
     orderBy: { sortOrder: "asc" },
     take: 10,
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      image: true,
+      sortOrder: true,
+    },
+  });
+}
+
+/** Menu chrome: title+slug only. */
+async function loadMenuProjects() {
+  return prisma.project.findMany({
+    where: { isActive: true },
+    orderBy: { sortOrder: "asc" },
+    take: 12,
+    select: { slug: true, title: true },
   });
 }
 
@@ -93,6 +109,18 @@ export const getFeaturedProjects = cache(async () => {
     });
   } catch (error) {
     console.error("[catalog] getFeaturedProjects failed:", error);
+    return [];
+  }
+});
+
+export const getMenuProjects = cache(async () => {
+  try {
+    return await memoryCache("catalog:menu-projects", loadMenuProjects, {
+      ttlMs: CATALOG_TTL_MS,
+      skipEmpty: true,
+    });
+  } catch (error) {
+    console.error("[catalog] getMenuProjects failed:", error);
     return [];
   }
 });

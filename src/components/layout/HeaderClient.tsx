@@ -1,19 +1,24 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Calendar, ShoppingCart } from "lucide-react";
+import { Calendar, Menu, ShoppingCart } from "lucide-react";
+import { useCallback, useState } from "react";
 import { SiteLink } from "@/components/ui/SiteLink";
 import { useAppSelector } from "@/store/hooks";
 import { selectCartCount } from "@/store/cartSlice";
-import {
-  SiteMenu,
-  type MenuCategoryItem,
-  type MenuLinkItem,
+import type {
+  MenuCategoryItem,
+  MenuLinkItem,
 } from "@/components/layout/SiteMenu";
 import type { NavLinkItem } from "@/lib/site";
 
 const CartToast = dynamic(
   () => import("@/components/shop/CartToast").then((m) => m.CartToast),
+  { ssr: false }
+);
+
+const SiteMenu = dynamic(
+  () => import("@/components/layout/SiteMenu").then((m) => m.SiteMenu),
   { ssr: false }
 );
 
@@ -37,6 +42,13 @@ export function HeaderClient({
   whatsappUrl,
 }: HeaderClientProps) {
   const cartCount = useAppSelector(selectCartCount);
+  const [menuMounted, setMenuMounted] = useState(false);
+  const [menuOpenRequest, setMenuOpenRequest] = useState(0);
+
+  const openMenu = useCallback(() => {
+    setMenuMounted(true);
+    setMenuOpenRequest((n) => n + 1);
+  }, []);
 
   return (
     <>
@@ -51,7 +63,7 @@ export function HeaderClient({
 
         <SiteLink
           href="/sepet"
-          className="relative inline-flex w-10 h-10 items-center justify-center text-muted hover:text-orange transition-colors"
+          className="relative inline-flex w-11 h-11 items-center justify-center text-muted hover:text-orange transition-colors"
           aria-label={`Randevu Sepeti${cartCount > 0 ? ` (${cartCount})` : ""}`}
         >
           <ShoppingCart size={18} />
@@ -62,15 +74,28 @@ export function HeaderClient({
           ) : null}
         </SiteLink>
 
-        <SiteMenu
-          navLinks={navLinks}
-          categories={categories}
-          projects={projects}
-          blogPosts={blogPosts}
-          phone={phone}
-          phoneRaw={phoneRaw}
-          whatsappUrl={whatsappUrl}
-        />
+        {menuMounted ? (
+          <SiteMenu
+            navLinks={navLinks}
+            categories={categories}
+            projects={projects}
+            blogPosts={blogPosts}
+            phone={phone}
+            phoneRaw={phoneRaw}
+            whatsappUrl={whatsappUrl}
+            autoOpenToken={menuOpenRequest}
+          />
+        ) : (
+          <button
+            type="button"
+            className="inline-flex w-11 h-11 items-center justify-center text-muted hover:text-orange transition-colors border border-transparent hover:border-border rounded-md"
+            onClick={openMenu}
+            aria-label="Menüyü aç"
+            aria-expanded={false}
+          >
+            <Menu size={22} />
+          </button>
+        )}
       </div>
 
       <CartToast />

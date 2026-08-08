@@ -8,9 +8,9 @@ import { getNavLinks, getSiteSettings } from "@/lib/site";
 import { getContentMap } from "@/lib/site-content";
 import { mapNavToEditor, toEditorHref } from "@/lib/editor-href";
 import {
-  getFeaturedProjects,
   getMenuCategories,
   getMenuPosts,
+  getMenuProjects,
 } from "@/lib/catalog";
 
 export const dynamic = "force-dynamic";
@@ -32,7 +32,7 @@ export default async function EditorLayout({
       getNavLinks(),
       getContentMap(["footer_blurb"]),
       getMenuCategories(),
-      getFeaturedProjects(),
+      getMenuProjects(),
       getMenuPosts(),
     ]);
   const editorNav = mapNavToEditor(navLinks);
@@ -40,7 +40,7 @@ export default async function EditorLayout({
     href: toEditorHref(`/hizmetler/${c.slug}`),
     label: c.name,
   }));
-  const menuProjects = projects.slice(0, 12).map((p) => ({
+  const menuProjects = projects.map((p) => ({
     href: toEditorHref(`/projeler/${p.slug}`),
     label: p.title,
   }));

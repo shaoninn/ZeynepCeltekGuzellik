@@ -1,12 +1,20 @@
 import dynamic from "next/dynamic";
 import { preload } from "react-dom";
-import { Hero, DEFAULT_HERO_IMAGE } from "@/components/home/Hero";
+import {
+  DEFAULT_HERO_IMAGE,
+  HeroPublic,
+} from "@/components/home/HeroPublic";
 import { heroPreloadHrefs } from "@/components/home/HeroMedia";
 import { PopularServicesSection } from "@/components/home/PopularServicesSection";
 import { PackagesCampaignSection } from "@/components/home/PackagesCampaignSection";
-import { FeatureBar } from "@/components/home/FeatureBar";
 import { loadHomePageData } from "@/lib/home-content";
 
+const Hero = dynamic(() =>
+  import("@/components/home/Hero").then((m) => m.Hero)
+);
+const FeatureBar = dynamic(() =>
+  import("@/components/home/FeatureBar").then((m) => m.FeatureBar)
+);
 const StatsBar = dynamic(() =>
   import("@/components/home/StatsBar").then((m) => m.StatsBar)
 );
@@ -17,17 +25,21 @@ const Testimonials = dynamic(() =>
   import("@/components/home/Testimonials").then((m) => m.Testimonials)
 );
 
-export async function HomePageView() {
+export async function HomePageView({
+  editable = false,
+}: {
+  editable?: boolean;
+} = {}) {
   const data = await loadHomePageData();
   const heroSrc = data.heroImage || DEFAULT_HERO_IMAGE;
   const { mobile, desktop } = heroPreloadHrefs(heroSrc);
 
-  preload(desktop, {
+  preload(mobile, {
     as: "image",
     fetchPriority: "high",
     imageSrcSet:
       mobile === desktop ? desktop : `${mobile} 960w, ${desktop} 1600w`,
-    imageSizes: "(max-width: 1024px) 90vw, 42vw",
+    imageSizes: "(max-width: 640px) 70vw, (max-width: 1024px) 90vw, 42vw",
   });
 
   const galleryImages =
@@ -45,15 +57,17 @@ export async function HomePageView() {
           "/images/gallery/gallery-6.jpg",
         ];
 
+  const heroProps = {
+    title: data.heroTitle,
+    subtitle: data.heroSubtitle,
+    body: data.heroBody,
+    image: heroSrc,
+    styles: data.styles,
+  };
+
   return (
     <>
-      <Hero
-        title={data.heroTitle}
-        subtitle={data.heroSubtitle}
-        body={data.heroBody}
-        image={heroSrc}
-        styles={data.styles}
-      />
+      {editable ? <Hero {...heroProps} /> : <HeroPublic {...heroProps} />}
       <PopularServicesSection
         title={data.servicesTitle || "Popüler Hizmetlerimiz"}
         styles={data.styles}

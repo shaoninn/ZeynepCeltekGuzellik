@@ -13,6 +13,7 @@ export const viewport: Viewport = {
 
 const montserrat = Montserrat({
   subsets: ["latin", "latin-ext"],
+  weight: ["400", "600", "700"],
   variable: "--font-body",
   display: "swap",
   adjustFontFallback: true,
@@ -21,7 +22,7 @@ const montserrat = Montserrat({
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["600", "700"],
   variable: "--font-display",
   display: "swap",
   adjustFontFallback: true,

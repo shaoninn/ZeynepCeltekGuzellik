@@ -52,7 +52,7 @@ export function GallerySection({
           <button
             type="button"
             onClick={() => scrollBy(-1)}
-            className="absolute left-0 top-1/2 z-10 -translate-y-1/2 -translate-x-1 sm:-translate-x-3 w-9 h-9 rounded-full border border-orange/50 bg-black/70 text-orange flex items-center justify-center hover:bg-orange hover:text-ink transition-colors"
+            className="absolute left-0 top-1/2 z-10 -translate-y-1/2 -translate-x-1 sm:-translate-x-3 w-11 h-11 rounded-full border border-orange/50 bg-black/70 text-orange flex items-center justify-center hover:bg-orange hover:text-ink transition-colors"
             aria-label="Önceki"
           >
             <ChevronLeft size={18} />
@@ -60,7 +60,7 @@ export function GallerySection({
           <button
             type="button"
             onClick={() => scrollBy(1)}
-            className="absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-1 sm:translate-x-3 w-9 h-9 rounded-full border border-orange/50 bg-black/70 text-orange flex items-center justify-center hover:bg-orange hover:text-ink transition-colors"
+            className="absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-1 sm:translate-x-3 w-11 h-11 rounded-full border border-orange/50 bg-black/70 text-orange flex items-center justify-center hover:bg-orange hover:text-ink transition-colors"
             aria-label="Sonraki"
           >
             <ChevronRight size={18} />
@@ -81,9 +81,12 @@ export function GallerySection({
                   <img
                     src={webp}
                     alt={`Uygulama ${i + 1}`}
+                    width={640}
+                    height={800}
                     className="absolute inset-0 h-full w-full object-cover"
                     loading="lazy"
                     decoding="async"
+                    sizes="(max-width: 640px) 78vw, (max-width: 1024px) 42vw, 30vw"
                   />
                 </div>
               );

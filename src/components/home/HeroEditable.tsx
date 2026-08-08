@@ -32,7 +32,7 @@ export function HeroEditable({
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_75%_45%,rgba(201,169,98,0.12),transparent_55%)]" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] gap-8 lg:gap-6 xl:gap-8 items-center py-8 sm:py-10 lg:py-6 lg:min-h-[min(34rem,calc(100svh-4.5rem))]">
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] gap-6 sm:gap-8 lg:gap-6 xl:gap-8 items-center py-6 sm:py-10 lg:py-6 lg:min-h-[min(34rem,calc(100svh-4.5rem))]">
           <div className="relative z-10 order-2 lg:order-1 min-w-0">
             <EditableText
               contentKey="hero_subtitle"
@@ -44,7 +44,7 @@ export function HeroEditable({
               textStyle={styles?.hero_subtitle}
             />
 
-            <h1 className="animate-hero-delay mb-4 sm:mb-5">
+            <h1 className="animate-hero-delay mb-3 sm:mb-5">
               <EditableText
                 contentKey="hero_title"
                 value={title || "Güzelliğinize Değer Veriyoruz"}
@@ -54,10 +54,10 @@ export function HeroEditable({
                 help='Slogan. "Değer"den sonrası altın script olur.'
                 textStyle={styles?.hero_title}
               >
-                <span className="font-display text-[2.35rem] leading-[1.08] sm:text-5xl lg:text-[3.35rem] font-semibold text-white tracking-tight">
+                <span className="font-display text-[1.85rem] leading-[1.1] sm:text-5xl lg:text-[3.35rem] font-semibold text-white tracking-tight">
                   {before}
                 </span>
-                <span className="mt-1 block font-script text-orange text-[2.35rem] sm:text-5xl lg:text-[3.4rem] italic font-normal leading-[1.05]">
+                <span className="mt-1 block font-script text-orange text-[1.85rem] sm:text-5xl lg:text-[3.4rem] italic font-normal leading-[1.05]">
                   {scriptPart}
                 </span>
               </EditableText>
@@ -69,32 +69,32 @@ export function HeroEditable({
               as="p"
               block
               multiline
-              className="animate-hero-delay-2 font-sans text-white/65 text-sm sm:text-[0.95rem] max-w-md mb-7 leading-relaxed"
+              className="animate-hero-delay-2 font-sans text-white/65 text-sm sm:text-[0.95rem] max-w-md mb-5 sm:mb-7 leading-relaxed pr-14 sm:pr-0"
               help="Hero açıklama"
               textStyle={styles?.hero_body}
             />
 
-            <div className="animate-hero-delay-2 flex flex-wrap gap-3 mb-8">
-              <Button href="/hizmetler" variant="primary" size="lg">
+            <div className="animate-hero-delay-2 flex flex-col sm:flex-row flex-wrap gap-3 mb-6 sm:mb-8">
+              <Button href="/hizmetler" variant="primary" size="lg" className="w-full sm:w-auto min-h-11">
                 Hizmetlerimizi İncele
               </Button>
-              <Button href="/iletisim" variant="outline" size="lg" className="gap-2">
+              <Button href="/iletisim" variant="outline" size="lg" className="gap-2 w-full sm:w-auto min-h-11">
                 <Phone size={15} />
                 Bize Ulaşın
               </Button>
             </div>
 
-            <div className="animate-hero-delay-2 flex flex-wrap items-center gap-4 sm:gap-5">
+            <div className="animate-hero-delay-2 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
               {INSTAGRAM_HANDLES.map((ig) => (
                 <a
                   key={ig.handle}
                   href={ig.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-white/55 hover:text-orange transition-colors text-xs sm:text-sm"
+                  className="inline-flex items-center gap-2 text-white/55 hover:text-orange transition-colors text-xs sm:text-sm min-h-10"
                 >
-                  <Camera size={14} className="text-orange" />
-                  <span>{ig.handle}</span>
+                  <Camera size={14} className="text-orange shrink-0" />
+                  <span className="break-all">{ig.handle}</span>
                 </a>
               ))}
             </div>
@@ -102,7 +102,7 @@ export function HeroEditable({
 
           <div className="relative order-1 lg:order-2 min-w-0 w-full">
             <div className="flex items-center justify-center lg:justify-end gap-3 xl:gap-5">
-              <div className="relative w-full max-w-[28rem] lg:max-w-[min(100%,26rem)] xl:max-w-[28rem] aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] lg:h-[min(36rem,calc(100svh-5.5rem))] lg:aspect-auto">
+              <div className="relative w-[70vw] max-w-[17.5rem] sm:w-full sm:max-w-[22rem] lg:max-w-[min(100%,26rem)] xl:max-w-[28rem] mx-auto lg:mx-0 aspect-square sm:aspect-[3/4] lg:aspect-[4/5] lg:h-[min(36rem,calc(100svh-5.5rem))] lg:aspect-auto">
                 <div className="pointer-events-none absolute inset-[-4%] sm:inset-[-6%] rounded-full border border-orange/40" />
                 <div className="pointer-events-none absolute inset-[2%] rounded-full border border-orange/15" />
 
@@ -114,7 +114,7 @@ export function HeroEditable({
                     alt="Zeynep Çeltek Güzellik"
                     fill
                     priority
-                    sizes="(max-width: 1024px) 90vw, 42vw"
+                    sizes="(max-width: 640px) 70vw, (max-width: 1024px) 90vw, 42vw"
                     imgClassName="object-cover object-[center_20%]"
                     help="Ana sayfa hero görseli"
                   />
@@ -135,13 +135,13 @@ export function HeroEditable({
               </ul>
             </div>
 
-            <ul className="lg:hidden mt-5 grid grid-cols-4 gap-2 text-center">
+            <ul className="lg:hidden mt-4 grid grid-cols-2 sm:grid-cols-4 gap-x-3 gap-y-3 text-center">
               {heroStats.map((s) => (
                 <li key={s.label}>
-                  <p className="font-display text-orange text-sm font-semibold">
+                  <p className="font-display text-orange text-base sm:text-sm font-semibold">
                     {s.value}
                   </p>
-                  <p className="text-[9px] text-cream/65 uppercase tracking-wide">
+                  <p className="text-[10px] text-cream/65 uppercase tracking-wide">
                     {s.label}
                   </p>
                 </li>

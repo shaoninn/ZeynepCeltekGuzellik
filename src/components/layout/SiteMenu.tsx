@@ -28,6 +28,8 @@ interface SiteMenuProps {
   phone: string;
   phoneRaw: string;
   whatsappUrl: string;
+  /** Increment to open immediately after lazy mount. */
+  autoOpenToken?: number;
 }
 
 const PRIMARY_SET = new Set<string>(PRIMARY_NAV_HREFS);
@@ -72,8 +74,9 @@ export function SiteMenu({
   phone,
   phoneRaw,
   whatsappUrl,
+  autoOpenToken = 0,
 }: SiteMenuProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(autoOpenToken > 0);
   const [sub, setSub] = useState<SubPanel>(null);
   const [mounted, setMounted] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
@@ -81,6 +84,10 @@ export function SiteMenu({
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (autoOpenToken > 0) setOpen(true);
+  }, [autoOpenToken]);
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 768px)");
@@ -113,8 +120,13 @@ export function SiteMenu({
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
     };
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
   }, [open, close]);
 
   const waHref = `${whatsappUrl}?text=${encodeURIComponent(
@@ -293,7 +305,7 @@ export function SiteMenu({
     <>
       <button
         type="button"
-        className="inline-flex w-10 h-10 items-center justify-center text-muted hover:text-orange transition-colors border border-transparent hover:border-border rounded-md"
+        className="inline-flex w-11 h-11 items-center justify-center text-muted hover:text-orange transition-colors border border-transparent hover:border-border rounded-md"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Menüyü kapat" : "Menüyü aç"}
         aria-expanded={open}

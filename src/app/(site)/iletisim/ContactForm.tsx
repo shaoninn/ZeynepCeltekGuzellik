@@ -9,6 +9,7 @@ import {
 } from "@/lib/constants";
 import { EditableText } from "@/components/editor/EditableText";
 import { EditableSetting } from "@/components/editor/EditableSetting";
+import { useEditor } from "@/components/editor/EditorProvider";
 
 export type ContactFormCopy = {
   cardTitle: string;
@@ -46,6 +47,7 @@ export function ContactForm({
   copy?: Partial<ContactFormCopy>;
 }) {
   const c = { ...DEFAULT_COPY, ...copy };
+  const { enabled: editorMode } = useEditor();
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -206,15 +208,17 @@ export function ContactForm({
               help="WhatsApp ana buton metni"
             />
           </a>
-          <p className="mt-2 text-[11px] text-[#666]">
-            Prefill:{" "}
-            <EditableText
-              contentKey="contact_whatsapp_prefill"
-              value={c.whatsappPrefill}
-              as="span"
-              help="WhatsApp’a tıklanınca hazır mesaj"
-            />
-          </p>
+          {editorMode ? (
+            <p className="mt-2 text-[11px] text-[#666]">
+              Prefill:{" "}
+              <EditableText
+                contentKey="contact_whatsapp_prefill"
+                value={c.whatsappPrefill}
+                as="span"
+                help="WhatsApp’a tıklanınca hazır mesaj"
+              />
+            </p>
+          ) : null}
         </div>
 
         <form

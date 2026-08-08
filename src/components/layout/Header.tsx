@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { SiteLink } from "@/components/ui/SiteLink";
 import { HeaderClient } from "./HeaderClient";
@@ -7,7 +8,14 @@ import { Logo } from "@/components/brand/Logo";
 import { PRIMARY_NAV_LINKS } from "@/lib/constants";
 import type { NavLinkItem, SiteSettingsMap } from "@/lib/site";
 import type { MenuCategoryItem, MenuLinkItem } from "@/components/layout/SiteMenu";
-import { EditableLayoutBox } from "@/components/editor/EditableLayoutBox";
+
+const EditableLayoutBox = dynamic(
+  () =>
+    import("@/components/editor/EditableLayoutBox").then(
+      (m) => m.EditableLayoutBox
+    ),
+  { ssr: false }
+);
 
 interface HeaderProps {
   settings: SiteSettingsMap;

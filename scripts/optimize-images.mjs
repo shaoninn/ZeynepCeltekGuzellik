@@ -74,7 +74,12 @@ async function main() {
       if (!/\.(jpe?g|png)$/i.test(name)) continue;
       const rel = path.join(dir, name).replace(/\\/g, "/");
       const webpRel = rel.replace(/\.(png|jpe?g)$/i, ".webp");
+      const webpSmRel = rel.replace(/\.(png|jpe?g)$/i, "-sm.webp");
       await writeWebp(path.join(publicDir, rel), webpRel, 1200, 75);
+      // Gallery / cards: mobile-friendly width for image delivery audit
+      if (dir.includes("gallery") || dir.includes("products")) {
+        await writeWebp(path.join(publicDir, rel), webpSmRel, 640, 70);
+      }
     }
   }
 }

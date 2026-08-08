@@ -22,22 +22,15 @@ export function Logo({
   const w = widths[size];
 
   const content = (
-    <span className={`inline-flex items-center gap-2 ${className}`}>
-      <span
-        className="sm:hidden relative shrink-0 flex items-center justify-center rounded-full border border-orange text-orange font-display text-[10px] font-semibold"
-        style={{ width: h * 0.82, height: h * 0.82 }}
-        aria-hidden
-      >
-        ZC
-      </span>
+    <span className={`inline-flex items-center ${className}`}>
       <Image
-        src="/images/logo/logo.png"
+        src="/images/logo/logo.webp"
         alt={SITE_NAME}
         width={w}
         height={h}
         priority={priority}
         unoptimized
-        className="h-auto w-auto max-w-[42vw] sm:max-w-none object-contain object-left"
+        className="h-auto w-auto max-w-[min(58vw,11.5rem)] sm:max-w-none object-contain object-left"
         style={{ maxHeight: h, width: "auto" }}
       />
     </span>

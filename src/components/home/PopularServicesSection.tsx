@@ -47,22 +47,22 @@ export function PopularServicesSection({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 sm:gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 sm:gap-5">
           {POPULAR_SERVICES.map((item) => {
             const Icon = ICONS[item.icon];
             return (
               <SiteLink
                 key={item.name}
                 href={item.href}
-                className="group flex flex-col items-center text-center"
+                className="group flex flex-col items-center text-center min-w-0"
               >
-                <span className="mb-3.5 flex h-[4.75rem] w-[4.75rem] sm:h-[5.25rem] sm:w-[5.25rem] items-center justify-center rounded-full border border-orange/55 text-orange transition-colors group-hover:bg-orange group-hover:text-ink">
-                  <Icon size={26} strokeWidth={1.25} />
+                <span className="mb-3 flex h-16 w-16 sm:h-[5.25rem] sm:w-[5.25rem] items-center justify-center rounded-full border border-orange/55 text-orange transition-colors group-hover:bg-orange group-hover:text-ink">
+                  <Icon size={24} strokeWidth={1.25} />
                 </span>
-                <h3 className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.14em] uppercase text-orange mb-1.5">
+                <h3 className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.14em] uppercase text-orange mb-1.5 px-0.5">
                   {item.name}
                 </h3>
-                <p className="text-ink/55 text-[11px] leading-snug line-clamp-2 max-w-[10.5rem]">
+                <p className="text-ink/55 text-[11px] leading-snug line-clamp-2 max-w-[10.5rem] px-0.5">
                   {item.description}
                 </p>
                 <span className="mt-2 inline-flex items-center gap-0.5 text-orange/0 group-hover:text-orange text-[10px] uppercase tracking-wider transition-colors">

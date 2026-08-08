@@ -1,7 +1,6 @@
 import { SiteLink } from "@/components/ui/SiteLink";
 import { EditableText } from "@/components/editor/EditableText";
 import { PACKAGES } from "@/lib/constants";
-import { Button } from "@/components/ui/Button";
 import { toWebpSrc } from "@/lib/image-optimize";
 
 interface PackagesCampaignSectionProps {
@@ -60,9 +59,12 @@ export function PackagesCampaignSection({
                   <img
                     src={img}
                     alt={pkg.name}
+                    width={640}
+                    height={440}
                     className="absolute inset-0 h-full w-full object-cover"
                     loading="lazy"
                     decoding="async"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   />
                 </div>
 
@@ -101,13 +103,14 @@ export function PackagesCampaignSection({
                   >
                     {pkg.sessions}
                   </p>
-                  <Button
+                  <SiteLink
                     href="/iletisim"
-                    variant={pkg.featured ? "primary" : "outline"}
-                    className="w-full justify-center !rounded-sm"
+                    className={`w-full justify-center !rounded-sm ${
+                      pkg.featured ? "btn-primary" : "btn-outline"
+                    }`}
                   >
                     Detayları İncele
-                  </Button>
+                  </SiteLink>
                 </div>
               </article>
             );

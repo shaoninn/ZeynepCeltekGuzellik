@@ -2,6 +2,7 @@
 
 import { EditableText } from "@/components/editor/EditableText";
 
+/** Thin EditableText island — interactive panel only loads under /duzenle. */
 export function FooterBlurb({ value }: { value?: string }) {
   return (
     <EditableText

@@ -13,13 +13,36 @@ function safeFrom(pathname: string): string {
   return "/admin";
 }
 
+function isWordPressProbe(pathname: string): boolean {
+  const p = pathname.toLowerCase();
+  return (
+    p.startsWith("/wp-admin") ||
+    p.startsWith("/wp-content") ||
+    p.startsWith("/wp-includes") ||
+    p.startsWith("/wordpress") ||
+    p === "/wp-login.php" ||
+    p === "/xmlrpc.php" ||
+    p.endsWith(".php")
+  );
+}
+
 /**
- * Auth only for admin/editor.
+ * Auth for admin/editor + cheap 404 for WP probe bots (saves Node processes).
  * Host canonicalization stays on Hostinger (hcdn) to avoid double redirects
  * that Lighthouse flags under "Avoid multiple page redirects".
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  if (isWordPressProbe(pathname)) {
+    return new NextResponse("Not Found", {
+      status: 404,
+      headers: {
+        "Cache-Control": "public, max-age=3600",
+        "Content-Type": "text/plain; charset=utf-8",
+      },
+    });
+  }
 
   const isEditor = pathname.startsWith("/duzenle");
   const isAdmin =
@@ -48,5 +71,19 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/duzenle", "/duzenle/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/duzenle",
+    "/duzenle/:path*",
+    "/wp-admin",
+    "/wp-admin/:path*",
+    "/wp-content/:path*",
+    "/wp-includes/:path*",
+    "/wordpress",
+    "/wordpress/:path*",
+    "/wp-login.php",
+    "/xmlrpc.php",
+    "/index.php",
+    "/:path*.php",
+  ],
 };
