@@ -28,7 +28,7 @@ hPanel → **Websites → Add website → Node.js Web App**
 0. **Önce (Hostinger resmi):** her Next.js site → Deployments → Settings → **Save and Redeploy** (Next.js process optimization).
 1. `NODE_ENV=production` · Start = **`npm run start`** (tek process; `start:db` kullanma)
 2. **Max Processes = 1** → Redeploy
-3. Env: `HEALTH_REQUIRE_TOKEN=1` + `HEALTH_TOKEN` · `NODE_OPTIONS=--max-old-space-size=448`
+3. Env: `HEALTH_REQUIRE_TOKEN=1` + `HEALTH_TOKEN` · `NODE_OPTIONS=--max-old-space-size=448` (yalnızca **runtime**; `build.mjs` build’te heap’i 1536’ya yükseltir)
 4. Eski / kullanılmayan Node deployment’ları sil
 5. Cron/uptime health’i token’sız ve sık vurma
 6. MySQL: `srv….hstgr.io` (localhost değil)
@@ -62,8 +62,10 @@ Kod: auth’lu admin API GET, bot probe 404, health pool+token, menü cache 5dk,
 | `MYSQL_PING_TIMEOUT_MS` | `6000` |
 | `HEALTH_TOKEN` | Rastgele secret |
 | `HEALTH_REQUIRE_TOKEN` | `1` (health token zorunlu) |
-| `NODE_OPTIONS` | `--max-old-space-size=448` |
+| `NODE_OPTIONS` | `--max-old-space-size=448` (start için; build OOM olursa panelden silme — `scripts/build.mjs` build’te 1536 zorlar) |
 | `PURGE_SECRET` | Cache purge secret (JWT ile aynı olabilir) |
+
+**Build OOM (`JavaScript heap out of memory` / ~445MB):** Paneldeki `448` build worker’ı öldürür. Kod `npm run build` içinde heap’i yükseltir — bu commit’i push edip Redeploy et. Hâlâ OOM ise geçici olarak panel `NODE_OPTIONS`’ı sil, build bitsin, sonra start için `448`’i geri koy.
 
 **Not:** Remote MySQL’de kullanıcı için `%` (Any Host) izni açık olmalı. `DATABASE_URL` satırı ekleme.
 
