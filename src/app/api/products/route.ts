@@ -27,14 +27,16 @@ const productSchema = z.object({
 });
 
 export async function GET(request: NextRequest) {
-  const categoryId = request.nextUrl.searchParams.get("categoryId");
   const session = await getSession();
-  const activeOnly = !session;
+  if (!session) {
+    return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
+  }
+
+  const categoryId = request.nextUrl.searchParams.get("categoryId");
 
   const products = await prisma.product.findMany({
     where: {
       ...(categoryId ? { categoryId } : {}),
-      ...(activeOnly ? { isActive: true } : {}),
     },
     orderBy: { sortOrder: "asc" },
     include: { category: true },

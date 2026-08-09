@@ -29,12 +29,12 @@ export function resolveMysqlPoolConfig(): MysqlPoolConfig {
   const serializeQueries =
     process.env.MYSQL_SERIALIZE === "1" || poolSize <= 1;
 
-  // Fail-faster under Hostinger entry-process pressure; cold TLS still needs >3s.
+  // Fail-faster under Hostinger entry-process pressure; cold TLS still needs a few seconds.
   const base = {
     connectionLimit: poolSize,
-    connectTimeout: Number(process.env.MYSQL_CONNECT_TIMEOUT_MS || 12_000) || 12_000,
-    acquireTimeout: Number(process.env.MYSQL_ACQUIRE_TIMEOUT_MS || 15_000) || 15_000,
-    idleTimeout: Number(process.env.MYSQL_IDLE_TIMEOUT_MS || 120_000) || 120_000,
+    connectTimeout: Number(process.env.MYSQL_CONNECT_TIMEOUT_MS || 8_000) || 8_000,
+    acquireTimeout: Number(process.env.MYSQL_ACQUIRE_TIMEOUT_MS || 10_000) || 10_000,
+    idleTimeout: Number(process.env.MYSQL_IDLE_TIMEOUT_MS || 60_000) || 60_000,
     minimumIdle: Math.min(1, poolSize),
     allowPublicKeyRetrieval: true,
     serializeQueries,

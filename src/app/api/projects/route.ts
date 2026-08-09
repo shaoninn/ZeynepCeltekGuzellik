@@ -20,10 +20,9 @@ const projectSchema = z.object({
 
 export async function GET() {
   const auth = await requireAdmin();
-  const isAdmin = !isUnauthorized(auth);
+  if (isUnauthorized(auth)) return auth;
 
   const projects = await prisma.project.findMany({
-    where: isAdmin ? undefined : { isActive: true },
     orderBy: { sortOrder: "asc" },
     include: { category: true },
   });

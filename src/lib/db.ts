@@ -136,8 +136,18 @@ export async function pingDatabase(): Promise<{
   error?: string;
 }> {
   const started = Date.now();
+  const budget =
+    Number(process.env.MYSQL_PING_TIMEOUT_MS || 6_000) || 6_000;
   try {
-    await prisma.$queryRaw`SELECT 1`;
+    await Promise.race([
+      prisma.$queryRaw`SELECT 1`,
+      new Promise<never>((_, reject) => {
+        setTimeout(
+          () => reject(new Error(`ping timeout after ${budget}ms`)),
+          budget
+        );
+      }),
+    ]);
     return { ok: true, ms: Date.now() - started };
   } catch (error) {
     return {

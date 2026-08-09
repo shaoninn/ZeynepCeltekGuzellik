@@ -13,9 +13,10 @@ function safeFrom(pathname: string): string {
   return "/admin";
 }
 
-function isWordPressProbe(pathname: string): boolean {
+/** Cheap 404 — never hit Next render / MySQL (Hostinger entry process saver). */
+function isProbePath(pathname: string): boolean {
   const p = pathname.toLowerCase();
-  return (
+  if (
     p.startsWith("/wp-admin") ||
     p.startsWith("/wp-content") ||
     p.startsWith("/wp-includes") ||
@@ -23,25 +24,45 @@ function isWordPressProbe(pathname: string): boolean {
     p === "/wp-login.php" ||
     p === "/xmlrpc.php" ||
     p.endsWith(".php")
-  );
+  ) {
+    return true;
+  }
+  if (
+    p.startsWith("/.env") ||
+    p.startsWith("/.git") ||
+    p.startsWith("/.aws") ||
+    p.startsWith("/phpmyadmin") ||
+    p.startsWith("/pma") ||
+    p.startsWith("/cgi-bin") ||
+    p.startsWith("/vendor/") ||
+    p.startsWith("/actuator") ||
+    p.includes("wlwmanifest") ||
+    p.includes("wp-config")
+  ) {
+    return true;
+  }
+  return false;
+}
+
+function cheapNotFound(): NextResponse {
+  return new NextResponse("Not Found", {
+    status: 404,
+    headers: {
+      "Cache-Control": "public, max-age=86400",
+      "Content-Type": "text/plain; charset=utf-8",
+    },
+  });
 }
 
 /**
- * Auth for admin/editor + cheap 404 for WP probe bots (saves Node processes).
- * Host canonicalization stays on Hostinger (hcdn) to avoid double redirects
- * that Lighthouse flags under "Avoid multiple page redirects".
+ * Auth for admin/editor + early 404 for scanner probes (saves Node entry processes).
+ * Host canonicalization stays on Hostinger (hcdn).
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (isWordPressProbe(pathname)) {
-    return new NextResponse("Not Found", {
-      status: 404,
-      headers: {
-        "Cache-Control": "public, max-age=3600",
-        "Content-Type": "text/plain; charset=utf-8",
-      },
-    });
+  if (isProbePath(pathname)) {
+    return cheapNotFound();
   }
 
   const isEditor = pathname.startsWith("/duzenle");
@@ -85,5 +106,15 @@ export const config = {
     "/xmlrpc.php",
     "/index.php",
     "/:path*.php",
+    "/.env",
+    "/.env/:path*",
+    "/.git",
+    "/.git/:path*",
+    "/phpmyadmin",
+    "/phpmyadmin/:path*",
+    "/pma",
+    "/pma/:path*",
+    "/cgi-bin",
+    "/cgi-bin/:path*",
   ],
 };

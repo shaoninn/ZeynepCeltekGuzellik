@@ -3,6 +3,7 @@ import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { z } from "zod";
 import { revalidateContent } from "@/lib/revalidate";
+import { requireAdmin, isUnauthorized } from "@/lib/api";
 
 const contentSchema = z.object({
   /** Empty allowed for clearing optional image URLs. */
@@ -11,6 +12,9 @@ const contentSchema = z.object({
 });
 
 export async function GET() {
+  const auth = await requireAdmin();
+  if (isUnauthorized(auth)) return auth;
+
   const contents = await prisma.siteContent.findMany({
     orderBy: { key: "asc" },
   });

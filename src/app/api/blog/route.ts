@@ -15,10 +15,9 @@ const blogSchema = z.object({
 
 export async function GET() {
   const auth = await requireAdmin();
-  const isAdmin = !isUnauthorized(auth);
+  if (isUnauthorized(auth)) return auth;
 
   const posts = await prisma.blogPost.findMany({
-    where: isAdmin ? undefined : { isPublished: true },
     orderBy: { createdAt: "desc" },
   });
   return NextResponse.json(posts);

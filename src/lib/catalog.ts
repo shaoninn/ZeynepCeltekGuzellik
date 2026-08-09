@@ -12,6 +12,11 @@ import {
 } from "@/lib/blog-fallback";
 
 const CATALOG_TTL_MS = 60_000;
+/** Menu chrome under Hostinger process pressure — fewer MySQL round-trips. */
+const MENU_TTL_MS =
+  process.env.MYSQL_SERIALIZE === "1" || process.env.MYSQL_POOL_SIZE === "1"
+    ? 300_000
+    : 120_000;
 
 export type ProjectListItem = Awaited<
   ReturnType<typeof loadActiveProjects>
@@ -116,7 +121,7 @@ export const getFeaturedProjects = cache(async () => {
 export const getMenuProjects = cache(async () => {
   try {
     return await memoryCache("catalog:menu-projects", loadMenuProjects, {
-      ttlMs: CATALOG_TTL_MS,
+      ttlMs: MENU_TTL_MS,
       skipEmpty: true,
     });
   } catch (error) {
@@ -207,7 +212,7 @@ export const getPublishedPosts = cache(async () => {
 export const getMenuCategories = cache(async () => {
   try {
     const rows = await memoryCache("catalog:categories:menu", loadMenuCategories, {
-      ttlMs: CATALOG_TTL_MS,
+      ttlMs: MENU_TTL_MS,
       skipEmpty: true,
     });
     if (rows.length === 0) {
@@ -229,7 +234,7 @@ export const getMenuCategories = cache(async () => {
 export const getMenuPosts = cache(async () => {
   try {
     const rows = await memoryCache("catalog:blog:menu", loadMenuPosts, {
-      ttlMs: CATALOG_TTL_MS,
+      ttlMs: MENU_TTL_MS,
       skipEmpty: true,
     });
     if (rows.length === 0) {

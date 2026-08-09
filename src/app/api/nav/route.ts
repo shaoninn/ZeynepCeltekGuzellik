@@ -12,6 +12,9 @@ const navSchema = z.object({
 });
 
 export async function GET() {
+  const auth = await requireAdmin();
+  if (isUnauthorized(auth)) return auth;
+
   const items = await prisma.navItem.findMany({
     orderBy: { sortOrder: "asc" },
   });

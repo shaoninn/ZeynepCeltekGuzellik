@@ -24,8 +24,11 @@ const categorySchema = z.object({
 
 export async function GET() {
   const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
+  }
+
   const categories = await prisma.category.findMany({
-    where: session ? undefined : { isActive: true },
     orderBy: { sortOrder: "asc" },
     include: { _count: { select: { products: true } } },
   });

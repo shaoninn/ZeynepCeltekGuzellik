@@ -5,6 +5,9 @@ import { requireAdmin, isUnauthorized } from "@/lib/api";
 import { revalidateSiteSettings } from "@/lib/revalidate";
 
 export async function GET() {
+  const auth = await requireAdmin();
+  if (isUnauthorized(auth)) return auth;
+
   const settings = await prisma.siteSetting.findMany();
   const map = Object.fromEntries(settings.map((s) => [s.key, s.value]));
   return NextResponse.json(map);

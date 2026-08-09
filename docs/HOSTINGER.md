@@ -17,7 +17,7 @@ hPanel → **Websites → Add website → Node.js Web App**
 | Root | `./` |
 | Node | 20 veya 22 |
 | Build | `npm run build` |
-| Start | `npm run start` |
+| Start | `npm run start` (**tek** Next process; `start:db` kullanma) |
 | Output | `.next` |
 | **Max Processes** (Deployments → Settings) | **`1`** (Hostinger Business ortak 120 limit) |
 
@@ -25,16 +25,18 @@ hPanel → **Websites → Add website → Node.js Web App**
 
 ## Hostinger destek checklist (işlem limiti)
 
-1. `NODE_ENV=production` · Start = `npm run start` (**dev değil**)
-2. Deployments → **Max Processes = 1** → Redeploy
-3. Eski / kullanılmayan Node deployment’ları sil veya durdur
-4. Cron / uptime bot `/api/health`’i dakikada 1’den sık vurma; istersen `HEALTH_TOKEN` koy
-5. MySQL: `srv….hstgr.io` + doğru user/şifre (`zc@127.0.0.1` değil)
-6. Limit baskısında: `MYSQL_POOL_SIZE=1` + `MYSQL_SERIALIZE=1`
-7. Diğer 2 PHP sitesinde cache aç, gereksiz eklenti/cron kapat
-8. Hangi site şişiriyor belirsizse: siteleri sırayla geçici kapatıp Resources grafiğini karşılaştır
+0. **Önce (Hostinger resmi):** her Next.js site → Deployments → Settings → **Save and Redeploy** (Next.js process optimization).
+1. `NODE_ENV=production` · Start = **`npm run start`** (tek process; `start:db` kullanma)
+2. **Max Processes = 1** → Redeploy
+3. Env: `HEALTH_REQUIRE_TOKEN=1` + `HEALTH_TOKEN` · `NODE_OPTIONS=--max-old-space-size=448`
+4. Eski / kullanılmayan Node deployment’ları sil
+5. Cron/uptime health’i token’sız ve sık vurma
+6. MySQL: `srv….hstgr.io` (localhost değil)
+7. Limit baskısında: `MYSQL_POOL_SIZE=1` + `MYSQL_SERIALIZE=1`
+8. 3 siteyi sırayla kapatıp Resources karşılaştır
 
-Kod tarafında zaten: ISR, prefetch kapalı, lean home, sitemap cache, health rate-limit, start’ta `npx` yok.
+Kod: auth’lu admin API GET, bot probe 404, health pool+token, menü cache 5dk, start tek process.  
+`output: export` uygun değil; `standalone` Hostinger auto-start ile riskli — ekleme. Kaynak: [Hostinger Next.js docs](https://docs.hostinger.com/node.js/overview-1/next).
 
 ## Ortam değişkenleri (Hostinger paneli)
 
@@ -52,9 +54,16 @@ Kod tarafında zaten: ISR, prefetch kapalı, lean home, sitemap cache, health ra
 | `MYSQL_HOST` | hPanel → Uzak MySQL hostname (`srv….hstgr.io`; `localhost` değil) |
 | `MYSQL_PORT` | `3306` |
 | `MYSQL_DATABASE` | Hostinger veritabanı adı |
-| `MYSQL_POOL_SIZE` | Normal: `3` · Limit baskısı: `1` |
-| `MYSQL_SERIALIZE` | Limit baskısında: `1` (pool=1 ile birlikte) |
-| `HEALTH_TOKEN` | Opsiyonel; set edilirse `/api/health` token ister |
+| `MYSQL_POOL_SIZE` | Limit baskısı: `1` (rahatlayınca `3`) |
+| `MYSQL_SERIALIZE` | Limit baskısında: `1` |
+| `MYSQL_CONNECT_TIMEOUT_MS` | `8000` |
+| `MYSQL_ACQUIRE_TIMEOUT_MS` | `10000` |
+| `MYSQL_IDLE_TIMEOUT_MS` | `60000` |
+| `MYSQL_PING_TIMEOUT_MS` | `6000` |
+| `HEALTH_TOKEN` | Rastgele secret |
+| `HEALTH_REQUIRE_TOKEN` | `1` (health token zorunlu) |
+| `NODE_OPTIONS` | `--max-old-space-size=448` |
+| `PURGE_SECRET` | Cache purge secret (JWT ile aynı olabilir) |
 
 **Not:** Remote MySQL’de kullanıcı için `%` (Any Host) izni açık olmalı. `DATABASE_URL` satırı ekleme.
 
@@ -67,12 +76,12 @@ Hâlâ P1000 ise hPanel → MySQL → kullanıcı şifresini **yenile** (özel k
 Build artık DB’ye bağlanmaz. İlk kurulumda bir kez şema senkronu:
 
 ```bash
-RUN_DB_PUSH=1 npm run start
+RUN_DB_PUSH=1 npm run start:db
 # veya Hostinger terminal:
 npx prisma db push
 ```
 
-Normal start **her boot’ta db push çalıştırmaz** (bağlantı havuzunu kilitlemesin diye).
+Normal start **her boot’ta db push çalıştırmaz** ve **ekstra parent process tutmaz**.
 
 ## Maksimum işlem (Entry processes) — kırmızı grafik
 
