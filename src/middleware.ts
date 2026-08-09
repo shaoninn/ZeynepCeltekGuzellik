@@ -3,6 +3,10 @@ import { jwtVerify } from "jose";
 import { COOKIE_NAME } from "@/lib/auth";
 import { getJwtSecretBytes } from "@/lib/jwt-secret";
 
+/** Scanners that ignore robots.txt and hold Node workers on Hostinger. */
+const BLOCKED_UA =
+  /CMS-Checker|ClaudeBot|GPTBot|CCBot|Bytespider|Amazonbot|meta-externalagent|Applebot-Extended|Google-Extended|anthropic-ai/i;
+
 function safeFrom(pathname: string): string {
   if (
     (pathname.startsWith("/admin") || pathname.startsWith("/duzenle")) &&
@@ -55,10 +59,20 @@ function cheapNotFound(): NextResponse {
 }
 
 /**
- * Auth for admin/editor + early 404 for scanner probes (saves Node entry processes).
+ * 1) Drop known abusive crawlers early (cheap 403 — no page/DB work).
+ * 2) Early 404 for scanner probes (saves Node entry processes).
+ * 3) Auth for admin/editor.
  * Host canonicalization stays on Hostinger (hcdn).
  */
 export async function middleware(request: NextRequest) {
+  const ua = request.headers.get("user-agent") ?? "";
+  if (BLOCKED_UA.test(ua)) {
+    return new NextResponse(null, {
+      status: 403,
+      headers: { "Cache-Control": "no-store" },
+    });
+  }
+
   const { pathname } = request.nextUrl;
 
   if (isProbePath(pathname)) {
@@ -93,28 +107,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/admin/:path*",
-    "/duzenle",
-    "/duzenle/:path*",
-    "/wp-admin",
-    "/wp-admin/:path*",
-    "/wp-content/:path*",
-    "/wp-includes/:path*",
-    "/wordpress",
-    "/wordpress/:path*",
-    "/wp-login.php",
-    "/xmlrpc.php",
-    "/index.php",
-    "/:path*.php",
-    "/.env",
-    "/.env/:path*",
-    "/.git",
-    "/.git/:path*",
-    "/phpmyadmin",
-    "/phpmyadmin/:path*",
-    "/pma",
-    "/pma/:path*",
-    "/cgi-bin",
-    "/cgi-bin/:path*",
+    "/((?!_next/static|_next/image|images/|favicon\\.ico|icon\\.png|apple-icon\\.png|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff2?|css|js|map)$).*)",
   ],
 };
