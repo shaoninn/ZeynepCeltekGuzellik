@@ -50,15 +50,18 @@ async function main() {
     select: { id: true, image: true },
   });
   const blogImages = [
-    "/images/portfolio/cmk-ecu-completed.png",
-    "/images/portfolio/gulbag-totem-3.png",
-    "/images/portfolio/arac-1.png",
+    "/images/gallery/gallery-1.webp",
+    "/images/gallery/gallery-2.webp",
+    "/images/gallery/gallery-3.webp",
   ];
   for (let i = 0; i < blogPosts.length; i++) {
     const post = blogPosts[i];
     if (!post) continue;
     const img = blogImages[i % blogImages.length]!;
-    if (post.image?.includes("/images/projects/work-")) {
+    if (
+      post.image?.includes("/images/projects/work-") ||
+      post.image?.includes("/images/portfolio/")
+    ) {
       await prisma.blogPost.update({
         where: { id: post.id },
         data: { image: img },

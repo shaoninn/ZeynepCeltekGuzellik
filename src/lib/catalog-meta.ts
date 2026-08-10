@@ -14,16 +14,12 @@ export function parseProductSpecs(specsJson: string | null | undefined): SpecFla
   const garanti = (specs.garanti || "").trim();
   const raw = `${specs.montaj || ""} ${specs.teslimat || ""} ${malzeme} ${specs.aciklama || ""}`.toLowerCase();
 
-  let isikli: boolean | null = null;
-  if (/ışıksız|isiksiz|ışıksız|unlit/.test(raw)) isikli = false;
-  else if (/ışıklı|isikli|led|neon|ışıklı/.test(raw) || /neon|led/.test(malzeme.toLowerCase()))
-    isikli = true;
-
-  let mekan: "ic" | "dis" | null = null;
-  if (/dış|dis mekan|outdoor|cephe/.test(raw)) mekan = "dis";
-  else if (/iç|ic mekan|indoor|ofis/.test(raw)) mekan = "ic";
-
-  return { malzeme, isikli, mekan, garanti };
+  return {
+    malzeme,
+    isikli: null,
+    mekan: /salon|şube|sube|klinik/.test(raw) ? "ic" : null,
+    garanti,
+  };
 }
 
 export function productSeoScore(input: {
@@ -38,7 +34,7 @@ export function productSeoScore(input: {
   let score = 0;
 
   if (input.name.length >= 8) score += 15;
-  else tips.push("Ürün adı en az 8 karakter olmalı");
+  else tips.push("Hizmet adı en az 8 karakter olmalı");
 
   if (/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(input.slug)) score += 15;
   else tips.push("Slug küçük harf ve tire ile olmalı");
@@ -55,7 +51,7 @@ export function productSeoScore(input: {
   const specs = parseJsonObject<Record<string, string>>(input.specs || "{}", {});
   const filled = Object.values(specs).filter((v) => (v || "").trim().length > 0).length;
   if (filled >= 2) score += 20;
-  else tips.push("En az 2 özellik (malzeme, garanti…) doldurun");
+  else tips.push("En az 2 özellik (süre, seans…) doldurun");
 
   return { score: Math.min(100, score), tips };
 }

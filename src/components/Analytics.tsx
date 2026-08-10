@@ -7,7 +7,6 @@ const AW_ID = process.env.NEXT_PUBLIC_AW_ID;
 
 /**
  * GA4 + optional Google Ads — load after idle so LCP is not competing.
- * Ads DNS/AAAA sorunlarını gtag çözmez; bkz. SITE-TEMPLATE-BLUEPRINT DNS bölümü.
  */
 export function Analytics() {
   if (!GA_ID && !AW_ID) return null;

@@ -10,7 +10,6 @@ import {
   selectCartTotal,
   removeFromCart,
   updateQuantity,
-  updateLineOptions,
   clearCart,
 } from "@/store/cartSlice";
 import { formatPrice } from "@/lib/utils";
@@ -243,65 +242,6 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                         {item.optionsNote}
                       </p>
                     )}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                      <input
-                        type="number"
-                        min={1}
-                        step="0.1"
-                        inputMode="decimal"
-                        placeholder="En (cm)"
-                        className="admin-input text-sm"
-                        value={item.widthCm ?? ""}
-                        onChange={(e) =>
-                          dispatch(
-                            updateLineOptions({
-                              lineId: item.lineId,
-                              widthCm: e.target.value
-                                ? Number(e.target.value)
-                                : null,
-                              heightCm: item.heightCm,
-                              color: item.color,
-                            })
-                          )
-                        }
-                      />
-                      <input
-                        type="number"
-                        min={1}
-                        step="0.1"
-                        inputMode="decimal"
-                        placeholder="Boy (cm)"
-                        className="admin-input text-sm"
-                        value={item.heightCm ?? ""}
-                        onChange={(e) =>
-                          dispatch(
-                            updateLineOptions({
-                              lineId: item.lineId,
-                              widthCm: item.widthCm,
-                              heightCm: e.target.value
-                                ? Number(e.target.value)
-                                : null,
-                              color: item.color,
-                            })
-                          )
-                        }
-                      />
-                      <input
-                        placeholder="Renk / RAL"
-                        className="admin-input text-sm"
-                        value={item.color ?? ""}
-                        onChange={(e) =>
-                          dispatch(
-                            updateLineOptions({
-                              lineId: item.lineId,
-                              widthCm: item.widthCm,
-                              heightCm: item.heightCm,
-                              color: e.target.value || null,
-                            })
-                          )
-                        }
-                      />
-                    </div>
                   </div>
                   <div className="flex sm:flex-col items-center sm:items-end justify-between gap-3">
                     <button

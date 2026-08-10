@@ -14,9 +14,6 @@ interface AddToCartButtonProps {
 export function AddToCartButton({ product }: AddToCartButtonProps) {
   const dispatch = useAppDispatch();
   const [quantity, setQuantity] = useState(1);
-  const [widthCm, setWidthCm] = useState("");
-  const [heightCm, setHeightCm] = useState("");
-  const [color, setColor] = useState("");
   const [added, setAdded] = useState(false);
 
   const handleAdd = () => {
@@ -29,9 +26,9 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
         image: product.image,
         quantity,
         categoryName: product.category?.name || "",
-        widthCm: widthCm ? Number(widthCm) : null,
-        heightCm: heightCm ? Number(heightCm) : null,
-        color: color.trim() || null,
+        widthCm: null,
+        heightCm: null,
+        color: null,
       })
     );
     setAdded(true);
@@ -40,51 +37,6 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className="block text-xs text-muted mb-1" htmlFor="w-cm">
-            En (cm)
-          </label>
-          <input
-            id="w-cm"
-            type="number"
-            min={1}
-            step="0.1"
-            className="admin-input"
-            placeholder="örn. 120"
-            value={widthCm}
-            onChange={(e) => setWidthCm(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-muted mb-1" htmlFor="h-cm">
-            Boy (cm)
-          </label>
-          <input
-            id="h-cm"
-            type="number"
-            min={1}
-            step="0.1"
-            className="admin-input"
-            placeholder="örn. 40"
-            value={heightCm}
-            onChange={(e) => setHeightCm(e.target.value)}
-          />
-        </div>
-      </div>
-      <div>
-        <label className="block text-xs text-muted mb-1" htmlFor="color">
-          Renk / RAL
-        </label>
-        <input
-          id="color"
-          className="admin-input"
-          placeholder="örn. Siyah mat, RAL 9005"
-          value={color}
-          onChange={(e) => setColor(e.target.value)}
-        />
-      </div>
-
       <div className="flex items-center gap-4">
         <span className="text-sm text-muted">Adet:</span>
         <div className="flex items-center border border-border">
@@ -117,12 +69,12 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
         {added ? (
           <>
             <Check size={20} />
-            Teklif Listesine Eklendi
+            Randevu Sepetine Eklendi
           </>
         ) : (
           <>
             <ShoppingCart size={20} />
-            Teklif Listesine Ekle — {formatPrice(product.price * quantity)}
+            Randevu Sepetine Ekle — {formatPrice(product.price * quantity)}
           </>
         )}
       </button>
@@ -135,7 +87,7 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
 
       {!product.inStock && (
         <p className="text-sm text-red-400 text-center">
-          Şu an teklife kapalı — iletişime geçin
+          Şu an randevuya kapalı — iletişime geçin
         </p>
       )}
     </div>

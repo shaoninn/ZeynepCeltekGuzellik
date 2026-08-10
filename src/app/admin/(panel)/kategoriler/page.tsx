@@ -18,7 +18,7 @@ export default async function AdminCategoriesPage() {
       </p>
       <div className="admin-warning mb-6">
         İçinde ürün olan kategori silinemez. Önce ürünleri başka kategoriye taşıyın
-        veya silin. <strong>Slug</strong> = adres eki (örn. /hizmetler/kutu-harf).
+        veya silin. <strong>Slug</strong> = adres eki (örn. /hizmetler/cilt-bakimi).
         Değiştirmek eski linkleri bozabilir.
       </div>
       <CategoriesClient initial={categories} />

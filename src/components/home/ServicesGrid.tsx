@@ -3,14 +3,7 @@
 import { useRef } from "react";
 import { SiteLink } from "@/components/ui/SiteLink";
 import {
-  Box,
-  Zap,
-  Columns,
-  Lamp,
   Scissors,
-  Car,
-  Flag,
-  Building,
   Palette,
   Sparkles,
   HeartHandshake,
@@ -30,16 +23,6 @@ const iconMap: Record<string, React.ElementType> = {
   support: HeartHandshake,
   egitim: GraduationCap,
   education: GraduationCap,
-  // Legacy keys
-  tabela: GraduationCap,
-  "kutu-harf": Box,
-  neon: Zap,
-  totem: Columns,
-  fener: Lamp,
-  cnc: Scissors,
-  arac: Car,
-  branda: Flag,
-  mekan: Building,
 };
 
 interface ServicesGridProps {

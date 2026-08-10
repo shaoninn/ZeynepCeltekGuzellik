@@ -12,7 +12,7 @@ interface LogoProps {
 const heights = { sm: 40, md: 52, lg: 64 } as const;
 const widths = { sm: 120, md: 160, lg: 200 } as const;
 
-/** Compact transparent WebP (~9KB) — not the old Global Reklam asset. */
+/** Compact transparent WebP header mark (~9KB). */
 export function Logo({
   href = "/",
   className = "",

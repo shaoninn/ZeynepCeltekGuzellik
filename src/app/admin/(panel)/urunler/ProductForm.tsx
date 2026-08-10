@@ -187,7 +187,7 @@ export function ProductForm({ categories, initial }: ProductFormProps) {
 
       <AdminField
         label="Slug (adres eki) *"
-        help="Ürünün web adresi. Örn: isikli-totem-cift-yuzlu → /urun/…. Benzersiz olmalı. Küçük harf, tire; boşluk/Türkçe karakter yok. İsim yazınca otomatik dolar."
+        help="Hizmetin web adresi. Örn: hydrafacial-bakim → /urun/…. Benzersiz olmalı. Küçük harf, tire; boşluk/Türkçe karakter yok. İsim yazınca otomatik dolar."
       >
         <input
           className="admin-input"

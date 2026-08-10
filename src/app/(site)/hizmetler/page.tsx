@@ -9,7 +9,6 @@ import {
   GraduationCap,
   HeartHandshake,
   Scissors,
-  Layers,
 } from "lucide-react";
 
 export const revalidate = 60;
@@ -21,9 +20,6 @@ const iconMap: Record<string, React.ElementType> = {
   support: HeartHandshake,
   egitim: GraduationCap,
   education: GraduationCap,
-  tabela: GraduationCap,
-  neon: Sparkles,
-  "kutu-harf": Layers,
 };
 
 export const metadata = {

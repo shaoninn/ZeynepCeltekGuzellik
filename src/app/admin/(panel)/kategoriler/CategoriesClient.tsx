@@ -124,7 +124,7 @@ export function CategoriesClient({ initial }: { initial: Cat[] }) {
           </AdminField>
           <AdminField
             label="Slug (adres eki) *"
-            help="Kategori sayfası adresi. Örn: kutu-harf-sistemleri → /hizmetler/…. Değiştirirseniz eski linkler kırılabilir — dikkatli olun."
+            help="Kategori sayfası adresi. Örn: cilt-bakimi → /hizmetler/…. Değiştirirseniz eski linkler kırılabilir — dikkatli olun."
           >
             <input
               className="admin-input"

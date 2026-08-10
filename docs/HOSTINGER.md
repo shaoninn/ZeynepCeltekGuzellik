@@ -95,7 +95,7 @@ Bu limit **hesap genelidir** (aynı Hostinger hesabındaki tüm PHP + Node sitel
 
 1. Env: `NODE_ENV=production` (kesin)
 2. Env: `MYSQL_POOL_SIZE=1` ve `MYSQL_SERIALIZE=1` → Restart / Redeploy
-3. Aynı hesapta kaç site var? (Global, Akademi, bu salon…) — hepsi aynı 120’ye ortak
+3. Aynı hesapta kaç Node.js sitesi var? (Akademi, bu salon, diğerleri…) — hepsi aynı 120’ye ortak
 4. Sürekli ping / cron / uptime bot varsa aralığı artır veya kapat (`/api/health` her saniye = süreç birikir)
 5. Eski Node deploy’lar / çift start bırakma; tek temiz Redeploy
 6. Trafik bot ise hPanel güvenlik / Cloudflare bot koruması
