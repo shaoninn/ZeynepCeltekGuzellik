@@ -3,6 +3,10 @@ const LOCAL_WEBP_MAP: Record<string, string> = {
   "/images/hero/hero-1.jpg": "/images/hero/hero-1.webp",
   "/images/hero/hero-1.webp": "/images/hero/hero-1.webp",
   "/images/hero/hero-2.jpg": "/images/hero/hero-2.webp",
+  "/images/logo/logo-nobg.png": "/images/logo/logo-header.webp",
+  "/images/logo/logo.png": "/images/logo/logo-header.webp",
+  "/images/logo/logo.webp": "/images/logo/logo-header.webp",
+  "/images/logo/logo-transparent.png": "/images/logo/logo-header.webp",
 };
 
 const LOCAL_WEBP_SM: Record<string, string> = {
@@ -24,6 +28,7 @@ export function toWebpSrc(src: string): string {
 export function toWebpSrcMobile(src: string): string | null {
   if (!src) return null;
   const pathOnly = src.split("?")[0] || src;
+  if (pathOnly.includes("/logo/")) return null;
   return LOCAL_WEBP_SM[pathOnly] || null;
 }
 

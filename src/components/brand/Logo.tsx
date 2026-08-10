@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { SiteLink } from "@/components/ui/SiteLink";
 import { SITE_NAME } from "@/lib/constants";
 
@@ -6,12 +5,14 @@ interface LogoProps {
   href?: string | null;
   className?: string;
   size?: "sm" | "md" | "lg";
+  /** Avoid on marketing LCP pages — hero should win fetch priority. */
   priority?: boolean;
 }
 
-const heights = { sm: 36, md: 44, lg: 56 } as const;
-const widths = { sm: 110, md: 150, lg: 190 } as const;
+const heights = { sm: 40, md: 52, lg: 64 } as const;
+const widths = { sm: 120, md: 160, lg: 200 } as const;
 
+/** Compact transparent WebP (~9KB) — not the old Global Reklam asset. */
 export function Logo({
   href = "/",
   className = "",
@@ -23,15 +24,18 @@ export function Logo({
 
   const content = (
     <span className={`inline-flex items-center ${className}`}>
-      <Image
-        src="/images/logo/logo.webp"
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/logo/logo-header.webp"
         alt={SITE_NAME}
         width={w}
         height={h}
-        priority={priority}
-        unoptimized
         className="h-auto w-auto max-w-[min(58vw,11.5rem)] sm:max-w-none object-contain object-left"
         style={{ maxHeight: h, width: "auto" }}
+        decoding="async"
+        {...(priority
+          ? { fetchPriority: "high" as const }
+          : { loading: "lazy" as const, fetchPriority: "low" as const })}
       />
     </span>
   );

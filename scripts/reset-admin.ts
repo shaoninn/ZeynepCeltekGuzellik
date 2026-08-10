@@ -14,7 +14,7 @@ async function main() {
       data: {
         passwordHash: hash,
         role: "SUPER",
-        name: existing.name || "Global Admin",
+        name: existing.name || "Zeynep Admin",
       },
     });
     console.log("Updated admin", email);
@@ -23,7 +23,7 @@ async function main() {
       data: {
         email,
         passwordHash: hash,
-        name: "Global Admin",
+        name: "Zeynep Admin",
         role: "SUPER",
       },
     });

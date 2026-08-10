@@ -1,12 +1,12 @@
 /**
- * Replace DMD leftover projects with Global portfolio images + fix hero_image.
+ * Resync projects from prisma/projects-data + hero image.
  * Run: npx tsx scripts/sync-portfolio.ts
  */
 import "dotenv/config";
 import { prisma } from "../src/lib/db";
 import { projectData } from "../prisma/projects-data";
 
-const HERO = "/images/hero/hero-global.png";
+const HERO = "/images/hero/hero-1.webp";
 
 async function main() {
   const deleted = await prisma.project.deleteMany({});

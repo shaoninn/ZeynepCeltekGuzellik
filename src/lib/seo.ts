@@ -28,8 +28,8 @@ export function localBusinessJsonLd() {
     url,
     telephone: `+${PHONE_RAW}`,
     ...(EMAIL.trim() ? { email: EMAIL } : {}),
-    image: `${url}/images/logo/logo.png`,
-    logo: `${url}/images/logo/logo.png`,
+    image: `${url}/images/logo/logo-nobg.png`,
+    logo: `${url}/images/logo/logo-nobg.png`,
     address: {
       "@type": "PostalAddress",
       streetAddress: ADDRESS,

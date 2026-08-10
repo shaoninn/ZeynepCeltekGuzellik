@@ -10,7 +10,7 @@ import sharp from "sharp";
 import pngToIco from "png-to-ico";
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
-const logoPath = path.join(root, "public", "images", "logo", "logo.png");
+const logoPath = path.join(root, "public", "images", "logo", "logo-nobg.png");
 
 async function extractMarkPng() {
   const meta = await sharp(logoPath).metadata();

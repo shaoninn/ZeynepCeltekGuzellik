@@ -13,7 +13,7 @@ veya yönetilen Postgres (Neon, Prisma Postgres, RDS…) bağlantı dizesi alın
 `.env`:
 
 ```env
-DATABASE_URL="postgresql://dmd:dmd@localhost:5432/dmdreklam?schema=public"
+DATABASE_URL="postgresql://zc:zc@localhost:5432/zeynepceltek?schema=public"
 ```
 
 ## 2. Şema
@@ -55,7 +55,7 @@ npx prisma generate
 Upload’lar için `.env`:
 
 ```env
-S3_BUCKET="dmd-uploads"
+S3_BUCKET="zc-uploads"
 S3_ACCESS_KEY_ID="..."
 S3_SECRET_ACCESS_KEY="..."
 S3_ENDPOINT="https://xxxx.r2.cloudflarestorage.com"

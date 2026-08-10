@@ -60,12 +60,12 @@ export const metadata: Metadata = {
   // Per-page canonical only — never set "/" here (inherits to all routes).
   icons: {
     icon: [
-      { url: "/favicon.ico?v=3", sizes: "any" },
-      { url: "/icon.png?v=3", type: "image/png", sizes: "192x192" },
-      { url: "/favicon-32.png?v=3", type: "image/png", sizes: "32x32" },
+      { url: "/favicon.ico?v=4", sizes: "any" },
+      { url: "/icon.png?v=4", type: "image/png", sizes: "192x192" },
+      { url: "/favicon-32.png?v=4", type: "image/png", sizes: "32x32" },
     ],
-    apple: [{ url: "/apple-icon.png?v=3", sizes: "180x180" }],
-    shortcut: "/favicon.ico?v=3",
+    apple: [{ url: "/apple-icon.png?v=4", sizes: "180x180" }],
+    shortcut: "/favicon.ico?v=4",
   },
   openGraph: {
     title: "Zeynep Çeltek Güzellik | Adana Güzellik Salonu",
@@ -76,9 +76,9 @@ export const metadata: Metadata = {
     siteName: "Zeynep Çeltek Güzellik",
     images: [
       {
-        url: "/images/logo/logo.png",
-        width: 763,
-        height: 117,
+        url: "/images/logo/logo-nobg.png",
+        width: 1024,
+        height: 682,
         alt: "Zeynep Çeltek Güzellik",
       },
     ],
@@ -87,7 +87,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Zeynep Çeltek Güzellik | Adana",
     description: "Adana'da profesyonel güzellik hizmetleri.",
-    images: ["/images/logo/logo.png"],
+    images: ["/images/logo/logo-nobg.png"],
   },
   robots: {
     index: true,

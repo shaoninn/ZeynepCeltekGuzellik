@@ -20,7 +20,7 @@ const adapter = new PrismaMariaDb(resolveMysqlDatabaseUrl());
 const prisma = new PrismaClient({ adapter });
 
 const HERO = "/images/hero/hero-1.jpg";
-const LOGO = "/images/logo/logo.png";
+const LOGO = "/images/logo/logo-nobg.png";
 
 const CATEGORY_IMAGES: Record<string, string> = {
   "cilt-bakimi": "/images/products/cilt-bakimi/1.jpg",

@@ -6,7 +6,7 @@ Next.js 16 kurumsal site — güzellik salonu hizmet kataloğu, randevu sepeti, 
 
 - Next.js 16 App Router + React 19 + TypeScript
 - Tailwind 4 · Prisma 7 + MariaDB · Redux (sepet)
-- Altyapı: GlobalReklam şablonu (`docs/SITE-TEMPLATE-BLUEPRINT.md`)
+- Yayın: Hostinger Node.js (`docs/HOSTINGER.md`)
 
 ## Kurulum
 
