@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { formatPrice } from "@/lib/utils";
-import { SITE_NAME, ADDRESS, PHONE, EMAIL } from "@/lib/constants";
+import { SITE_NAME, BRANCHES } from "@/lib/constants";
 import { PrintActions } from "../yazdir/PrintActions";
 
 export const dynamic = "force-dynamic";
@@ -34,10 +34,11 @@ export default async function InvoicePage({ params, searchParams }: Props) {
         <PrintActions />
         <header className="border-b-2 border-black pb-4 mb-6">
           <h1 className="text-2xl font-bold">{SITE_NAME}</h1>
-          <p className="text-sm">{ADDRESS}</p>
-          <p className="text-sm">
-            {PHONE} · {EMAIL}
-          </p>
+          {BRANCHES.map((b) => (
+            <p key={b.name} className="text-sm">
+              {b.name}: {b.address} · {b.phones.join(" · ")}
+            </p>
+          ))}
           <p className="mt-4 text-lg font-semibold">
             Fatura taslağı — {order.invoiceNo || order.orderNo}
           </p>

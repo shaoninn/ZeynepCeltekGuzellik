@@ -87,6 +87,17 @@ export function Footer({ settings, footerBlurb }: FooterProps) {
                   <span className="text-muted text-sm leading-snug">
                     <span className="block text-cream/90">{b.name}</span>
                     {b.address}
+                    <span className="mt-1 flex flex-col">
+                      {b.phones.map((phone) => (
+                        <a
+                          key={phone}
+                          href={`tel:+90${phone.replace(/\D/g, "").replace(/^0/, "")}`}
+                          className="text-cream/80 hover:text-orange"
+                        >
+                          {phone}
+                        </a>
+                      ))}
+                    </span>
                   </span>
                 </li>
               ))}
@@ -106,14 +117,8 @@ export function Footer({ settings, footerBlurb }: FooterProps) {
                   rel="noopener noreferrer"
                   className="text-orange text-sm font-semibold hover:underline"
                 >
-                  {settings.phone}
+                  WhatsApp {settings.phone}
                 </a>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <MapPin size={15} className="text-orange shrink-0 mt-0.5" />
-                <span className="text-muted text-sm leading-relaxed">
-                  {settings.address}
-                </span>
               </li>
               {INSTAGRAM_HANDLES.map((ig) => (
                 <li key={ig.handle} className="text-muted text-sm pl-6">

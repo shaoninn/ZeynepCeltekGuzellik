@@ -1,5 +1,6 @@
 import { SiteLink } from "@/components/ui/SiteLink";
 import { getActiveCategories } from "@/lib/catalog";
+import { toWebpSrc, toWebpSrcMobile } from "@/lib/image-optimize";
 import { getContentMap } from "@/lib/site-content";
 import { PageIntro } from "@/components/editor/PageIntro";
 import { CatalogAdminHint } from "@/components/editor/CatalogAdminHint";
@@ -73,7 +74,13 @@ export default async function ServicesPage() {
                   <div className="relative aspect-[16/10] overflow-hidden bg-surface">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={category.image}
+                      src={toWebpSrcMobile(category.image) || toWebpSrc(category.image)}
+                      srcSet={
+                        toWebpSrcMobile(category.image)
+                          ? `${toWebpSrcMobile(category.image)} 640w, ${toWebpSrc(category.image)} 1100w`
+                          : undefined
+                      }
+                      sizes="(max-width: 640px) 100vw, 33vw"
                       alt={category.name}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                       loading="lazy"

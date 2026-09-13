@@ -5,15 +5,16 @@ import { NAV_LINKS } from "../src/lib/constants";
 async function main() {
   // Finish incomplete seed pieces safely (upsert)
   const settings = [
-    { key: "phone", value: "0 (532) 224 07 85" },
-    { key: "email", value: "info@zeynepceltekguzellik.local" },
-    { key: "address", value: "Çakırlar, Antalya" },
-    { key: "instagram", value: "https://www.instagram.com/zeynepceltekguzellik/" },
-    { key: "whatsapp", value: "905322240785" },
+    { key: "phone", value: "0 (545) 457 06 56" },
+    { key: "email", value: "" },
     {
-      key: "google_reviews_url",
-      value: "https://share.google/mmdpck843WySI93pq",
+      key: "address",
+      value:
+        "Gazi Paşa: CarrefourSA Expres Market Üstü, Cemal Paşa Mh. Gazipaşa Bulvarı, 63003. Sk. Tek Apt Kat 4 No 41, 01120 Seyhan/Adana · Turgut Özal: Güzelyalı, Turgut Özal Blv. No:102, 01170 Çukurova/Adana",
     },
+    { key: "instagram", value: "https://www.instagram.com/zeynepceltek_adana/" },
+    { key: "whatsapp", value: "905454570656" },
+    { key: "google_reviews_url", value: "" },
   ];
   for (const s of settings) {
     await prisma.siteSetting.upsert({

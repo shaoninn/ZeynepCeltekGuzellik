@@ -13,7 +13,7 @@ const FIELDS = [
   {
     key: "whatsapp",
     label: "WhatsApp (ülke kodlu)",
-    help: "Örn: 905327359884 — sadece rakam.",
+    help: "Örn: 905454570656 — sadece rakam.",
   },
   {
     key: "whatsapp_label",

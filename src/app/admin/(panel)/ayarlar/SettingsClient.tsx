@@ -10,7 +10,7 @@ import {
 
 const FIELDS = [
   { key: "phone", label: "Telefon", help: "Sitede ve WhatsApp butonunda görünür." },
-  { key: "whatsapp", label: "WhatsApp (ülke kodlu)", help: "Örn: 905340809873 — sadece rakam." },
+  { key: "whatsapp", label: "WhatsApp (ülke kodlu)", help: "Örn: 905454570656 — sadece rakam." },
   { key: "address", label: "Adres" },
   { key: "instagram", label: "Instagram URL", help: "https://www.instagram.com/zeynepceltek_adana/" },
   {

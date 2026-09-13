@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { EditableText } from "@/components/editor/EditableText";
-import { toWebpSrc } from "@/lib/image-optimize";
+import { toWebpSrc, toWebpSrcMobile } from "@/lib/image-optimize";
 
 interface GallerySectionProps {
   title?: string;
@@ -72,6 +72,7 @@ export function GallerySection({
           >
             {list.map((src, i) => {
               const webp = toWebpSrc(src);
+              const sm = toWebpSrcMobile(src);
               return (
                 <div
                   key={`${src}-${i}`}
@@ -79,7 +80,8 @@ export function GallerySection({
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={webp}
+                    src={sm || webp}
+                    srcSet={sm ? `${sm} 640w, ${webp} 1100w` : undefined}
                     alt={`Uygulama ${i + 1}`}
                     width={640}
                     height={800}

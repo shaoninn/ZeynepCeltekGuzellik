@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { toWebpSrc } from "@/lib/image-optimize";
 import Image from "next/image";
 import { SiteLink } from "@/components/ui/SiteLink";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
@@ -92,7 +93,7 @@ export function CategoriesGrid({
                   <div className="arch-frame relative aspect-[3/4] bg-cream-dark border border-ink/8 shadow-[0_12px_40px_rgba(26,22,18,0.08)]">
                     {cat.image ? (
                       <Image
-                        src={cat.image}
+                        src={toWebpSrc(cat.image)}
                         alt={cat.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500"

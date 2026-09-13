@@ -159,7 +159,7 @@ const keys: { key: string; title: string; content: string }[] = [
     key: "contact_intro",
     title: "İletişim Açıklama",
     content:
-      "Hizmet danışmanlığı, kayıt veya program seçimi hakkında sorularınız için yazın. En hızlı yanıt WhatsApp üzerinden gelir. Adres: Cemalpaşa Mah. Gazipaşa Bulvarı Çelik Apartmanı Kat 4 No 7, Seyhan / Adana · Tel: 0 (850) 550 35 40 · Google: https://share.google/URWo0MWX0f2nTAswo",
+      "Randevu ve hizmetler için WhatsApp’tan yazın. Gazi Paşa: 0 (541) 457 06 54 · Turgut Özal: 0 (545) 457 06 56 / 0 (322) 232 59 52.",
   },
   {
     key: "process_section_title",

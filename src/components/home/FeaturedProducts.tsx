@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { toWebpSrc } from "@/lib/image-optimize";
 import Image from "next/image";
 import { SiteLink } from "@/components/ui/SiteLink";
 import { ArrowRight, ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
@@ -88,7 +89,7 @@ export function FeaturedProducts({ products, title }: FeaturedProductsProps) {
               <SiteLink href={`/urun/${product.slug}`} className="relative aspect-[4/3] bg-black block">
                 {product.image ? (
                   <Image
-                    src={product.image}
+                    src={toWebpSrc(product.image)}
                     alt={product.name}
                     fill
                     className="object-cover"

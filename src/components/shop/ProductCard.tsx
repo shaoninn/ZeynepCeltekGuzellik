@@ -10,7 +10,7 @@ import { addToCart } from "@/store/cartSlice";
 import { ProductBadges } from "@/components/shop/ProductBadges";
 import { WishlistButton } from "@/components/shop/WishlistButton";
 import { parseProductSpecs } from "@/lib/catalog-meta";
-import type { Product } from "@/types";
+import { toWebpSrc } from "@/lib/image-optimize";
 
 interface ProductCardProps {
   product: Product & {
@@ -84,7 +84,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {primarySrc ? (
           <>
             <Image
-              src={primarySrc}
+              src={toWebpSrc(primarySrc)}
               alt={product.name}
               fill
               className={`object-cover transition-all duration-500 ${
@@ -98,7 +98,7 @@ export function ProductCard({ product }: ProductCardProps) {
             />
             {hoverImage && !night ? (
               <Image
-                src={hoverImage}
+                src={toWebpSrc(hoverImage)}
                 alt=""
                 fill
                 className="object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"

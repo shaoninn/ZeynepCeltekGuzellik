@@ -1,5 +1,3 @@
 # Stock photo attribution
 
-Placeholder site photos are from [Unsplash](https://unsplash.com) (Unsplash License — free to use commercially).
-
-Replace with original salon photography when available. Logo: transparent brand mark (`logo/logo-nobg.png`, header `logo/logo-header.webp`).
+Placeholder treatment photos were replaced with unique generated clinic photos (2026-09). Mobile siblings are `*-sm.webp` (about 640px). Do not copy the same file into gallery, products, and projects.

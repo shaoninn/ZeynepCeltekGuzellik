@@ -1,10 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { ArrowRight, MapPin, Phone, Clock } from "lucide-react";
+import { ArrowRight, Clock, MapPin } from "lucide-react";
 import { EditableText } from "@/components/editor/EditableText";
 import { EditableSectionShift } from "@/components/editor/EditableSectionShift";
-import { PHONE, ADDRESS, WORK_HOURS } from "@/lib/constants";
+import { BRANCHES, PHONE, WORK_HOURS } from "@/lib/constants";
 
 interface CTASectionProps {
   title?: string;
@@ -59,17 +59,29 @@ export function CTASection({
               <h3 className="font-display text-sm font-semibold tracking-[0.18em] uppercase text-orange mb-2">
                 İletişim
               </h3>
-              <a
-                href={`tel:${PHONE.replace(/\D/g, "")}`}
-                className="flex items-start gap-3 text-sm text-white/85 hover:text-orange transition-colors"
-              >
-                <Phone size={16} className="mt-0.5 text-orange shrink-0" />
-                {PHONE}
-              </a>
-              <p className="flex items-start gap-3 text-sm text-white/85">
-                <MapPin size={16} className="mt-0.5 text-orange shrink-0" />
-                {ADDRESS}
-              </p>
+              <div className="space-y-4">
+                {BRANCHES.map((branch) => (
+                  <div key={branch.name} className="space-y-1.5">
+                    <p className="flex items-start gap-3 text-sm text-white/85">
+                      <MapPin size={16} className="mt-0.5 text-orange shrink-0" />
+                      <span>
+                        <span className="block text-cream">{branch.name}</span>
+                        {branch.address}
+                      </span>
+                    </p>
+                    {branch.phones.map((phone) => (
+                      <a
+                        key={phone}
+                        href={`tel:+90${phone.replace(/\D/g, "").replace(/^0/, "")}`}
+                        className="flex items-start gap-3 text-sm text-white/85 hover:text-orange transition-colors pl-7"
+                      >
+                        {phone}
+                        {phone === PHONE ? " · WhatsApp" : ""}
+                      </a>
+                    ))}
+                  </div>
+                ))}
+              </div>
               <p className="flex items-start gap-3 text-sm text-white/85">
                 <Clock size={16} className="mt-0.5 text-orange shrink-0" />
                 <span>

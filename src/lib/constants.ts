@@ -1,12 +1,14 @@
 export const SITE_NAME = "Zeynep Çeltek Güzellik";
 export const SITE_OWNER = "Zeynep Çeltek";
 export const SITE_TAGLINE = "Güzelliğinize değer veriyoruz.";
-export const PHONE = "0 (534) 080 98 73";
-export const PHONE_RAW = "905340809873";
+/** Primary public line — Turgut Özal WhatsApp (Instagram randevu hattı). */
+export const PHONE = "0 (545) 457 06 56";
+export const PHONE_RAW = "905454570656";
 export const PHONE_ALT = "";
 export const WHATSAPP_URL = `https://wa.me/${PHONE_RAW}`;
 export const EMAIL = "";
-export const ADDRESS = "Adana — Özal & Gazi Paşa şubeleri";
+export const ADDRESS =
+  "Gazi Paşa (Seyhan) ve Turgut Özal (Çukurova) şubeleri, Adana";
 export const LOCATION_LABEL = "Adana";
 export const INSTAGRAM = "https://www.instagram.com/zeynepceltek_adana/";
 export const INSTAGRAM_HANDLES = [
@@ -17,10 +19,6 @@ export const INSTAGRAM_HANDLES = [
   {
     handle: "@zeynepceltek_t.ozal",
     href: "https://www.instagram.com/zeynepceltek_t.ozal/",
-  },
-  {
-    handle: "@zeynepceltek_guzellik.kursu",
-    href: "https://www.instagram.com/zeynepceltek_guzellik.kursu/",
   },
 ] as const;
 /** Google İşletme Profili — domain ile birlikte sonra */
@@ -33,8 +31,20 @@ export const WORK_HOURS = {
 };
 
 export const BRANCHES = [
-  { name: "Özal Şube", address: "Adana" },
-  { name: "Gazi Paşa Şube", address: "Adana" },
+  {
+    name: "Gazi Paşa Şube",
+    address:
+      "CarrefourSA Expres Market Üstü, Cemal Paşa Mh. Gazipaşa Bulvarı, 63003. Sk. Tek Apt Kat 4 No 41, 01120 Seyhan/Adana",
+    phones: ["0 (541) 457 06 54"],
+    mapQuery:
+      "Cemal Paşa Mahallesi Gazipaşa Bulvarı 63003. Sokak Tek Apt Kat 4 No 41 Seyhan Adana",
+  },
+  {
+    name: "Turgut Özal Şube",
+    address: "Güzelyalı, Turgut Özal Blv. No:102, 01170 Çukurova/Adana",
+    phones: ["0 (545) 457 06 56", "0 (322) 232 59 52"],
+    mapQuery: "Güzelyalı Turgut Özal Bulvarı No 102 Çukurova Adana",
+  },
 ] as const;
 
 export const LEGAL_LINKS = [

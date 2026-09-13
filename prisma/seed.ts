@@ -563,14 +563,15 @@ async function main() {
 
   await prisma.siteSetting.createMany({
     data: [
-      { key: "phone", value: "0 (534) 080 98 73" },
+      { key: "phone", value: "0 (545) 457 06 56" },
       { key: "email", value: "" },
       {
         key: "address",
-        value: "Adana — Özal & Gazi Paşa şubeleri",
+        value:
+          "Gazi Paşa: CarrefourSA Expres Market Üstü, Cemal Paşa Mh. Gazipaşa Bulvarı, 63003. Sk. Tek Apt Kat 4 No 41, 01120 Seyhan/Adana · Turgut Özal: Güzelyalı, Turgut Özal Blv. No:102, 01170 Çukurova/Adana",
       },
       { key: "instagram", value: "https://www.instagram.com/zeynepceltek_adana/" },
-      { key: "whatsapp", value: "905340809873" },
+      { key: "whatsapp", value: "905454570656" },
       { key: "location_label", value: "Adana" },
       { key: "google_reviews_url", value: "" },
       {

@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { SiteLink } from "@/components/ui/SiteLink";
-import { MapPin, Phone, Clock, ExternalLink } from "lucide-react";
+import { Clock, ExternalLink, MapPin } from "lucide-react";
 import type { SiteSettingsMap } from "@/lib/site";
 import {
-  GOOGLE_MAPS_EMBED_QUERY,
+  BRANCHES,
 } from "@/lib/constants";
 import { EditableText } from "@/components/editor/EditableText";
 import { EditableSetting } from "@/components/editor/EditableSetting";
@@ -60,12 +60,11 @@ export function ContactForm({
   );
   const [error, setError] = useState("");
 
-  const mapsEmbed = `https://www.google.com/maps?q=${encodeURIComponent(
-    GOOGLE_MAPS_EMBED_QUERY
-  )}&z=17&hl=tr&output=embed`;
-  const mapsOpenUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    GOOGLE_MAPS_EMBED_QUERY
-  )}`;
+  const maps = BRANCHES.map((branch) => ({
+    ...branch,
+    embed: `https://www.google.com/maps?q=${encodeURIComponent(branch.mapQuery)}&z=17&hl=tr&output=embed`,
+    open: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(branch.mapQuery)}`,
+  }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -124,54 +123,27 @@ export function ContactForm({
             className="font-display text-lg font-bold text-white mb-6"
             help="İletişim kartı başlığı"
           />
-          <ul className="space-y-4 flex-1">
-            <li className="flex gap-3">
-              <MapPin size={18} className="text-orange flex-shrink-0 mt-0.5" />
-              <EditableSetting
-                settingKey="address"
-                value={settings.address}
-                as="span"
-                block
-                multiline
-                className="text-sm text-muted leading-relaxed"
-                help="Adres (Ayarlar)"
-              />
-            </li>
-            <li className="flex gap-3">
-              <Phone size={18} className="text-orange flex-shrink-0" />
-              <div className="flex flex-col gap-1">
-                <a
-                  href={`tel:+${settings.phoneRaw}`}
-                  className="text-sm text-orange hover:underline inline-flex flex-wrap items-center gap-1"
-                >
-                  <EditableText
-                    contentKey="contact_call_prefix"
-                    value={c.callPrefix}
-                    as="span"
-                    help="Telefon satırı öneki (Ara:)"
-                  />{" "}
-                  <EditableSetting
-                    settingKey="phone"
-                    value={settings.phone}
-                    as="span"
-                    help="Telefon numarası (görünen)"
-                  />
-                </a>
-                <a
-                  href={settings.whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-muted hover:text-orange"
-                >
-                  <EditableText
-                    contentKey="contact_whatsapp_link"
-                    value={c.whatsappLink}
-                    as="span"
-                    help="WhatsApp ikincil link metni"
-                  />
-                </a>
-              </div>
-            </li>
+          <ul className="space-y-5 flex-1">
+            {BRANCHES.map((branch) => (
+              <li key={branch.name} className="flex gap-3">
+                <MapPin size={18} className="text-orange flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-muted leading-relaxed">
+                  <p className="text-cream/90 font-medium">{branch.name}</p>
+                  <p>{branch.address}</p>
+                  <p className="mt-1 flex flex-col">
+                    {branch.phones.map((phone) => (
+                      <a
+                        key={phone}
+                        href={`tel:+90${phone.replace(/\D/g, "").replace(/^0/, "")}`}
+                        className="text-orange hover:underline"
+                      >
+                        {phone}
+                      </a>
+                    ))}
+                  </p>
+                </div>
+              </li>
+            ))}
             <li className="flex gap-3">
               <Clock size={18} className="text-orange flex-shrink-0" />
               <div className="text-sm text-muted space-y-1">
@@ -337,38 +309,31 @@ export function ContactForm({
         </form>
       </div>
 
-      <div className="border border-border overflow-hidden bg-card">
-        <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-border">
-          <EditableText
-            contentKey="contact_map_label"
-            value={c.mapLabel}
-            as="p"
-            className="text-sm text-muted"
-            help="Harita bölümü başlığı"
-          />
-          <a
-            href={mapsOpenUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs text-orange hover:underline"
-          >
-            <EditableText
-              contentKey="contact_map_open"
-              value={c.mapOpen}
-              as="span"
-              help="Harita dış link metni"
+      <div className="grid gap-4 md:grid-cols-2">
+        {maps.map((branch) => (
+          <div key={branch.name} className="border border-border overflow-hidden bg-card">
+            <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-border">
+              <p className="text-sm text-muted">{branch.name}</p>
+              <a
+                href={branch.open}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs text-orange hover:underline"
+              >
+                Google&apos;da aç
+                <ExternalLink size={12} />
+              </a>
+            </div>
+            <iframe
+              title={`${branch.name} konumu`}
+              src={branch.embed}
+              className="w-full h-[240px] sm:h-[280px] grayscale-[20%] contrast-110"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
             />
-            <ExternalLink size={12} />
-          </a>
-        </div>
-        <iframe
-          title="Zeynep Çeltek Güzellik konumu — Adana"
-          src={mapsEmbed}
-          className="w-full h-[240px] sm:h-[320px] md:h-[400px] grayscale-[20%] contrast-110"
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          allowFullScreen
-        />
+          </div>
+        ))}
       </div>
     </div>
   );
