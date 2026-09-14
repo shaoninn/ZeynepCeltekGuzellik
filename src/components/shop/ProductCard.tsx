@@ -11,6 +11,7 @@ import { ProductBadges } from "@/components/shop/ProductBadges";
 import { WishlistButton } from "@/components/shop/WishlistButton";
 import { parseProductSpecs } from "@/lib/catalog-meta";
 import { toWebpSrc } from "@/lib/image-optimize";
+import type { Product } from "@/types";
 
 interface ProductCardProps {
   product: Product & {
