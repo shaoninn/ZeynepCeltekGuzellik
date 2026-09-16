@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/api/", "/sepet", "/duzenle"],
+        disallow: ["/admin", "/api/", "/sepet", "/duzenle", "/tesekkur"],
       },
       // Aggressive AI crawlers — middleware also 403s these (Hostinger process saver).
       {

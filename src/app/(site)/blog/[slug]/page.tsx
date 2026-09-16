@@ -12,9 +12,19 @@ interface Props {
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
+  const post = await getPostBySlug(slug);
+  if (!post) {
+    return { title: "Yazı | Zeynep Çeltek Güzellik" };
+  }
   return {
     alternates: { canonical: `/blog/${slug}` },
-    title: `${slug.replace(/-/g, " ")} | Zeynep Çeltek Güzellik`,
+    title: post.title,
+    description: post.excerpt || post.title,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt || undefined,
+      images: post.image ? [post.image] : undefined,
+    },
   };
 }
 

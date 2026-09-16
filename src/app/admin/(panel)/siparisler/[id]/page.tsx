@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { formatPrice } from "@/lib/utils";
-import { WHATSAPP_URL } from "@/lib/constants";
+import { WHATSAPP_URL, branchLabel } from "@/lib/constants";
 import { buildAdminWhatsAppMessage } from "@/lib/order-workflow";
 import { OrderTimeline } from "@/components/admin/OrderTimeline";
 import { OrderStatusActions } from "./OrderStatusActions";
@@ -61,13 +61,13 @@ export default async function AdminOrderDetailPage({
           href="/admin/siparisler"
           className="text-sm text-orange hover:underline"
         >
-          ← Siparişlere dön
+          ← Taleplere dön
         </Link>
         <Link
           href="/admin/siparisler/kanban"
           className="text-sm text-[#888] hover:text-orange"
         >
-          Sipariş Panosu
+          Talep panosu
         </Link>
         <Link
           href={`/admin/siparisler/${order.id}/yazdir`}
@@ -87,11 +87,29 @@ export default async function AdminOrderDetailPage({
         <strong className="text-white">
           {paymentLabel[order.paymentStatus] || order.paymentStatus}
         </strong>
+        {order.branch ? (
+          <>
+            {" · "}
+            Şube:{" "}
+            <strong className="text-white">{branchLabel(order.branch)}</strong>
+          </>
+        ) : null}
+      </p>
+      <p className="mb-4">
+        {order.manufacturerNotified ? (
+          <span className="inline-flex items-center rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 text-xs font-semibold px-2.5 py-1">
+            Salon e-postası gönderildi
+          </span>
+        ) : (
+          <span className="inline-flex items-center rounded-full bg-white/5 border border-white/15 text-[#aaa] text-xs font-semibold px-2.5 py-1">
+            Salon e-postası gönderilemedi
+          </span>
+        )}
       </p>
 
       <div className="admin-card p-5 mb-6">
         <h2 className="font-semibold mb-3 text-sm uppercase tracking-wider text-[#888]">
-          Üretim süreci
+          Randevu durumu
         </h2>
         <OrderTimeline current={order.workflow} />
       </div>

@@ -2,28 +2,28 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import { SiteLink } from "@/components/ui/SiteLink";
 import { prisma } from "@/lib/db";
-import { getSimilarProducts } from "@/lib/catalog";
+import { getSimilarProducts, getRecentProductPool } from "@/lib/catalog";
 import { memoryCache } from "@/lib/memory-cache";
 import { formatPrice, parseJsonArray, parseJsonObject } from "@/lib/utils";
 import { ProductConfigurator } from "@/components/shop/ProductConfigurator";
 import { SimilarProducts } from "@/components/shop/SimilarProducts";
+import { RecentlyViewed } from "@/components/shop/RecentlyViewed";
 import { TrackProductView } from "@/components/shop/TrackProductView";
 import { ProjectGallery } from "@/components/projects/ProjectGallery";
 import { productJsonLd } from "@/lib/seo";
 import type { ProductSpecs } from "@/types";
-import { MapPin, Check, Truck } from "lucide-react";
+import { MapPin, Check } from "lucide-react";
 import { CatalogAdminHint } from "@/components/editor/CatalogAdminHint";
 import { ProductBadges } from "@/components/shop/ProductBadges";
+import { getFallbackProductsByCategorySlug } from "@/lib/catalog-fallback";
+import { CATALOG_PRODUCTS } from "@/lib/constants";
+import { BranchWhatsAppButtons } from "@/components/leads/BranchWhatsAppButtons";
 
 export const revalidate = 60;
-
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
-
-import { getFallbackProductsByCategorySlug } from "@/lib/catalog-fallback";
-import { CATALOG_PRODUCTS } from "@/lib/constants";
 
 function getFallbackProductBySlug(slug: string) {
   const meta = CATALOG_PRODUCTS.find((p) => p.slug === slug);
@@ -45,7 +45,7 @@ const getProductBySlug = cache(async (slug: string) => {
     );
     if (row) return row;
   } catch (error) {
-    console.error("[urun] getProductBySlug failed:", error);
+    console.error("[hizmet] getProductBySlug failed:", error);
   }
   return getFallbackProductBySlug(slug);
 });
@@ -55,12 +55,12 @@ export async function generateMetadata({ params }: Props) {
   const product = await getProductBySlug(slug);
   if (!product) {
     return {
-      alternates: { canonical: `/urun/${slug}` },
-      title: "Ürün Bulunamadı",
+      alternates: { canonical: `/hizmet/${slug}` },
+      title: "Hizmet bulunamadı",
     };
   }
   return {
-    alternates: { canonical: `/urun/${slug}` },
+    alternates: { canonical: `/hizmet/${slug}` },
     title: product.name,
     description: product.shortDesc || product.description || undefined,
     openGraph: {
@@ -86,12 +86,52 @@ export default async function ProductPage({ params }: Props) {
         ? [product.image]
         : [];
 
-  const unitPrice =
-    product.badgeSale && product.salePrice != null
-      ? product.salePrice
-      : product.price;
+  const saleLive =
+    Boolean(product.badgeSale) &&
+    product.salePrice != null &&
+    product.salePrice < product.price &&
+    product.campaignEndsAt != null &&
+    new Date(product.campaignEndsAt) > new Date();
+  const unitPrice = saleLive && product.salePrice != null
+    ? product.salePrice
+    : product.price;
+  const waPrefill = `Merhaba, ${product.name} için randevu almak istiyorum.`;
+  const specLabels: Record<string, string> = {
+    sure: "Süre",
+    seans: "Seans",
+    hazirlik: "Hazırlık",
+    kimlere: "Kimlere uygun",
+    malzeme: "Hizmet içeriği",
+    garanti: "Sertifika",
+    montaj: "Süre",
+    teslimat: "Kontenjan / başlangıç",
+  };
+  const specOrder = [
+    "sure",
+    "seans",
+    "hazirlik",
+    "kimlere",
+    "malzeme",
+    "garanti",
+    "montaj",
+    "teslimat",
+  ];
+  const specRows = [
+    ...specOrder
+      .filter((key) => (specs[key] || "").trim())
+      .map((key) => [key, specs[key]!] as const),
+    ...Object.entries(specs).filter(
+      ([key, value]) =>
+        (value || "").trim() &&
+        !specOrder.includes(key) &&
+        !key.startsWith("neon")
+    ),
+  ];
 
   const similar = await getSimilarProducts(product.categoryId, product.id, 4);
+  const recentPool = (await getRecentProductPool().catch(() => [])).filter(
+    (p) => p.id !== product.id
+  );
 
   return (
     <section className="py-16 lg:py-24">
@@ -127,10 +167,10 @@ export default async function ProductPage({ params }: Props) {
         </nav>
 
         <CatalogAdminHint
-          title="Bu ürün sayfasının tamamı"
+          title="Bu hizmet sayfasının tamamı"
           adminHref="/admin/urunler"
-          adminLabel="Admin → Ürünler"
-          detail="ad, fiyat, özellikler, görseller, açıklama ürün eklerken girilir; canlı editörden düzenlenmez."
+          adminLabel="Admin → Hizmetler"
+          detail="ad, fiyat, özellikler, görseller, açıklama hizmet eklerken girilir; canlı editörden düzenlenmez."
         />
 
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
@@ -142,6 +182,7 @@ export default async function ProductPage({ params }: Props) {
                 badgeBestseller={product.badgeBestseller}
                 badgeSale={product.badgeSale}
                 inStock={product.inStock}
+                campaignEndsAt={product.campaignEndsAt}
               />
             </div>
           </div>
@@ -162,41 +203,34 @@ export default async function ProductPage({ params }: Props) {
               <p className="font-display text-3xl font-bold text-orange">
                 {formatPrice(unitPrice)}
               </p>
-              {product.badgeSale &&
-                product.salePrice != null &&
-                product.salePrice < product.price && (
+              {saleLive && product.salePrice != null && (
                   <p className="text-muted line-through text-lg">
                     {formatPrice(product.price)}
                   </p>
                 )}
             </div>
             <p className="text-xs text-muted mb-6">
-              Başlangıç / örnek fiyat — kesin teklif keşif sonrası verilir.
+              Listedeki fiyat güncel listedir. Randevu ve seans planı onayda netleşir.
             </p>
-
-            {product.shippingLabel && (
-              <p className="flex items-center gap-2 text-sm text-muted mb-4">
-                <Truck size={16} className="text-orange" />
-                {product.shippingLabel}
-              </p>
-            )}
 
             {product.shortDesc && (
               <p className="text-muted mb-6">{product.shortDesc}</p>
             )}
 
-            {Object.keys(specs).length > 0 && (
+            {specRows.length > 0 && (
               <div className="mb-6 p-4 bg-card border border-border rounded-xl">
                 <h3 className="text-sm font-semibold text-white mb-3 uppercase tracking-wider">
                   Özellikler
                 </h3>
                 <dl className="space-y-2">
-                  {Object.entries(specs).map(([key, value]) => (
+                  {specRows.map(([key, value]) => (
                     <div
                       key={key}
                       className="flex flex-col gap-0.5 sm:flex-row sm:justify-between sm:gap-4 text-sm"
                     >
-                      <dt className="text-muted capitalize shrink-0">{key}</dt>
+                      <dt className="text-muted shrink-0">
+                        {specLabels[key] || key}
+                      </dt>
                       <dd className="text-white sm:text-right break-words">
                         {value}
                       </dd>
@@ -209,7 +243,7 @@ export default async function ProductPage({ params }: Props) {
             <div className="mb-6 space-y-2">
               <div className="flex items-center gap-2 text-sm text-muted">
                 <Check size={16} className="text-orange" />
-                Ücretsiz ön görüşme
+                Ön görüşme / danışmanlık
               </div>
               <div className="flex items-center gap-2 text-sm text-muted">
                 <Check size={16} className="text-orange" />
@@ -223,10 +257,15 @@ export default async function ProductPage({ params }: Props) {
 
             <ProductConfigurator product={product} />
 
+            <BranchWhatsAppButtons
+              prefill={waPrefill}
+              className="mt-3"
+            />
+
             {product.description && (
               <div className="mt-8 pt-8 border-t border-border">
                 <h3 className="text-sm font-semibold text-white mb-3 uppercase tracking-wider">
-                  Ürün Açıklaması
+                  Hizmet açıklaması
                 </h3>
                 <p className="text-muted text-sm leading-relaxed">
                   {product.description}
@@ -237,6 +276,7 @@ export default async function ProductPage({ params }: Props) {
         </div>
 
         <SimilarProducts products={similar} />
+        <RecentlyViewed allProducts={recentPool} />
       </div>
     </section>
   );

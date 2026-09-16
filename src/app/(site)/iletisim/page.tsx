@@ -8,7 +8,7 @@ export const revalidate = 60;
 export const metadata = {
   alternates: { canonical: "/iletisim" },
   title: "İletişim | Zeynep Çeltek Güzellik",
-  description: "Zeynep Çeltek Güzellik iletişim bilgileri ve teklif formu.",
+  description: "Zeynep Çeltek Güzellik iletişim bilgileri ve randevu formu.",
 };
 
 export default async function ContactPage() {

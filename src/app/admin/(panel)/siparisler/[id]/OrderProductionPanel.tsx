@@ -61,7 +61,7 @@ export function OrderProductionPanel({
 
   return (
     <div className="admin-card p-5 space-y-4">
-      <h2 className="font-semibold">Üretim kartı & ödeme</h2>
+      <h2 className="font-semibold">Randevu kartı & ödeme</h2>
       <AdminField label="İş akışı aşaması">
         <select
           className="admin-input"
@@ -87,21 +87,21 @@ export function OrderProductionPanel({
           <option value="REFUNDED">İade</option>
         </select>
       </AdminField>
-      <AdminField label="Hizmet notları (içerik, malzeme, süre)">
+      <AdminField label="Seans notları">
         <textarea
           className="admin-input min-h-[100px]"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="Program içeriği, malzeme seti, süre notları…"
+          placeholder="Seans içeriği, süre, hazırlık notları…"
         />
       </AdminField>
       <ImageUploadField
-        label="Hizmet eki (PDF / görsel URL)"
+        label="Foto / ek (görsel veya PDF URL)"
         value={file}
         onChange={setFile}
-        help="Müfredat veya görsel linki. PDF yükleyip URL yapıştırın."
+        help="Seans fotoğrafı veya belge linki."
       />
-      <AdminField label="Randevu">
+      <AdminField label="Randevu tarihi">
         <input
           type="datetime-local"
           className="admin-input"

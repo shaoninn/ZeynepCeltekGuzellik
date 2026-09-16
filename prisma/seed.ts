@@ -2,7 +2,7 @@ import "dotenv/config";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { hashPassword } from "../src/lib/auth";
-import { CATEGORIES, CATALOG_PRODUCTS } from "../src/lib/constants";
+import { CATEGORIES, CATALOG_PRODUCTS, PACKAGES } from "../src/lib/constants";
 import { projectData } from "./projects-data";
 import { SAMPLE_BLOG_POSTS } from "./blog-data";
 import { resolveMysqlDatabaseUrl } from "../src/lib/db-url";
@@ -123,49 +123,63 @@ const siteContent = [
     content: "/images/about/about-4.jpg",
   },
   {
+    key: "about_headline",
+    title: "Hakkımızda Başlık",
+    content: "GÜZELLİĞİ BİLİMLE,\nSANATA DÖNÜŞTÜRÜYORUZ",
+  },
+  {
     key: "about_intro",
     title: "Hakkımızda Giriş",
     content:
-      "Zeynep Çeltek Güzellik, Adana’da Özal ve Gazi Paşa şubelerinde cilt bakımı, lazer epilasyon ve bölgesel incelme hizmetleri sunar.\n\nAmacımız herkese aynı uygulamayı yapmak değil; cilt tipinize ve ihtiyacınıza uygun protokolü birlikte seçmek. Şeffaf fiyat listesi, hijyenik ortam ve uzman kadro ile yanınızdayız.",
+      "Zeynep Çeltek Güzellik, Adana’da Gazi Paşa (Seyhan) ve Turgut Özal (Çukurova) şubelerinde cilt bakımı, lazer epilasyon, bölgesel incelme, kirpik-kaş ve Alex lazer hizmetleri sunar.\n\nAmacımız herkese aynı uygulamayı yapmak değil; cilt tipinize, yaşam tarzınıza ve hedeflerinize uygun protokolü birlikte seçmek. Şeffaf fiyat listesi, hijyenik ortam ve deneyimli kadro ile yanınızdayız.\n\nRandevu için WhatsApp veya telefonla ulaşabilir; hizmet ve paket seçimlerinizi sitemizdeki randevu sepetinden de iletebilirsiniz.",
   },
   {
     key: "about_philosophy",
     title: "Çalışma İlkelerimiz",
     content:
-      "Hijyen, şeffaflık ve kişiye özel bakım; her randevuda uyguladığımız somut kurallar.",
+      "Her seansı standart bir işlem değil, planlı bir bakım adımı olarak görürüz. Hijyen, bilgilendirme ve kişiye özel yaklaşım; randevudan önce, uygulama sırasında ve sonrasında tuttuğumuz somut kurallardır.\n\nMisafirlerimize ne yapılacağını ve neden tercih edildiğini net anlatırız. Acele etmeden, cihaz ve ürün seçimini ihtiyaca göre belirleriz.",
   },
   {
     key: "mission",
     title: "Misyon",
     content:
-      "Misafirlerimizin kendilerini güvende ve özel hissettiği, hijyenik ve profesyonel bir güzellik deneyimi sunmak.",
+      "Misafirlerimizin kendilerini güvende ve özel hissettiği, hijyenik ve profesyonel bir güzellik deneyimi sunmak.\n\nAdana’daki her iki şubemizde de aynı standartlarla karşılamak; doğru analizi, doğru uygulamayı ve takip edilebilir seans planını bir araya getirmek istiyoruz.",
   },
   {
     key: "vision",
     title: "Vizyon",
     content:
-      "Adana’da güvenilir güzellik bakımında referans salon olmak; kişiye özel protokollerle kalıcı memnuniyet yaratmak.",
+      "Adana’da güvenilir güzellik bakımında referans salon olmak; kişiye özel protokollerle kalıcı memnuniyet yaratmak.\n\nTeknolojiyi ve uzmanlığı birleştirerek, kısa vadeli vaatler yerine sürdürülebilir sonuçlara odaklanan bir marka olarak büyümeyi hedefliyoruz.",
+  },
+  {
+    key: "about_why_us",
+    title: "Neden Zeynep Çeltek",
+    content:
+      "İki şubeli konum avantajı, güncel cihaz parkı ve şeffaf fiyatlandırma ile randevu sürecini sade tutuyoruz. Popüler paketlerimizi ve hizmet kategorilerimizi net listeleriz; böylece neye karar verdiğinizi bilirsiniz.\n\nLazer epilasyondan cilt bakımına, bölgesel incelmeden kirpik-kaş uygulamalarına kadar aynı çatı altında planlı bakım sunarız. İhtiyacınızı dinler, abartısız önerir, sonuçları takip ederiz.",
   },
   {
     key: "values_hygiene",
     title: "Hijyenik Ortam",
     content:
-      "Klinik standartlarda temiz uygulama alanı; steril protokoller.",
+      "Klinik standartlarda temiz uygulama alanı. Her seans öncesi steril protokoller ve düzenli alan kontrolü ile hijyeni önceliklendiririz.",
   },
   {
     key: "values_team",
     title: "Uzman Kadro",
-    content: "Deneyimli güzellik uzmanlarıyla kişiye özel uygulama.",
+    content:
+      "Deneyimli güzellik uzmanlarıyla kişiye özel uygulama. Cilt tipinize ve hedeflerinize göre protokol seçer, seansları takip ederiz.",
   },
   {
     key: "values_products",
     title: "Şeffaf Fiyat",
-    content: "Güncel fiyat listesiyle net bilgilendirme.",
+    content:
+      "Güncel fiyat listesi ve paket içerikleriyle net bilgilendirme. Sürpriz ücret yerine şeffaf teklif ve randevu planı sunarız.",
   },
   {
     key: "values_personal",
     title: "Kişiye Özel",
-    content: "Cilt ve ihtiyaca göre planlanan protokoller.",
+    content:
+      "Tek tip menü değil; cilt ve ihtiyaca göre planlanan protokoller. Analiz sonrası sizin için en uygun adımları birlikte belirleriz.",
   },
   {
     key: "cta_title",
@@ -236,7 +250,7 @@ const siteContent = [
   {
     key: "feature_bar_4_title",
     title: "Özellik 4",
-    content: "Memnuniyet",
+    content: "SEANS SONRASI TAKİP",
   },
   {
     key: "feature_bar_4_desc",
@@ -249,11 +263,11 @@ const siteContent = [
   { key: "stat_2_label", title: "İstatistik 2 Etiket", content: "Takipçi" },
   { key: "stat_3_value", title: "İstatistik 3", content: "1.547+" },
   { key: "stat_3_label", title: "İstatistik 3 Etiket", content: "Takip" },
-  { key: "stat_4_value", title: "İstatistik 4", content: "%98" },
+  { key: "stat_4_value", title: "İstatistik 4", content: "WA" },
   {
     key: "stat_4_label",
     title: "İstatistik 4 Etiket",
-    content: "Memnuniyet",
+    content: "WhatsApp randevu",
   },
   {
     key: "stats_script",
@@ -574,6 +588,17 @@ async function main() {
       { key: "whatsapp", value: "905454570656" },
       { key: "location_label", value: "Adana" },
       { key: "google_reviews_url", value: "" },
+      { key: "branch_gazipasa_phone", value: "0 (541) 457 06 54" },
+      {
+        key: "branch_gazipasa_address",
+        value:
+          "CarrefourSA Expres Market Üstü, Cemal Paşa Mh. Gazipaşa Bulvarı, 63003. Sk. Tek Apt Kat 4 No 41, 01120 Seyhan/Adana",
+      },
+      { key: "branch_turgutozal_phone", value: "0 (545) 457 06 56" },
+      {
+        key: "branch_turgutozal_address",
+        value: "Güzelyalı, Turgut Özal Blv. No:102, 01170 Çukurova/Adana",
+      },
       {
         key: "work_hours_weekdays",
         value: "Pazartesi - Cumartesi 09:00-19:00",
@@ -592,6 +617,41 @@ async function main() {
       isPublished: true,
       publishedAt: new Date(Date.now() - i * 86_400_000),
     })),
+  });
+
+  for (const [index, pkg] of PACKAGES.entries()) {
+    await prisma.servicePackage.upsert({
+      where: { slug: pkg.slug },
+      create: {
+        slug: pkg.slug,
+        name: pkg.name,
+        price: pkg.price,
+        sessions: pkg.sessions,
+        featured: pkg.featured,
+        badge: "badge" in pkg ? pkg.badge : null,
+        image: pkg.image,
+        shortDesc: pkg.shortDesc,
+        items: JSON.stringify([...pkg.items]),
+        sortOrder: index,
+        isActive: true,
+      },
+      update: {},
+    });
+  }
+
+  await prisma.campaignOffer.upsert({
+    where: { slug: "guzellik-paketi-one-cikan" },
+    create: {
+      title: "Güzellik Paketi",
+      slug: "guzellik-paketi-one-cikan",
+      description:
+        "10 seanslık yüz-boyun toparlama paketi. Güncel fiyat paket sayfasındadır.",
+      href: "/paketler/guzellik-paketi",
+      image: "/images/products/cilt-bakimi/2.jpg",
+      isActive: true,
+      sortOrder: 0,
+    },
+    update: {},
   });
 
   console.log("Seed completed!");

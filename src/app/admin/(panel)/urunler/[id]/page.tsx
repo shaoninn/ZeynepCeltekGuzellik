@@ -24,9 +24,9 @@ export default async function EditProductPage({ params }: PageProps) {
   return (
     <div>
       <Link href="/admin/urunler" className="text-sm text-orange hover:underline mb-4 inline-block">
-        ← Ürünlere dön
+        ← Hizmetlere dön
       </Link>
-      <h1 className="font-display text-3xl font-bold mb-2">Ürün Düzenle</h1>
+      <h1 className="font-display text-3xl font-bold mb-2">Hizmeti düzenle</h1>
       <p className="text-sm text-[#888] mb-6">{product.name}</p>
       <ProductForm categories={categories} initial={product} />
     </div>

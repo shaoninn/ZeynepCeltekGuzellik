@@ -1,7 +1,7 @@
 import { Camera, Phone } from "lucide-react";
 import Link from "next/link";
 import { HeroMedia } from "@/components/home/HeroMedia";
-import { INSTAGRAM_HANDLES, STATS } from "@/lib/constants";
+import { INSTAGRAM_HANDLES, STATS, WHATSAPP_URL } from "@/lib/constants";
 import { textStyleToCss, parseTextStyle } from "@/lib/text-style";
 
 export const DEFAULT_HERO_IMAGE = "/images/hero/hero-1.jpg";
@@ -14,6 +14,7 @@ export type HeroViewProps = {
   body?: string;
   image?: string;
   styles?: Record<string, string>;
+  whatsappUrl?: string;
 };
 
 export function splitHeroTitle(title: string) {
@@ -58,6 +59,7 @@ export function HeroPublic({
   body,
   image,
   styles,
+  whatsappUrl,
 }: HeroViewProps) {
   const bg = image || DEFAULT_HERO_IMAGE;
   const { before, scriptPart } = splitHeroTitle(
@@ -114,6 +116,14 @@ export function HeroPublic({
                 <Phone size={15} />
                 Bize Ulaşın
               </Link>
+              <a
+                href={whatsappUrl || WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline gap-2 w-full sm:w-auto min-h-11 justify-center text-base px-8 py-4"
+              >
+                WhatsApp
+              </a>
             </div>
 
             <div className="animate-hero-delay-2 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">

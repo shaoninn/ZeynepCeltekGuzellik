@@ -5,8 +5,10 @@ import { SiteLink } from "@/components/ui/SiteLink";
 import { Clock, ExternalLink, MapPin } from "lucide-react";
 import type { SiteSettingsMap } from "@/lib/site";
 import {
-  BRANCHES,
+  BRANCH_OPTIONS,
+  resolveBranches,
 } from "@/lib/constants";
+import { captureUtm, readStoredUtm } from "@/lib/analytics";
 import { EditableText } from "@/components/editor/EditableText";
 import { EditableSetting } from "@/components/editor/EditableSetting";
 import { useEditor } from "@/components/editor/EditorProvider";
@@ -51,7 +53,8 @@ export function ContactForm({
   const [form, setForm] = useState({
     name: "",
     phone: "",
-    subject: "Teklif",
+    subject: "Randevu",
+    branch: "turgutozal",
     message: "",
     kvkkAccepted: false,
   });
@@ -60,7 +63,13 @@ export function ContactForm({
   );
   const [error, setError] = useState("");
 
-  const maps = BRANCHES.map((branch) => ({
+  const branches = resolveBranches({
+    gazipasaAddress: settings.branchGazipasaAddress,
+    gazipasaPhone: settings.branchGazipasaPhone,
+    turgutozalAddress: settings.branchTurgutozalAddress,
+    turgutozalPhone: settings.branchTurgutozalPhone,
+  });
+  const maps = branches.map((branch) => ({
     ...branch,
     embed: `https://www.google.com/maps?q=${encodeURIComponent(branch.mapQuery)}&z=17&hl=tr&output=embed`,
     open: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(branch.mapQuery)}`,
@@ -83,10 +92,20 @@ export function ContactForm({
     }
 
     try {
+      captureUtm();
+      const message = [
+        `Şube: ${BRANCH_OPTIONS.find((b) => b.id === form.branch)?.name ?? form.branch}`,
+        form.message,
+      ].join("\n");
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, email: "" }),
+        body: JSON.stringify({
+          ...form,
+          email: "",
+          message,
+          utm: readStoredUtm(),
+        }),
       });
 
       if (!res.ok) {
@@ -95,13 +114,9 @@ export function ContactForm({
       }
 
       setStatus("success");
-      setForm({
-        name: "",
-        phone: "",
-        subject: "Teklif",
-        message: "",
-        kvkkAccepted: false,
-      });
+      window.location.assign(
+        `/tesekkur/iletisim?branch=${encodeURIComponent(form.branch)}`
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : "Bir hata oluştu.");
       setStatus("error");
@@ -114,7 +129,7 @@ export function ContactForm({
   return (
     <div className="space-y-10">
       <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 lg:items-stretch">
-        <div className="flex flex-col border border-border bg-card p-6 sm:p-8 min-h-[28rem]">
+        <div className="flex flex-col border border-border bg-card p-6 sm:p-8 min-h-0 sm:min-h-[28rem]">
           <EditableText
             contentKey="contact_card_title"
             value={c.cardTitle}
@@ -124,7 +139,7 @@ export function ContactForm({
             help="İletişim kartı başlığı"
           />
           <ul className="space-y-5 flex-1">
-            {BRANCHES.map((branch) => (
+            {branches.map((branch) => (
               <li key={branch.name} className="flex gap-3">
                 <MapPin size={18} className="text-orange flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-muted leading-relaxed">
@@ -195,7 +210,7 @@ export function ContactForm({
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col border border-border bg-card p-6 sm:p-8 min-h-[28rem] space-y-4"
+          className="flex flex-col border border-border bg-card p-6 sm:p-8 min-h-0 sm:min-h-[28rem] space-y-4"
         >
           <div>
             <label className="block text-sm text-muted mb-1" htmlFor="c-name">
@@ -204,6 +219,8 @@ export function ContactForm({
             <input
               id="c-name"
               type="text"
+              name="name"
+              autoComplete="name"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               className={fieldClass}
@@ -217,6 +234,8 @@ export function ContactForm({
             <input
               id="c-phone"
               type="tel"
+              name="tel"
+              autoComplete="tel"
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
               className={fieldClass}
@@ -233,10 +252,27 @@ export function ContactForm({
               onChange={(e) => setForm({ ...form, subject: e.target.value })}
               className={fieldClass}
             >
-              <option value="Teklif">Teklif Talebi</option>
-              <option value="Keşif">Ücretsiz Keşif</option>
+              <option value="Randevu">Randevu</option>
               <option value="Bilgi">Bilgi Alma</option>
               <option value="Diğer">Diğer</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm text-muted mb-1" htmlFor="c-branch">
+              Şube <span className="text-orange">*</span>
+            </label>
+            <select
+              id="c-branch"
+              value={form.branch}
+              onChange={(e) => setForm({ ...form, branch: e.target.value })}
+              className={fieldClass}
+              required
+            >
+              {BRANCH_OPTIONS.map((b) => (
+                <option key={b.id} value={b.id}>
+                  {b.name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="flex-1 flex flex-col">
@@ -255,7 +291,7 @@ export function ContactForm({
             <p className="text-xs text-muted mt-1">{form.message.length}/800</p>
           </div>
 
-          <label className="flex items-start gap-2 text-xs text-muted cursor-pointer">
+          <label className="flex items-start gap-2 text-sm text-muted leading-relaxed cursor-pointer">
             <input
               type="checkbox"
               checked={form.kvkkAccepted}

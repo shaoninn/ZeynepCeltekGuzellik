@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Montserrat, Great_Vibes } from "next/font/google";
 import "./globals.css";
 import { getSiteUrl, localBusinessJsonLd, siteNavigationJsonLd, webSiteJsonLd } from "@/lib/seo";
-import { Analytics } from "@/components/Analytics";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -76,9 +75,9 @@ export const metadata: Metadata = {
     siteName: "Zeynep Çeltek Güzellik",
     images: [
       {
-        url: "/images/logo/logo-nobg.png",
-        width: 1024,
-        height: 682,
+        url: "/images/hero/hero-1.jpg",
+        width: 1600,
+        height: 900,
         alt: "Zeynep Çeltek Güzellik",
       },
     ],
@@ -87,7 +86,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Zeynep Çeltek Güzellik | Adana",
     description: "Adana'da profesyonel güzellik hizmetleri.",
-    images: ["/images/logo/logo-nobg.png"],
+    images: ["/images/hero/hero-1.jpg"],
   },
   robots: {
     index: true,
@@ -116,7 +115,6 @@ export default function RootLayout({
           />
         ))}
         {children}
-        <Analytics />
       </body>
     </html>
   );

@@ -13,9 +13,9 @@ export default async function NewProductPage() {
   return (
     <div>
       <Link href="/admin/urunler" className="text-sm text-orange hover:underline mb-4 inline-block">
-        ← Ürünlere dön
+        ← Hizmetlere dön
       </Link>
-      <h1 className="font-display text-3xl font-bold mb-2">Yeni Ürün</h1>
+      <h1 className="font-display text-3xl font-bold mb-2">Yeni hizmet</h1>
       <p className="text-sm text-[#888] mb-6">
         Tüm alanları doldurun. Görsel yoksa boş bırakabilirsiniz — sitede
         placeholder görünür.

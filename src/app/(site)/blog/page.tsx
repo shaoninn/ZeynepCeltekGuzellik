@@ -12,7 +12,7 @@ export const revalidate = 60;
 export const metadata = {
   alternates: { canonical: "/blog" },
   title: "Blog",
-  description: "Güzellik eğitimi, bakım ve meslek hakkında bilgilendirici yazılar.",
+  description: "Cilt bakımı, lazer epilasyon ve güzellik hakkında bilgilendirici yazılar.",
 };
 
 export default async function BlogPage() {

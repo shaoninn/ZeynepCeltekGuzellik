@@ -107,14 +107,15 @@ model SiteSetting {
 }
 
 model ContactMessage {
-  id        String   @id @default(cuid())
-  name      String
-  phone     String
-  email     String?
-  subject   String?
-  message   String   @db.Text
-  isRead    Boolean  @default(false)
-  createdAt DateTime @default(now())
+  id             String    @id @default(cuid())
+  name           String
+  phone          String
+  email          String?
+  subject        String?
+  message        String    @db.Text
+  isRead         Boolean   @default(false)
+  kvkkAcceptedAt DateTime?
+  createdAt      DateTime  @default(now())
 }
 
 model Customer {
@@ -149,6 +150,9 @@ model Order {
   reminderAt           DateTime?
   reminderSent         Boolean     @default(false)
   manufacturerNotified Boolean     @default(false)
+  kvkkAcceptedAt       DateTime?
+  branch               String?
+  utm                  String?     @db.Text
   total                Float       @default(0)
   customerId           String?
   items                OrderItem[]
@@ -202,4 +206,35 @@ model AuditLog {
   meta       String   @default("{}")
   ip         String?
   createdAt  DateTime @default(now())
+}
+
+model ServicePackage {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  price     Float
+  sessions  String
+  featured  Boolean  @default(false)
+  badge     String?
+  image     String   @db.Text
+  shortDesc String   @db.Text
+  items     String   @default("[]") @db.Text
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CampaignOffer {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  description String?   @db.Text
+  image       String?   @db.Text
+  href        String?
+  endsAt      DateTime?
+  isActive    Boolean   @default(true)
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }

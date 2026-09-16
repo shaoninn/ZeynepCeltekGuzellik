@@ -42,7 +42,7 @@ async function getStats() {
     prisma.order.findMany({
       orderBy: { createdAt: "desc" },
       take: 5,
-      select: { orderNo: true, name: true, total: true, status: true, createdAt: true },
+      select: { id: true, orderNo: true, name: true, total: true, status: true, createdAt: true },
     }),
   ]);
 
@@ -95,7 +95,7 @@ export default async function AdminDashboard() {
       hint: "Onaylanan / tüm teklifler",
     },
     {
-      label: "Ürünler",
+      label: "Hizmetler",
       value: stats.products,
       href: "/admin/urunler",
       icon: Package,
@@ -109,7 +109,7 @@ export default async function AdminDashboard() {
       hint: "Okunmamış",
     },
     {
-      label: "Projeler",
+      label: "Galeri",
       value: stats.projects,
       href: "/admin/projeler",
       icon: Images,
@@ -176,11 +176,11 @@ export default async function AdminDashboard() {
           )}
           {stats.recentOrders.map((o) => (
             <li
-              key={o.orderNo}
+              key={o.id}
               className="flex justify-between gap-3 border-b border-[#222] pb-2"
             >
               <Link
-                href={`/admin/siparisler`}
+                href={`/admin/siparisler/${o.id}`}
                 className="text-orange hover:underline"
               >
                 {o.orderNo}

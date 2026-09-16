@@ -3,7 +3,7 @@ import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { mysqlConnectionSummary, resolveMysqlPoolConfig } from "@/lib/db-url";
 
 /** Bump when Prisma schema / pool config changes so HMR doesn’t keep a stale client. */
-const PRISMA_CLIENT_VERSION = 10;
+const PRISMA_CLIENT_VERSION = 14;
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;

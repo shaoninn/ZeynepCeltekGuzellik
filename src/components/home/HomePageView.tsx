@@ -8,6 +8,8 @@ import { heroPreloadHrefs } from "@/components/home/HeroMedia";
 import { PopularServicesSection } from "@/components/home/PopularServicesSection";
 import { PackagesCampaignSection } from "@/components/home/PackagesCampaignSection";
 import { loadHomePageData } from "@/lib/home-content";
+import { getPackages } from "@/lib/packages";
+import { faqPageJsonLd } from "@/lib/faq";
 
 const Hero = dynamic(() =>
   import("@/components/home/Hero").then((m) => m.Hero)
@@ -24,13 +26,19 @@ const GallerySection = dynamic(() =>
 const Testimonials = dynamic(() =>
   import("@/components/home/Testimonials").then((m) => m.Testimonials)
 );
+const FaqSection = dynamic(() =>
+  import("@/components/home/FaqSection").then((m) => m.FaqSection)
+);
 
 export async function HomePageView({
   editable = false,
 }: {
   editable?: boolean;
 } = {}) {
-  const data = await loadHomePageData();
+  const [data, packages] = await Promise.all([
+    loadHomePageData(),
+    getPackages(),
+  ]);
   const heroSrc = data.heroImage || DEFAULT_HERO_IMAGE;
   const { mobile, desktop } = heroPreloadHrefs(heroSrc);
 
@@ -63,16 +71,21 @@ export async function HomePageView({
     body: data.heroBody,
     image: heroSrc,
     styles: data.styles,
+    whatsappUrl: data.whatsappUrl,
   };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd()) }}
+      />
       {editable ? <Hero {...heroProps} /> : <HeroPublic {...heroProps} />}
       <PopularServicesSection
         title={data.servicesTitle || "Popüler Hizmetlerimiz"}
         styles={data.styles}
       />
-      <PackagesCampaignSection styles={data.styles} />
+      <PackagesCampaignSection styles={data.styles} packages={packages} />
       <FeatureBar
         items={data.featureBarItems}
         sectionOffset={data.sectionFeatureBarOffset}
@@ -80,14 +93,16 @@ export async function HomePageView({
       />
       <StatsBar items={data.stats} />
       <GallerySection
-        title="Kampanyalar & Uygulamalarımız"
+        title="Uygulamalarımız"
         images={galleryImages}
       />
       <Testimonials
         sectionTitle={data.testimonialTitle || "Müşterilerimiz Ne Diyor?"}
         items={data.testimonials}
         styles={data.styles}
+        googleReviewsUrl={data.googleReviewsUrl}
       />
+      <FaqSection styles={data.styles} />
     </>
   );
 }

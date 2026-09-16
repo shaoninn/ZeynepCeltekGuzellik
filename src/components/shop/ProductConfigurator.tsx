@@ -2,10 +2,9 @@
 
 import { useMemo, useState } from "react";
 import { ShoppingCart, Check, Minus, Plus } from "lucide-react";
-import { useAppDispatch } from "@/store/hooks";
-import { addToCart } from "@/store/cartSlice";
+import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/utils";
-import { WishlistButton } from "@/components/shop/WishlistButton";
+import { track } from "@/lib/analytics";
 import type { Product } from "@/types";
 
 type ConfigProduct = Product & {
@@ -21,7 +20,7 @@ interface ProductConfiguratorProps {
 }
 
 export function ProductConfigurator({ product }: ProductConfiguratorProps) {
-  const dispatch = useAppDispatch();
+  const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
@@ -36,43 +35,39 @@ export function ProductConfigurator({ product }: ProductConfiguratorProps) {
   );
 
   const handleAdd = () => {
-    dispatch(
-      addToCart({
-        productId: product.id,
-        slug: product.slug,
-        name: product.name,
-        price: unitPrice,
-        image: product.image,
-        quantity,
-        categoryName: product.category?.name || "",
-        widthCm: null,
-        heightCm: null,
-        color: null,
-      })
-    );
+    addToCart({
+      productId: product.id,
+      slug: product.slug,
+      name: product.name,
+      price: unitPrice,
+      image: product.image,
+      quantity,
+      categoryName: product.category?.name || "",
+      widthCm: null,
+      heightCm: null,
+      color: null,
+    });
+    track("add_to_list", { item: product.slug, value: lineTotal });
     setAdded(true);
     setTimeout(() => setAdded(false), 4000);
   };
 
   return (
     <div className="space-y-4">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="font-display text-2xl font-bold text-orange">
-            {formatPrice(unitPrice)}
+      <div>
+        <p className="font-display text-2xl font-bold text-orange">
+          {formatPrice(unitPrice)}
+        </p>
+        {product.badgeSale && product.salePrice != null && (
+          <p className="text-sm text-muted line-through">
+            {formatPrice(product.price)}
           </p>
-          {product.badgeSale && product.salePrice != null && (
-            <p className="text-sm text-muted line-through">
-              {formatPrice(product.price)}
-            </p>
-          )}
-          <p className="text-xs text-muted mt-1">Birim fiyat</p>
-        </div>
-        <WishlistButton productId={product.id} />
+        )}
+        <p className="text-xs text-muted mt-1">Seans / birim fiyat</p>
       </div>
 
       <div className="flex items-center gap-4">
-        <span className="text-sm text-muted">Adet:</span>
+        <span className="text-sm text-muted">Seans sayısı:</span>
         <div className="flex items-center border border-border rounded-lg">
           <button
             type="button"
@@ -103,12 +98,12 @@ export function ProductConfigurator({ product }: ProductConfiguratorProps) {
         {added ? (
           <>
             <Check size={20} />
-            Randevu Sepetine Eklendi
+            Listeye eklendi
           </>
         ) : (
           <>
             <ShoppingCart size={20} />
-            Randevu Sepetine Ekle — {formatPrice(lineTotal)}
+            Listeye ekle — {formatPrice(lineTotal)}
           </>
         )}
       </button>

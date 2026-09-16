@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db";
 import { generateOrderNo } from "@/lib/api";
 import { sendOrderConfirmation, sendManufacturerBrief } from "@/lib/mail";
 import { writeAuditLog } from "@/lib/audit";
+import { getPackageBySlug } from "@/lib/constants";
 
 export interface QuoteItemInput {
   productId: string;
@@ -10,6 +11,40 @@ export interface QuoteItemInput {
   heightCm?: number | null;
   color?: string | null;
   optionsNote?: string | null;
+}
+
+function isVirtualLineId(productId: string): boolean {
+  return productId.startsWith("custom-") || productId.startsWith("package:");
+}
+
+async function parsePackageLine(item: QuoteItemInput): Promise<{
+  productName: string;
+  productSlug: string | null;
+  unitPrice: number;
+} | null> {
+  if (!item.productId.startsWith("package:")) return null;
+  const slug = item.productId.slice("package:".length);
+  try {
+    const row = await prisma.servicePackage.findUnique({ where: { slug } });
+    if (row) {
+      return {
+        productName: row.name,
+        productSlug: row.slug,
+        unitPrice: row.price,
+      };
+    }
+  } catch {
+    /* fallback */
+  }
+  const pkg = getPackageBySlug(slug);
+  if (!pkg) {
+    throw new Error("Sepette geçersiz paket var. Sepeti güncelleyin.");
+  }
+  return {
+    productName: pkg.name,
+    productSlug: pkg.slug,
+    unitPrice: pkg.price,
+  };
 }
 
 function parseCustomLine(item: QuoteItemInput): {
@@ -48,13 +83,15 @@ export async function createQuoteOrder(input: {
   address?: string | null;
   note?: string | null;
   source?: string;
+  branch?: string | null;
+  utm?: string | null;
   items: QuoteItemInput[];
   ip?: string | null;
   wantPayment?: boolean;
 }) {
   const productIds = input.items
     .map((i) => i.productId)
-    .filter((id) => !id.startsWith("custom-"));
+    .filter((id) => !isVirtualLineId(id));
   const products = await prisma.product.findMany({
     where: { id: { in: productIds }, isActive: true },
   });
@@ -62,6 +99,23 @@ export async function createQuoteOrder(input: {
 
   const items = [];
   for (const item of input.items) {
+    const packageLine = await parsePackageLine(item);
+    if (packageLine) {
+      items.push({
+        productId: null as string | null,
+        productName: packageLine.productName,
+        productSlug: packageLine.productSlug,
+        unitPrice: packageLine.unitPrice,
+        quantity: item.quantity,
+        lineTotal: packageLine.unitPrice * item.quantity,
+        widthCm: item.widthCm ?? null,
+        heightCm: item.heightCm ?? null,
+        color: item.color?.trim() || null,
+        optionsNote: item.optionsNote?.trim() || null,
+      });
+      continue;
+    }
+
     const custom = parseCustomLine(item);
     if (custom) {
       items.push({
@@ -137,11 +191,14 @@ export async function createQuoteOrder(input: {
       address: input.address || null,
       note: input.note || null,
       source: input.source || "WEB",
+      branch: input.branch || null,
+      utm: input.utm || null,
       status: "PENDING",
       paymentStatus: input.wantPayment ? "PENDING" : "UNPAID",
       paymentProvider: input.wantPayment ? "BANK_TRANSFER" : null,
       invoiceNo: `F-${Date.now().toString(36).toUpperCase()}`,
       reminderAt,
+      kvkkAcceptedAt: new Date(),
       total,
       customerId: customer.id,
       items: { create: items },

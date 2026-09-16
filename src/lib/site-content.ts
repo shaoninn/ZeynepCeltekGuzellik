@@ -64,6 +64,7 @@ export const EDITOR_CONTENT_KEYS = [
   "about_philosophy",
   "mission",
   "vision",
+  "about_why_us",
   "values_hygiene",
   "values_team",
   "values_products",

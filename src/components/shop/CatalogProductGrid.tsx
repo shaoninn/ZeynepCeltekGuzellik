@@ -3,14 +3,11 @@
 import { useMemo, useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { ProductCard } from "@/components/shop/ProductCard";
-import { parseProductSpecs } from "@/lib/catalog-meta";
 import type { Product } from "@/types";
 
 type StockFilter = "all" | "inStock";
 type BadgeFilter = "all" | "new" | "sale" | "bestseller";
 type SortOption = "default" | "price-asc" | "price-desc" | "name" | "popular";
-type LightFilter = "all" | "lit" | "unlit";
-type PlaceFilter = "all" | "ic" | "dis";
 
 export type CatalogProduct = Product & {
   category?: { name: string; slug: string };
@@ -32,23 +29,11 @@ export function CatalogProductGrid({ products }: CatalogProductGridProps) {
   const [stock, setStock] = useState<StockFilter>("all");
   const [badge, setBadge] = useState<BadgeFilter>("all");
   const [sort, setSort] = useState<SortOption>("default");
-  const [light, setLight] = useState<LightFilter>("all");
-  const [place, setPlace] = useState<PlaceFilter>("all");
-  const [material, setMaterial] = useState("all");
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedSearch(search.trim().toLowerCase()), 200);
     return () => clearTimeout(t);
   }, [search]);
-
-  const materials = useMemo(() => {
-    const set = new Set<string>();
-    for (const p of products) {
-      const m = parseProductSpecs(p.specs).malzeme;
-      if (m) set.add(m);
-    }
-    return Array.from(set).sort((a, b) => a.localeCompare(b, "tr"));
-  }, [products]);
 
   const filtered = useMemo(() => {
     let list = [...products];
@@ -67,17 +52,6 @@ export function CatalogProductGrid({ products }: CatalogProductGridProps) {
     if (badge === "new") list = list.filter((p) => p.badgeNew);
     else if (badge === "sale") list = list.filter((p) => p.badgeSale);
     else if (badge === "bestseller") list = list.filter((p) => p.badgeBestseller);
-
-    if (light !== "all" || place !== "all" || material !== "all") {
-      list = list.filter((p) => {
-        const s = parseProductSpecs(p.specs);
-        if (light === "lit" && s.isikli === false) return false;
-        if (light === "unlit" && s.isikli === true) return false;
-        if (place !== "all" && s.mekan != null && s.mekan !== place) return false;
-        if (material !== "all" && s.malzeme !== material) return false;
-        return true;
-      });
-    }
 
     switch (sort) {
       case "price-asc":
@@ -103,7 +77,7 @@ export function CatalogProductGrid({ products }: CatalogProductGridProps) {
     }
 
     return list;
-  }, [products, debouncedSearch, stock, badge, sort, light, place, material]);
+  }, [products, debouncedSearch, stock, badge, sort]);
 
   return (
     <div className="space-y-4">
@@ -112,70 +86,37 @@ export function CatalogProductGrid({ products }: CatalogProductGridProps) {
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
           <input
             type="search"
-            placeholder="Ürün ara…"
+            placeholder="Hizmet ara…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="admin-input pl-9 text-sm"
+            className="admin-input pl-9"
           />
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           <select
             value={stock}
             onChange={(e) => setStock(e.target.value as StockFilter)}
-            className="admin-input text-sm"
-            aria-label="Stok filtresi"
+            className="admin-input"
+            aria-label="Durum filtresi"
           >
             <option value="all">Tümü</option>
-            <option value="inStock">Stokta</option>
+            <option value="inStock">Randevuya açık</option>
           </select>
           <select
             value={badge}
             onChange={(e) => setBadge(e.target.value as BadgeFilter)}
-            className="admin-input text-sm"
+            className="admin-input"
             aria-label="Rozet filtresi"
           >
             <option value="all">Tüm rozetler</option>
             <option value="new">Yeni</option>
-            <option value="sale">İndirim</option>
-            <option value="bestseller">Çok satan</option>
-          </select>
-          <select
-            value={light}
-            onChange={(e) => setLight(e.target.value as LightFilter)}
-            className="admin-input text-sm"
-            aria-label="Işık filtresi"
-          >
-            <option value="all">Işıklı / ışıksız</option>
-            <option value="lit">Işıklı</option>
-            <option value="unlit">Işıksız</option>
-          </select>
-          <select
-            value={place}
-            onChange={(e) => setPlace(e.target.value as PlaceFilter)}
-            className="admin-input text-sm"
-            aria-label="Mekân filtresi"
-          >
-            <option value="all">İç / dış</option>
-            <option value="ic">İç mekân</option>
-            <option value="dis">Dış mekân</option>
-          </select>
-          <select
-            value={material}
-            onChange={(e) => setMaterial(e.target.value)}
-            className="admin-input text-sm"
-            aria-label="Malzeme filtresi"
-          >
-            <option value="all">Malzeme</option>
-            {materials.map((m) => (
-              <option key={m} value={m}>
-                {m}
-              </option>
-            ))}
+            <option value="sale">Öne çıkan</option>
+            <option value="bestseller">Çok tercih edilen</option>
           </select>
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as SortOption)}
-            className="admin-input text-sm"
+            className="admin-input"
             aria-label="Sıralama"
           >
             <option value="default">Varsayılan</option>
@@ -189,7 +130,7 @@ export function CatalogProductGrid({ products }: CatalogProductGridProps) {
 
       {filtered.length === 0 ? (
         <p className="text-sm text-muted py-8 text-center">
-          Aramanıza uygun ürün bulunamadı.
+          Aramanıza uygun hizmet bulunamadı.
         </p>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

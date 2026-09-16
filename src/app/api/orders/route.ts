@@ -25,6 +25,10 @@ const createOrderSchema = z.object({
     .boolean()
     .refine((v) => v === true, { message: "KVKK onayı gerekli" }),
   wantPayment: z.boolean().optional(),
+  branch: z.enum(["gazipasa", "turgutozal", "any"]).optional(),
+  preferredDay: z.string().max(40).optional(),
+  preferredTime: z.string().max(40).optional(),
+  utm: z.string().max(400).optional().nullable(),
   items: z.array(orderItemSchema).min(1, "Sepet boş olamaz"),
 });
 
@@ -57,9 +61,11 @@ export async function POST(request: NextRequest) {
       name: data.name,
       phone: data.phone,
       email: data.email || null,
-      address: data.address || null,
+      address: null,
       note: data.note || null,
       source: data.source || "WEB",
+      branch: data.branch || null,
+      utm: data.utm || null,
       items: data.items,
       ip,
       wantPayment: data.wantPayment,

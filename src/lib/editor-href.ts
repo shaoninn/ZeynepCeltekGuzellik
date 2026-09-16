@@ -5,7 +5,7 @@ const EDITOR_ROOTS = [
   "/hizmetler",
   "/projeler",
   "/blog",
-  "/urun",
+  "/hizmet",
 ] as const;
 
 export function toEditorHref(href: string): string {

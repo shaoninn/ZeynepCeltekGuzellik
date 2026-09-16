@@ -144,7 +144,7 @@ export default function TekliflerimPage() {
             <input
               id="lookup-order"
               className="admin-input"
-              placeholder="GR-…"
+              placeholder="ZC-…"
               value={orderNo}
               onChange={(e) => setOrderNo(e.target.value)}
               required
@@ -180,7 +180,7 @@ export default function TekliflerimPage() {
                 {STATUS_LABEL[result.status] || result.status}
               </p>
               <p>
-                <span className="text-muted">Üretim aşaması:</span>{" "}
+                <span className="text-muted">Randevu durumu:</span>{" "}
                 {workflowLabel(result.workflow)}
               </p>
               <p>
@@ -212,7 +212,7 @@ export default function TekliflerimPage() {
 
             <div>
               <h3 className="text-sm font-semibold text-white mb-3">
-                Üretim süreci
+                Randevu durumu
               </h3>
               <OrderTimeline current={result.workflow} compact />
             </div>

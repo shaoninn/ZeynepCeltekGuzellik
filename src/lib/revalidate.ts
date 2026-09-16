@@ -11,8 +11,12 @@ function bustPublicPages() {
   revalidatePath("/hizmetler", "page");
   revalidatePath("/projeler", "page");
   revalidatePath("/blog", "page");
+  revalidatePath("/paketler", "page");
+  revalidatePath("/kampanyalar", "page");
   revalidatePath("/hakkimizda", "page");
   revalidatePath("/iletisim", "page");
+  revalidatePath("/randevu/lazer-epilasyon-adana", "page");
+  revalidatePath("/randevu/cilt-bakimi-adana", "page");
 }
 
 export function revalidateSiteSettings() {

@@ -1,7 +1,7 @@
 import {
   ArrowUpRight,
   Droplets,
-  GraduationCap,
+  LayoutGrid,
   Search,
   Sparkles,
   Waves,
@@ -17,7 +17,7 @@ interface PopularServicesSectionProps {
 }
 
 const ICONS = {
-  graduation: GraduationCap,
+  graduation: LayoutGrid,
   search: Search,
   droplet: Droplets,
   sparkles: Sparkles,
@@ -59,13 +59,13 @@ export function PopularServicesSection({
                 <span className="mb-3 flex h-16 w-16 sm:h-[5.25rem] sm:w-[5.25rem] items-center justify-center rounded-full border border-orange/55 text-orange transition-colors group-hover:bg-orange group-hover:text-ink">
                   <Icon size={24} strokeWidth={1.25} />
                 </span>
-                <h3 className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.14em] uppercase text-orange mb-1.5 px-0.5">
+                <h3 className="font-sans text-xs sm:text-[11px] font-bold tracking-[0.14em] uppercase text-orange mb-1.5 px-0.5">
                   {item.name}
                 </h3>
-                <p className="text-ink/55 text-[11px] leading-snug line-clamp-2 max-w-[10.5rem] px-0.5">
+                <p className="text-ink/55 text-xs leading-snug line-clamp-2 max-w-[10.5rem] px-0.5">
                   {item.description}
                 </p>
-                <span className="mt-2 inline-flex items-center gap-0.5 text-orange/0 group-hover:text-orange text-[10px] uppercase tracking-wider transition-colors">
+                <span className="mt-2 inline-flex items-center gap-0.5 text-orange/70 sm:text-orange/0 group-hover:text-orange text-[10px] uppercase tracking-wider transition-colors">
                   İncele <ArrowUpRight size={11} />
                 </span>
               </SiteLink>

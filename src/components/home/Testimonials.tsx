@@ -25,6 +25,7 @@ const DEFAULT = [
 ];
 
 export function Testimonials({
+  googleReviewsUrl,
   sectionTitle,
   items,
   styles,
@@ -116,6 +117,22 @@ export function Testimonials({
             );
           })}
         </div>
+        {googleReviewsUrl ? (
+          <p className="text-center mt-8">
+            <a
+              href={googleReviewsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-orange text-sm font-semibold hover:underline"
+            >
+              Google yorumları →
+            </a>
+          </p>
+        ) : (
+          <p className="text-center mt-8 text-xs text-muted">
+            Örnek yorumlar. Google İşletme linki Ayarlar’dan eklenebilir.
+          </p>
+        )}
       </div>
     </section>
   );

@@ -2,10 +2,10 @@ import { SiteLink } from "@/components/ui/SiteLink";
 import { Camera, MapPin, Phone } from "lucide-react";
 import {
   SITE_NAME,
-  BRANCHES,
   LEGAL_LINKS,
   PRIMARY_NAV_LINKS,
   INSTAGRAM_HANDLES,
+  resolveBranches,
 } from "@/lib/constants";
 import { Logo } from "@/components/brand/Logo";
 import { FooterBlurb } from "@/components/layout/FooterBlurb";
@@ -21,6 +21,12 @@ interface FooterProps {
 export function Footer({ settings, footerBlurb }: FooterProps) {
   const currentYear = new Date().getFullYear();
   const quickLinks = PRIMARY_NAV_LINKS;
+  const branches = resolveBranches({
+    gazipasaAddress: settings.branchGazipasaAddress,
+    gazipasaPhone: settings.branchGazipasaPhone,
+    turgutozalAddress: settings.branchTurgutozalAddress,
+    turgutozalPhone: settings.branchTurgutozalPhone,
+  });
 
   return (
     <footer className="bg-black border-t border-border">
@@ -81,7 +87,7 @@ export function Footer({ settings, footerBlurb }: FooterProps) {
               Şubelerimiz
             </h3>
             <ul className="space-y-3">
-              {BRANCHES.map((b) => (
+              {branches.map((b) => (
                 <li key={b.name} className="flex items-start gap-2.5">
                   <MapPin size={15} className="text-orange shrink-0 mt-0.5" />
                   <span className="text-muted text-sm leading-snug">
@@ -120,6 +126,14 @@ export function Footer({ settings, footerBlurb }: FooterProps) {
                   WhatsApp {settings.phone}
                 </a>
               </li>
+              <li>
+                <SiteLink
+                  href="/tekliflerim"
+                  className="text-muted text-sm hover:text-orange transition-colors pl-6"
+                >
+                  Randevularım
+                </SiteLink>
+              </li>
               {INSTAGRAM_HANDLES.map((ig) => (
                 <li key={ig.handle} className="text-muted text-sm pl-6">
                   <a
@@ -137,13 +151,13 @@ export function Footer({ settings, footerBlurb }: FooterProps) {
         </div>
       </div>
 
-      <div className="border-t border-border bg-black">
+      <div className="border-t border-border bg-black pb-[max(5.5rem,calc(env(safe-area-inset-bottom)+4.5rem))] md:pb-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col lg:flex-row items-center justify-between gap-3">
           <p className="text-muted text-xs text-center lg:text-left">
             © {currentYear} {SITE_NAME} Merkezi. Tüm hakları saklıdır.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-            {LEGAL_LINKS.slice(0, 4).map((link) => (
+            {LEGAL_LINKS.map((link) => (
               <SiteLink
                 key={link.href}
                 href={link.href}

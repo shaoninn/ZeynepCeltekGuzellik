@@ -87,7 +87,7 @@ export function ProductsAdminClient({
       });
       const data = (await res.json()) as { updated?: number; error?: string };
       if (!res.ok) throw new Error(data.error || "Kayıt başarısız");
-      setMessage(`${data.updated ?? dirty.length} ürün güncellendi.`);
+      setMessage(`${data.updated ?? dirty.length} hizmet güncellendi.`);
       router.refresh();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Toplu kayıt hatası");
@@ -135,7 +135,7 @@ export function ProductsAdminClient({
       <div className="admin-card p-4 flex flex-col lg:flex-row gap-3 lg:items-center">
         <input
           className="admin-input flex-1"
-          placeholder="Ürün veya kategori ara…"
+          placeholder="Hizmet veya kategori ara…"
           value={q}
           onChange={(e) => setQ(e.target.value)}
         />
@@ -176,21 +176,67 @@ export function ProductsAdminClient({
       <p className="text-xs text-[#666]">
         Excel sütunları: id, name, slug, categorySlug, price, shortDesc,
         description, image, sortOrder, isActive, inStock. id veya slug eşleşirse
-        güncellenir; yoksa yeni ürün oluşur.
+        güncellenir; yoksa yeni hizmet oluşur.
       </p>
 
       {message && <p className="text-sm text-green-400">{message}</p>}
       {error && <p className="text-sm text-red-400">{error}</p>}
 
-      <div className="admin-card overflow-x-auto">
+          <div className="lg:hidden space-y-3">
+        {visible.map((p) => (
+          <div key={p.id} className="admin-card p-4 space-y-3">
+            <input
+              className="admin-input"
+              value={p.name}
+              onChange={(e) => patch(p.id, { name: e.target.value })}
+            />
+            <p className="text-xs text-[#888]">{p.categoryName}</p>
+            <input
+              type="number"
+              min={0}
+              className="admin-input text-orange"
+              value={p.price}
+              onChange={(e) =>
+                patch(p.id, { price: Number(e.target.value) || 0 })
+              }
+            />
+            <div className="flex gap-4 text-sm">
+              <label className="inline-flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={p.inStock}
+                  onChange={(e) => patch(p.id, { inStock: e.target.checked })}
+                />
+                Açık
+              </label>
+              <label className="inline-flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={p.isActive}
+                  onChange={(e) => patch(p.id, { isActive: e.target.checked })}
+                />
+                Aktif
+              </label>
+            </div>
+            <div className="flex items-center gap-3">
+              <Link href={`/admin/urunler/${p.id}`} className="text-orange text-sm min-h-11 inline-flex items-center">
+                Detay
+              </Link>
+              <ProductDeleteButton id={p.id} name={p.name} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="hidden lg:block admin-card overflow-x-auto">
         <table className="w-full text-sm min-w-[720px]">
           <thead>
             <tr className="border-b border-[#333] text-left text-[#888]">
-              <th className="p-3">Ürün</th>
+              <th className="p-3">Hizmet</th>
               <th className="p-3">Kategori</th>
               <th className="p-3">Fiyat</th>
               <th className="p-3">Sıra</th>
-              <th className="p-3">Stok</th>
+              <th className="p-3">Randevuya açık</th>
               <th className="p-3">Durum</th>
               <th className="p-3">İşlem</th>
             </tr>
@@ -200,7 +246,7 @@ export function ProductsAdminClient({
               <tr key={p.id} className="border-b border-[#222] hover:bg-white/5">
                 <td className="p-2">
                   <input
-                    className="admin-input py-1.5 text-sm"
+                    className="admin-input py-1.5"
                     value={p.name}
                     onChange={(e) => patch(p.id, { name: e.target.value })}
                   />
@@ -212,7 +258,7 @@ export function ProductsAdminClient({
                   <input
                     type="number"
                     min={0}
-                    className="admin-input py-1.5 text-sm text-orange"
+                    className="admin-input py-1.5 text-orange"
                     value={p.price}
                     onChange={(e) =>
                       patch(p.id, { price: Number(e.target.value) || 0 })
@@ -225,7 +271,7 @@ export function ProductsAdminClient({
                 <td className="p-2 w-20">
                   <input
                     type="number"
-                    className="admin-input py-1.5 text-sm"
+                    className="admin-input py-1.5"
                     value={p.sortOrder}
                     onChange={(e) =>
                       patch(p.id, { sortOrder: Number(e.target.value) || 0 })
@@ -241,7 +287,7 @@ export function ProductsAdminClient({
                         patch(p.id, { inStock: e.target.checked })
                       }
                     />
-                    Var
+                    Açık
                   </label>
                 </td>
                 <td className="p-3">
@@ -270,7 +316,7 @@ export function ProductsAdminClient({
           </tbody>
         </table>
         {visible.length === 0 && (
-          <p className="p-6 text-[#666] text-center">Ürün bulunamadı.</p>
+          <p className="p-6 text-[#666] text-center">Hizmet bulunamadı.</p>
         )}
       </div>
     </div>

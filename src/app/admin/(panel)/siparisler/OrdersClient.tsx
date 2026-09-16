@@ -12,6 +12,7 @@ export type OrderListItem = {
   name: string;
   phone: string;
   status: string;
+  branch: string | null;
   total: number;
   createdAt: string;
   itemCount: number;
@@ -23,22 +24,36 @@ const statusLabel: Record<string, string> = {
   CANCELLED: "İptal",
 };
 
+const branchLabel: Record<string, string> = {
+  gazipasa: "Gazi Paşa",
+  turgutozal: "Turgut Özal",
+  any: "Farketmez",
+};
+
 function toDateInputValue(d: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
-export function OrdersClient({ initial }: { initial: OrderListItem[] }) {
+export function OrdersClient({
+  initial,
+  initialQ = "",
+}: {
+  initial: OrderListItem[];
+  initialQ?: string;
+}) {
   const router = useRouter();
   const [status, setStatus] = useState("ALL");
+  const [branch, setBranch] = useState("ALL");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [q, setQ] = useState("");
+  const [q, setQ] = useState(initialQ);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
     return initial.filter((o) => {
       if (status !== "ALL" && o.status !== status) return false;
+      if (branch !== "ALL" && (o.branch || "any") !== branch) return false;
       const created = new Date(o.createdAt);
       if (from) {
         const start = new Date(`${from}T00:00:00`);
@@ -55,7 +70,7 @@ export function OrdersClient({ initial }: { initial: OrderListItem[] }) {
       }
       return true;
     });
-  }, [initial, status, from, to, q]);
+  }, [initial, status, branch, from, to, q]);
 
   async function deleteOrder(id: string, orderNo: string) {
     if (
@@ -121,7 +136,7 @@ export function OrdersClient({ initial }: { initial: OrderListItem[] }) {
   return (
     <div>
       <div className="admin-card p-4 mb-6 space-y-3">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
           <div>
             <label className="block text-xs text-[#888] mb-1">Durum</label>
             <select
@@ -133,6 +148,19 @@ export function OrdersClient({ initial }: { initial: OrderListItem[] }) {
               <option value="PENDING">Beklemede</option>
               <option value="CONFIRMED">Onaylandı</option>
               <option value="CANCELLED">İptal</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs text-[#888] mb-1">Şube</label>
+            <select
+              className="admin-input"
+              value={branch}
+              onChange={(e) => setBranch(e.target.value)}
+            >
+              <option value="ALL">Tümü</option>
+              <option value="gazipasa">Gazi Paşa</option>
+              <option value="turgutozal">Turgut Özal</option>
+              <option value="any">Farketmez</option>
             </select>
           </div>
           <div>
@@ -182,6 +210,7 @@ export function OrdersClient({ initial }: { initial: OrderListItem[] }) {
             type="button"
             onClick={() => {
               setStatus("ALL");
+              setBranch("ALL");
               setFrom("");
               setTo("");
               setQ("");
@@ -225,8 +254,11 @@ export function OrdersClient({ initial }: { initial: OrderListItem[] }) {
                     {o.name} · {o.phone}
                   </p>
                   <p className="text-xs text-[#666] mt-1">
-                    {o.itemCount} kalem ·{" "}
-                    {new Date(o.createdAt).toLocaleString("tr-TR")}
+                    {o.itemCount} kalem
+                    {o.branch
+                      ? ` · ${branchLabel[o.branch] || o.branch}`
+                      : ""}{" "}
+                    · {new Date(o.createdAt).toLocaleString("tr-TR")}
                   </p>
                 </div>
                 <div className="text-right shrink-0">

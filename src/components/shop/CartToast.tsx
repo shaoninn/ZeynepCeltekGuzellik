@@ -4,26 +4,17 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { SiteLink } from "@/components/ui/SiteLink";
 import { Check, X } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import {
-  clearCartToast,
-  selectCartCount,
-  selectCartToast,
-  selectCartTotal,
-} from "@/store/cartSlice";
+import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/utils";
 
 export function CartToast() {
-  const dispatch = useAppDispatch();
-  const item = useAppSelector(selectCartToast);
-  const count = useAppSelector(selectCartCount);
-  const total = useAppSelector(selectCartTotal);
+  const { toastItem: item, count, total, clearCartToast } = useCart();
 
   useEffect(() => {
     if (!item) return;
-    const t = setTimeout(() => dispatch(clearCartToast()), 6000);
+    const t = setTimeout(() => clearCartToast(), 6000);
     return () => clearTimeout(t);
-  }, [item, dispatch]);
+  }, [item, clearCartToast]);
 
   if (!item) return null;
 
@@ -42,7 +33,7 @@ export function CartToast() {
         </p>
         <button
           type="button"
-          onClick={() => dispatch(clearCartToast())}
+          onClick={() => clearCartToast()}
           className="p-1 text-muted hover:text-white"
           aria-label="Kapat"
         >
@@ -59,30 +50,30 @@ export function CartToast() {
         <div className="min-w-0 flex-1">
           <p className="text-sm text-white font-medium line-clamp-2">{item.name}</p>
           <p className="text-xs text-muted mt-0.5">
-            {item.quantity} adet · {formatPrice(item.price * item.quantity)}
+            {item.quantity} seans · {formatPrice(item.price * item.quantity)}
           </p>
         </div>
       </div>
 
       <div className="flex items-center justify-between px-3 pb-2 text-xs text-muted">
-        <span>{count} ürün listede</span>
+        <span>{count} hizmet listede</span>
         <span className="text-white font-semibold">{formatPrice(total)}</span>
       </div>
 
       <div className="grid grid-cols-2 gap-2 p-3 pt-0">
         <button
           type="button"
-          onClick={() => dispatch(clearCartToast())}
+          onClick={() => clearCartToast()}
           className="py-2.5 border border-orange text-orange text-xs font-semibold uppercase tracking-wider hover:bg-orange/10"
         >
-          Alışverişe devam
+          Hizmetlere dön
         </button>
         <SiteLink
           href="/sepet"
-          onClick={() => dispatch(clearCartToast())}
+          onClick={() => clearCartToast()}
           className="py-2.5 bg-orange text-white text-center text-xs font-semibold uppercase tracking-wider hover:bg-orange-dark"
         >
-          Sepete git →
+          Listeye git →
         </SiteLink>
       </div>
     </div>

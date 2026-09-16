@@ -158,7 +158,7 @@ export function EditableCategoryField({
         <div className="absolute left-0 top-full z-50 mt-2 w-[min(100vw-2rem,28rem)] rounded-lg border border-border bg-card p-3 shadow-2xl">
           <p className="text-[11px] text-muted mb-2 leading-relaxed">
             {help ||
-              "Kategori adı / açıklama. Ürün fiyatları ve ürün listesi Admin → Ürünler’den yönetilir."}
+              "Kategori adı / açıklama. Hizmet fiyatları ve listesi Admin → Hizmetler’den yönetilir."}
           </p>
           {multiline ? (
             <textarea

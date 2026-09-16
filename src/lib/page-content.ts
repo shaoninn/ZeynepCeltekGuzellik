@@ -10,6 +10,7 @@ const ABOUT_KEYS = [
   "about_philosophy",
   "mission",
   "vision",
+  "about_why_us",
   "values_hygiene",
   "values_team",
   "values_products",
@@ -62,28 +63,31 @@ export async function loadAboutPageData(): Promise<AboutPageData> {
       "GÜZELLİĞİ BİLİMLE,\nSANATA DÖNÜŞTÜRÜYORUZ",
     intro:
       map.about_intro ||
-      "Zeynep Çeltek Güzellik, Adana’da Özal ve Gazi Paşa şubelerinde cilt bakımı, lazer epilasyon ve bölgesel incelme hizmetleri sunar.\n\nAmacımız herkese aynı uygulamayı yapmak değil; cilt tipinize ve ihtiyacınıza uygun protokolü birlikte seçmek.",
+      "Zeynep Çeltek Güzellik, Adana’da Gazi Paşa (Seyhan) ve Turgut Özal (Çukurova) şubelerinde cilt bakımı, lazer epilasyon, bölgesel incelme, kirpik-kaş ve Alex lazer hizmetleri sunar.\n\nAmacımız herkese aynı uygulamayı yapmak değil; cilt tipinize, yaşam tarzınıza ve hedeflerinize uygun protokolü birlikte seçmek. Şeffaf fiyat listesi, hijyenik ortam ve deneyimli kadro ile yanınızdayız.\n\nRandevu için WhatsApp veya telefonla ulaşabilir; hizmet ve paket seçimlerinizi sitemizdeki randevu sepetinden de iletebilirsiniz.",
     philosophy:
       map.about_philosophy ||
-      "Hijyen, şeffaflık ve kişiye özel bakım; her randevuda uyguladığımız somut kurallar.",
+      "Her seansı standart bir işlem değil, planlı bir bakım adımı olarak görürüz. Hijyen, bilgilendirme ve kişiye özel yaklaşım; randevudan önce, uygulama sırasında ve sonrasında tuttuğumuz somut kurallardır.\n\nMisafirlerimize ne yapılacağını ve neden tercih edildiğini net anlatırız. Acele etmeden, cihaz ve ürün seçimini ihtiyaca göre belirleriz.",
     mission:
       map.mission ||
-      "Misafirlerimizin kendilerini güvende ve özel hissettiği, hijyenik ve profesyonel bir güzellik deneyimi sunmak.",
+      "Misafirlerimizin kendilerini güvende ve özel hissettiği, hijyenik ve profesyonel bir güzellik deneyimi sunmak.\n\nAdana’daki her iki şubemizde de aynı standartlarla karşılamak; doğru analizi, doğru uygulamayı ve takip edilebilir seans planını bir araya getirmek istiyoruz.",
     vision:
       map.vision ||
-      "Adana’da güvenilir güzellik bakımında referans salon olmak; kişiye özel protokollerle kalıcı memnuniyet yaratmak.",
+      "Adana’da güvenilir güzellik bakımında referans salon olmak; kişiye özel protokollerle kalıcı memnuniyet yaratmak.\n\nTeknolojiyi ve uzmanlığı birleştirerek, kısa vadeli vaatler yerine sürdürülebilir sonuçlara odaklanan bir marka olarak büyümeyi hedefliyoruz.",
+    whyUs:
+      map.about_why_us ||
+      "İki şubeli konum avantajı, güncel cihaz parkı ve şeffaf fiyatlandırma ile randevu sürecini sade tutuyoruz. Popüler paketlerimizi ve hizmet kategorilerimizi net listeleriz; böylece neye karar verdiğinizi bilirsiniz.\n\nLazer epilasyondan cilt bakımına, bölgesel incelmeden kirpik-kaş uygulamalarına kadar aynı çatı altında planlı bakım sunarız. İhtiyacınızı dinler, abartısız önerir, sonuçları takip ederiz.",
     values: VALUE_DEFS.map((v) => ({
       key: v.key,
       title: titles[v.key] || v.fallbackTitle,
       desc:
         map[v.key] ||
         (v.key === "values_hygiene"
-          ? "Klinik standartlarda temiz uygulama alanı; steril protokoller."
+          ? "Klinik standartlarda temiz uygulama alanı. Her seans öncesi steril protokoller ve düzenli alan kontrolü ile hijyeni önceliklendiririz."
           : v.key === "values_products"
-            ? "Güncel fiyat listesiyle net bilgilendirme."
+            ? "Güncel fiyat listesi ve paket içerikleriyle net bilgilendirme. Sürpriz ücret yerine şeffaf teklif ve randevu planı sunarız."
             : v.key === "values_team"
-              ? "Deneyimli güzellik uzmanlarıyla kişiye özel uygulama."
-              : "Cilt ve ihtiyaca göre planlanan protokoller."),
+              ? "Deneyimli güzellik uzmanlarıyla kişiye özel uygulama. Cilt tipinize ve hedeflerinize göre protokol seçer, seansları takip ederiz."
+              : "Tek tip menü değil; cilt ve ihtiyaca göre planlanan protokoller. Analiz sonrası sizin için en uygun adımları birlikte belirleriz."),
     })),
     images: DEFAULT_ABOUT_IMAGES.map(
       (fallback, i) => map[`about_image_${i + 1}`] || fallback

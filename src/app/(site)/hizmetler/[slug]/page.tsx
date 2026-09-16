@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props) {
   return {
     alternates: { canonical: `/hizmetler/${slug}` },
     title: `${name} | Zeynep Çeltek Güzellik`,
-    description: `${name} ürünleri`,
+    description: `${name} hizmetleri — Adana Zeynep Çeltek Güzellik. Fiyat listesi ve randevu.`,
   };
 }
 
@@ -58,7 +58,7 @@ export default async function CategoryPage({ params }: Props) {
         <CatalogAdminHint
           title="Ürün kartları / fiyat"
           adminHref="/admin/urunler"
-          adminLabel="Admin → Ürünler"
+          adminLabel="Admin → Hizmetler"
         />
 
         <div className="mb-8">
@@ -71,7 +71,7 @@ export default async function CategoryPage({ params }: Props) {
             as="h1"
             block
             className="font-display text-3xl sm:text-4xl font-bold text-white mb-2"
-            help="Kategori adı (ürün fiyatları Admin → Ürünler’de)"
+            help="Kategori adı (hizmet fiyatları Admin → Hizmetler’de)"
           />
           <EditableCategoryField
             categoryId={category.id}
@@ -83,18 +83,45 @@ export default async function CategoryPage({ params }: Props) {
             block
             multiline
             className="text-muted max-w-2xl"
-            help="Kategori sayfası açıklama metni"
+            help="Kategori sayfası açıklama metni — kim için, süre, not"
           />
+        </div>
+
+        <div className="grid sm:grid-cols-3 gap-3 mb-10">
+          <div className="border border-border bg-card/40 p-4">
+            <p className="text-orange text-[10px] uppercase tracking-widest mb-1">
+              Kim için
+            </p>
+            <p className="text-sm text-muted">
+              Cilt tipi ve hedefinize göre uzman yönlendirir; ilk görüşmede netleşir.
+            </p>
+          </div>
+          <div className="border border-border bg-card/40 p-4">
+            <p className="text-orange text-[10px] uppercase tracking-widest mb-1">
+              Süre
+            </p>
+            <p className="text-sm text-muted">
+              Seans süresi uygulamaya göre değişir; randevu teyidinde paylaşılır.
+            </p>
+          </div>
+          <div className="border border-border bg-card/40 p-4">
+            <p className="text-orange text-[10px] uppercase tracking-widest mb-1">
+              Not
+            </p>
+            <p className="text-sm text-muted">
+              Online ödeme yoktur. WhatsApp veya telefonla randevu kesinleşir.
+            </p>
+          </div>
         </div>
 
         {products.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-muted">Bu kategoride henüz ürün bulunmuyor.</p>
+            <p className="text-muted">Bu kategoride henüz hizmet bulunmuyor.</p>
             <SiteLink
               href="/iletisim"
               className="inline-block mt-4 text-orange text-sm hover:underline"
             >
-              Teklif için iletişime geçin
+              Randevu için iletişime geçin
             </SiteLink>
           </div>
         ) : (

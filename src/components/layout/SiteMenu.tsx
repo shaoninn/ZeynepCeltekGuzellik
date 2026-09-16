@@ -37,8 +37,8 @@ const PRIMARY_SET = new Set<string>(PRIMARY_NAV_HREFS);
 /** Header dışı + alt menülü sayfalar (masaüstü menü). */
 const DRAWER_LINKS: { href: string; label: string; sub?: SubPanel }[] = [
   { href: "/hizmetler", label: "Hizmetlerimiz", sub: "categories" },
-  { href: "/#paketler", label: "Paketler" },
-  { href: "/#kampanyalar", label: "Kampanyalar" },
+  { href: "/paketler", label: "Paketler" },
+  { href: "/kampanyalar", label: "Kampanyalar" },
   { href: "/hakkimizda", label: "Hakkımızda" },
   { href: "/iletisim", label: "İletişim" },
   { href: "/sepet", label: "Randevu Sepeti" },
@@ -90,7 +90,7 @@ export function SiteMenu({
   }, [autoOpenToken]);
 
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
+    const mq = window.matchMedia("(min-width: 1024px)");
     const apply = () => setIsDesktop(mq.matches);
     apply();
     mq.addEventListener("change", apply);
@@ -197,7 +197,7 @@ export function SiteMenu({
                   </p>
                   <button
                     type="button"
-                    className="w-9 h-9 inline-flex items-center justify-center text-muted hover:text-orange"
+                    className="w-11 h-11 inline-flex items-center justify-center text-muted hover:text-orange"
                     onClick={close}
                     aria-label="Menüyü kapat"
                   >

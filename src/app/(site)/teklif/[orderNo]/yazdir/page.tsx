@@ -80,32 +80,26 @@ export default async function PublicQuotePrintPage({ params, searchParams }: Pro
         <table className="w-full text-sm mb-6 border-collapse">
           <thead>
             <tr className="border-b border-gray-400">
-              <th className="text-left py-2">Ürün</th>
+              <th className="text-left py-2">Hizmet</th>
               <th className="text-right py-2">Adet</th>
               <th className="text-right py-2">Tutar</th>
             </tr>
           </thead>
           <tbody>
-            {order.items.map((item) => {
-              const dims = [
-                item.widthCm != null ? `${item.widthCm}×${item.heightCm ?? "?"} cm` : null,
-                item.color || null,
-              ]
-                .filter(Boolean)
-                .join(" · ");
-              return (
+          {order.items.map((item) => (
                 <tr key={item.id} className="border-b border-gray-200">
                   <td className="py-2">
                     {item.productName}
-                    {dims && (
-                      <span className="block text-xs text-gray-500">{dims}</span>
-                    )}
+                    {item.optionsNote ? (
+                      <span className="block text-xs text-gray-500">
+                        {item.optionsNote}
+                      </span>
+                    ) : null}
                   </td>
                   <td className="text-right py-2">{item.quantity}</td>
                   <td className="text-right py-2">{formatPrice(item.lineTotal)}</td>
                 </tr>
-              );
-            })}
+              ))}
           </tbody>
         </table>
 
@@ -115,7 +109,7 @@ export default async function PublicQuotePrintPage({ params, searchParams }: Pro
         </div>
 
         <p className="text-xs text-gray-500 mt-8 print:mt-12">
-          Bu belge tahmini tekliftir. Kesin fiyat ölçü teyidi sonrası belirlenir.
+          Bu belge tahmini tekliftir. Kesin fiyat randevu teyidi sonrası belirlenir.
         </p>
       </div>
     </div>

@@ -16,7 +16,7 @@ interface SimilarProductsProps {
 
 export function SimilarProducts({
   products,
-  title = "Benzer ürünler",
+  title = "Benzer hizmetler",
 }: SimilarProductsProps) {
   if (!products.length) return null;
 

@@ -8,10 +8,11 @@ const contactSchema = z.object({
   phone: z.string().min(10, "Geçerli bir telefon numarası girin"),
   email: z.string().email().optional().or(z.literal("")),
   subject: z.string().optional(),
-  message: z.string().min(10, "Mesaj en az 10 karakter olmalı").max(800),
+  message: z.string().min(10, "Mesaj en az 10 karakter olmalı").max(1000),
   kvkkAccepted: z
     .boolean()
     .refine((v) => v === true, { message: "KVKK onayı gerekli" }),
+  utm: z.string().max(400).optional().nullable(),
 });
 
 export async function POST(request: NextRequest) {
@@ -27,6 +28,9 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const data = contactSchema.parse(body);
+    const message = [data.message, data.utm ? `UTM: ${data.utm}` : null]
+      .filter(Boolean)
+      .join("\n");
 
     await prisma.contactMessage.create({
       data: {
@@ -34,9 +38,18 @@ export async function POST(request: NextRequest) {
         phone: data.phone,
         email: data.email || null,
         subject: data.subject || null,
-        message: data.message,
+        message,
+        kvkkAcceptedAt: new Date(),
       },
     });
+
+    const { sendContactNotify } = await import("@/lib/mail");
+    await sendContactNotify({
+      name: data.name,
+      phone: data.phone,
+      subject: data.subject,
+      message,
+    }).catch(() => undefined);
 
     return NextResponse.json({ success: true });
   } catch (error) {

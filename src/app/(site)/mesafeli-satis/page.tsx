@@ -3,14 +3,14 @@ import { COMPANY, companyContactLine } from "@/lib/legal";
 
 export const metadata = {
   alternates: { canonical: "/mesafeli-satis" },
-  title: "Mesafeli Satış Sözleşmesi",
+  title: "Mesafeli Hizmet",
   description:
-    "Zeynep Çeltek Güzellik mesafeli satış ve randevu süreci bilgilendirmesi.",
+    "Zeynep Çeltek Güzellik mesafeli hizmet ve randevu süreci bilgilendirmesi.",
 };
 
 export default function DistanceSalesPage() {
   return (
-    <LegalShell title="Mesafeli Satış Sözleşmesi">
+    <LegalShell title="Mesafeli Hizmet">
       <p>
         6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli
         Sözleşmeler Yönetmeliği kapsamında bilgilendirme metnidir.{" "}

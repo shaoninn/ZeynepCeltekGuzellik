@@ -98,27 +98,32 @@ export default async function PaymentPage({ searchParams }: Props) {
           </div>
         )}
 
-        <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-sm">
-          <p className="font-semibold text-white">Havale / EFT</p>
-          <p>
-            <span className="text-muted">Banka:</span>{" "}
-            {map.bank_name || "— (Admin → Ayarlar)"}
-          </p>
-          <p>
-            <span className="text-muted">IBAN:</span>{" "}
-            <span className="text-white break-all">
-              {map.bank_iban || "TR00 0000 0000 0000 0000 0000 00"}
-            </span>
-          </p>
-          <p>
-            <span className="text-muted">Alıcı:</span>{" "}
-            {map.bank_holder || "Zeynep Çeltek Güzellik"}
-          </p>
-          <p className="text-xs text-muted">
-            {map.payment_note ||
-              "Açıklamaya teklif numaranızı yazın. Dekontu WhatsApp’tan iletin."}
-          </p>
-        </div>
+        {map.bank_iban ? (
+          <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-sm">
+            <p className="font-semibold text-white">Havale / EFT</p>
+            <p>
+              <span className="text-muted">Banka:</span>{" "}
+              {map.bank_name || "—"}
+            </p>
+            <p>
+              <span className="text-muted">IBAN:</span>{" "}
+              <span className="text-white break-all">{map.bank_iban}</span>
+            </p>
+            <p>
+              <span className="text-muted">Alıcı:</span>{" "}
+              {map.bank_holder || "Zeynep Çeltek Güzellik"}
+            </p>
+            <p className="text-xs text-muted">
+              {map.payment_note ||
+                "Açıklamaya teklif numaranızı yazın. Dekontu WhatsApp’tan iletin."}
+            </p>
+          </div>
+        ) : (
+          <div className="rounded-xl border border-border bg-card p-5 text-sm text-muted">
+            Havale bilgisi henüz yayınlanmadı. Onay sonrası ekibimiz IBAN’ı
+            WhatsApp veya telefonla iletir.
+          </div>
+        )}
 
         <p className="mt-6 text-sm">
           <SiteLink href="/tekliflerim" className="text-orange hover:underline">

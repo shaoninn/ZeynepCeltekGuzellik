@@ -70,6 +70,10 @@ export function BlogForm({ initial }: BlogFormProps) {
   return (
     <form onSubmit={onSubmit} className="admin-card p-4 sm:p-6 max-w-2xl w-full">
       {error && <AdminAlert type="error">{error}</AdminAlert>}
+      <p className="text-xs text-[#888] mb-4">
+        Adana rehber yazıları (cilt bakımı, lazer, seans planı) yayınlayın.
+        Boş blog bırakmayın; 4–6 güncel yazı yeterlidir.
+      </p>
       <AdminField label="Başlık *">
         <input
           className="admin-input"
@@ -83,7 +87,7 @@ export function BlogForm({ initial }: BlogFormProps) {
       </AdminField>
       <AdminField
         label="Slug (adres eki) *"
-        help="Yazının web adresi. Örn: protez-tirnak-egitimi → /blog/protez-tirnak-egitimi. Küçük harf ve tire; başlık yazılınca otomatik oluşur."
+        help="Yazının web adresi. Örn: cilt-bakimi-ipuclari → /blog/cilt-bakimi-ipuclari. Küçük harf ve tire; başlık yazılınca otomatik oluşur."
       >
         <input
           className="admin-input"

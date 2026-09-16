@@ -12,13 +12,13 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
       "font-src 'self' data:",
       "media-src 'self' blob: mediastream:",
       "worker-src 'self' blob:",
-      "connect-src 'self' blob: data: https://www.google-analytics.com https://www.googletagmanager.com https://*.imgly.design https://staticimgly.com https://cdn.jsdelivr.net https://graph.instagram.com https://graph.facebook.com https://api.remove.bg https://*.cdninstagram.com https://*.fbcdn.net",
+      "connect-src 'self' blob: data: https://www.google-analytics.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://connect.facebook.net https://www.facebook.com https://*.imgly.design https://staticimgly.com https://cdn.jsdelivr.net https://graph.instagram.com https://graph.facebook.com https://api.remove.bg https://*.cdninstagram.com https://*.fbcdn.net",
       "frame-src 'self' https://www.google.com https://maps.google.com https://www.instagram.com",
       "object-src 'none'",
       "base-uri 'self'",
@@ -96,6 +96,20 @@ const nextConfig = {
   },
   // No app-level redirects for index.html/php — Hostinger already does
   // http→https (and optionally www). Extra hops hurt Lighthouse "redirects".
+  async redirects() {
+    return [
+      {
+        source: "/urun/:slug",
+        destination: "/hizmet/:slug",
+        permanent: true,
+      },
+      {
+        source: "/duzenle/urun/:slug",
+        destination: "/duzenle/hizmet/:slug",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

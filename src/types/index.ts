@@ -29,6 +29,10 @@ export function cartLineId(input: {
 }
 
 export interface ProductSpecs {
+  sure?: string;
+  seans?: string;
+  hazirlik?: string;
+  kimlere?: string;
   malzeme?: string;
   garanti?: string;
   montaj?: string;

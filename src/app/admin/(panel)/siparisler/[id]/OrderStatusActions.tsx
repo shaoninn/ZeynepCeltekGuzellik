@@ -15,7 +15,7 @@ export function OrderStatusActions({
   async function setStatus(next: string) {
     if (
       next === "CANCELLED" &&
-      !confirm("Siparişi iptal etmek istediğinize emin misiniz?")
+      !confirm("Talebi iptal etmek istediğinize emin misiniz?")
     ) {
       return;
     }
@@ -29,7 +29,7 @@ export function OrderStatusActions({
   async function remove() {
     if (
       !confirm(
-        "Bu siparişi kalıcı olarak silmek istediğinize emin misiniz? Geri alınamaz."
+        "Bu talebi kalıcı olarak silmek istediğinize emin misiniz? Geri alınamaz."
       )
     ) {
       return;
@@ -57,7 +57,7 @@ export function OrderStatusActions({
         İptal Et
       </AdminButton>
       <AdminButton variant="danger" onClick={() => void remove()}>
-        Siparişi sil
+        Talebi sil
       </AdminButton>
     </div>
   );

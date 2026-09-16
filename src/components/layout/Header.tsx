@@ -38,7 +38,6 @@ function resolvePrimaryNav(navLinks: NavLinkItem[]): NavLinkItem[] {
 
 function isActive(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/";
-  if (href.startsWith("/#")) return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 

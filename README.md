@@ -22,4 +22,4 @@ npm run dev
 
 - Cookie/sepet öneki: `zc_*` / `zc-*`
 - Domain ve MySQL env sonradan
-- Telefon (geçici): 0 (534) 080 98 73 · Adana
+- Telefon: 0 (545) 457 06 56 (Turgut Özal) · 0 (541) 457 06 54 (Gazi Paşa) · Adana

@@ -6,15 +6,12 @@ import { memoryCacheStats } from "@/lib/memory-cache";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-/** Live counts — require secret in production. */
+/** Live counts — PURGE_SECRET header only. */
 export async function GET(request: NextRequest) {
-  const secret = process.env.PURGE_SECRET || process.env.JWT_SECRET || "";
-  const provided =
-    request.headers.get("x-purge-secret") ||
-    request.nextUrl.searchParams.get("secret") ||
-    "";
+  const secret = process.env.PURGE_SECRET || "";
+  const provided = request.headers.get("x-purge-secret") || "";
 
-  if (process.env.NODE_ENV === "production" && (!secret || provided !== secret)) {
+  if (!secret || provided !== secret) {
     return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
   }
 

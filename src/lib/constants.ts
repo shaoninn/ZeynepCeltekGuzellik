@@ -47,21 +47,76 @@ export const BRANCHES = [
   },
 ] as const;
 
+export const BRANCH_OPTIONS = [
+  { id: "gazipasa", name: "Gazi Paşa Şube", waRaw: "905414570654" },
+  { id: "turgutozal", name: "Turgut Özal Şube", waRaw: "905454570656" },
+  { id: "any", name: "Farketmez", waRaw: "905454570656" },
+] as const;
+
+export function branchWhatsAppUrl(branchId: string): string {
+  const match = BRANCH_OPTIONS.find((b) => b.id === branchId);
+  return `https://wa.me/${match?.waRaw ?? PHONE_RAW}`;
+}
+
+export function branchLabel(branchId: string): string {
+  return BRANCH_OPTIONS.find((b) => b.id === branchId)?.name ?? "Farketmez";
+}
+
+export type BranchInfo = {
+  name: string;
+  address: string;
+  phones: string[];
+  mapQuery: string;
+};
+
+function splitPhones(
+  raw: string | undefined,
+  fallback: readonly string[]
+): string[] {
+  if (!raw?.trim()) return [...fallback];
+  return raw
+    .split(/[·,|/]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+export function resolveBranches(overrides?: {
+  gazipasaAddress?: string;
+  gazipasaPhone?: string;
+  turgutozalAddress?: string;
+  turgutozalPhone?: string;
+}): BranchInfo[] {
+  return [
+    {
+      name: BRANCHES[0].name,
+      address: overrides?.gazipasaAddress?.trim() || BRANCHES[0].address,
+      phones: splitPhones(overrides?.gazipasaPhone, BRANCHES[0].phones),
+      mapQuery: BRANCHES[0].mapQuery,
+    },
+    {
+      name: BRANCHES[1].name,
+      address: overrides?.turgutozalAddress?.trim() || BRANCHES[1].address,
+      phones: splitPhones(overrides?.turgutozalPhone, BRANCHES[1].phones),
+      mapQuery: BRANCHES[1].mapQuery,
+    },
+  ];
+}
+
 export const LEGAL_LINKS = [
   { href: "/gizlilik-politikasi", label: "Gizlilik Politikası" },
   { href: "/kullanim-kosullari", label: "Kullanım Koşulları" },
   { href: "/kvkk", label: "KVKK" },
-  { href: "/mesafeli-satis", label: "Mesafeli Satış" },
+  { href: "/mesafeli-satis", label: "Mesafeli Hizmet" },
   { href: "/iade-politikasi", label: "İade Politikası" },
-  { href: "/teslimat", label: "Teslimat" },
+  { href: "/teslimat", label: "Randevu süreci" },
   { href: "/cerez-politikasi", label: "Çerez Politikası" },
 ] as const;
 
 export const PRIMARY_NAV_HREFS = [
   "/",
   "/hizmetler",
-  "/#paketler",
-  "/#kampanyalar",
+  "/paketler",
+  "/kampanyalar",
   "/hakkimizda",
   "/iletisim",
 ] as const;
@@ -69,8 +124,8 @@ export const PRIMARY_NAV_HREFS = [
 export const PRIMARY_NAV_LINKS = [
   { href: "/", label: "ANA SAYFA" },
   { href: "/hizmetler", label: "HİZMETLERİMİZ" },
-  { href: "/#paketler", label: "PAKETLER" },
-  { href: "/#kampanyalar", label: "KAMPANYALAR" },
+  { href: "/paketler", label: "PAKETLER" },
+  { href: "/kampanyalar", label: "KAMPANYALAR" },
   { href: "/hakkimizda", label: "HAKKIMIZDA" },
   { href: "/iletisim", label: "İLETİŞİM" },
 ] as const;
@@ -78,42 +133,21 @@ export const PRIMARY_NAV_LINKS = [
 export const NAV_LINKS = [
   { href: "/", label: "ANA SAYFA" },
   { href: "/hizmetler", label: "HİZMETLERİMİZ" },
-  { href: "/#paketler", label: "PAKETLER" },
-  { href: "/#kampanyalar", label: "KAMPANYALAR" },
+  { href: "/paketler", label: "PAKETLER" },
+  { href: "/kampanyalar", label: "KAMPANYALAR" },
   { href: "/hakkimizda", label: "HAKKIMIZDA" },
   { href: "/iletisim", label: "İLETİŞİM" },
   { href: "/sepet", label: "RANDEVU SEPETİ" },
 ] as const;
 
-/** Ana sayfa popüler hizmet ikon sırası (mockup) */
+/** Ana sayfa popüler hizmet ikon sırası */
 export const POPULAR_SERVICES = [
-  {
-    name: "Eğitimlerimiz",
-    slug: "cilt-bakimi",
-    href: "/hizmetler",
-    description: "Uzman kadro ile uygulamalı güzellik eğitimleri.",
-    icon: "graduation",
-  },
-  {
-    name: "İnceleme",
-    slug: "cilt-bakimi",
-    href: "/iletisim",
-    description: "Ücretsiz cilt ve ihtiyaç analizi.",
-    icon: "search",
-  },
   {
     name: "Cilt Bakımı",
     slug: "cilt-bakimi",
     href: "/hizmetler/cilt-bakimi",
     description: "Hydrafacial, medikal bakım ve onarım.",
     icon: "droplet",
-  },
-  {
-    name: "Yüz-Boyun Toparlama",
-    slug: "cilt-bakimi",
-    href: "/hizmetler/cilt-bakimi",
-    description: "Mikroplus ile yüz ve boyun toparlama.",
-    icon: "sparkles",
   },
   {
     name: "Lazer Epilasyon",
@@ -128,6 +162,27 @@ export const POPULAR_SERVICES = [
     href: "/hizmetler/bolgesel-incelme",
     description: "G5, Emslim, heykeltıraş ve G8.",
     icon: "waves",
+  },
+  {
+    name: "Kirpik & Kaş",
+    slug: "kirpik-kas",
+    href: "/hizmetler/kirpik-kas",
+    description: "Lifting, laminasyon ve kaş şekillendirme.",
+    icon: "sparkles",
+  },
+  {
+    name: "Alex Lazer",
+    slug: "alex-lazer",
+    href: "/hizmetler/alex-lazer",
+    description: "Soğuk hava üflemeli Alex paketleri.",
+    icon: "zap",
+  },
+  {
+    name: "Tüm Hizmetler",
+    slug: "hizmetler",
+    href: "/hizmetler",
+    description: "Tüm kategori ve fiyat listesini inceleyin.",
+    icon: "search",
   },
 ] as const;
 
@@ -172,16 +227,16 @@ export const FEATURE_BAR = [
   },
   {
     icon: "support",
-    title: "MEMNUNİYET GARANTİSİ",
+    title: "SEANS SONRASI TAKİP",
     desc: "Her seans sonrası takip ve destek.",
   },
 ] as const;
 
 export const STATS = [
-  { value: "4.677+", label: "Gönderi" },
-  { value: "1M+", label: "Takipçi" },
-  { value: "1.547+", label: "Takip" },
-  { value: "%98", label: "Memnuniyet" },
+  { value: "2", label: "Şube" },
+  { value: "10+", label: "Yıl Deneyim" },
+  { value: "6", label: "Hizmet Alanı" },
+  { value: "WA", label: "WhatsApp randevu" },
 ] as const;
 
 export const WHY_US = [
@@ -578,21 +633,27 @@ export const CATALOG_PRODUCTS: {
 export const PACKAGES = [
   {
     id: "baslangic",
+    slug: "baslangic",
     name: "Başlangıç Paketi",
     price: 2750,
     sessions: "TOPLAM 3 SEANS",
     featured: false,
     image: "/images/products/cilt-bakimi/1.jpg",
+    shortDesc:
+      "Cilt bakımına yeni başlayanlar için karbon maske ve temizlik odaklı giriş paketi.",
     items: ["3 seans karbon maske", "Cilt temizliği", "Randevu planı"],
   },
   {
     id: "guzellik-paketi",
+    slug: "guzellik-paketi",
     name: "Güzellik Paketi",
     price: 8000,
     sessions: "TOPLAM 10 SEANS",
     featured: true,
     badge: "En Çok Tercih Edilen",
     image: "/images/products/cilt-bakimi/2.jpg",
+    shortDesc:
+      "Yüz ve boyun toparlama ile yoğun bakım arayanlar için 10 seanslık kapsamlı paket.",
     items: [
       "10 seans yüz-boyun toparlama",
       "Mikroplus işlemi",
@@ -601,20 +662,32 @@ export const PACKAGES = [
   },
   {
     id: "vip",
+    slug: "vip",
     name: "VIP Paket",
     price: 4500,
     sessions: "TOPLAM 5 SEANS",
     featured: false,
     image: "/images/products/cilt-bakimi/4.jpg",
+    shortDesc:
+      "Karbon maske ve cilt bakımı kombinasyonuyla dengeli bir 5 seans programı.",
     items: ["5 seans karbon maske", "Cilt bakımı", "Seans takibi"],
   },
   {
     id: "lazer",
+    slug: "lazer",
     name: "Lazer Paket",
     price: 2000,
     sessions: "8 SEANS · 3 BÖLGE",
     featured: false,
     image: "/images/products/lazer-bayan/1.jpg",
+    shortDesc:
+      "Bayan 3 bölge lazer epilasyon için 8 seanslık giriş seviyesi paket.",
     items: ["8 seans 3 bölge lazer", "Bayan paket", "Seans takibi"],
   },
 ] as const;
+
+export type PackageItem = (typeof PACKAGES)[number];
+
+export function getPackageBySlug(slug: string): PackageItem | undefined {
+  return PACKAGES.find((p) => p.slug === slug);
+}

@@ -83,7 +83,7 @@ export async function GET() {
     headers: {
       "Content-Type":
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "Content-Disposition": `attachment; filename="zeynep-egitimler.xlsx"`,
+      "Content-Disposition": `attachment; filename="zeynep-hizmetler.xlsx"`,
     },
   });
 }

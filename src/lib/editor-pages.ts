@@ -26,7 +26,7 @@ export const EDITOR_PAGES = [
     path: "/hizmetler",
     label: "Hizmetler",
     kind: "edit" as const,
-    help: "Liste başlıkları + kategori adı/açıklama. Ürün fiyatı Admin → Ürünler.",
+    help: "Liste başlıkları + kategori adı/açıklama. Hizmet fiyatı Admin → Hizmetler.",
   },
   {
     href: "/duzenle/projeler",

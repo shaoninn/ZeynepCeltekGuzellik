@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { ShoppingCart, Minus, Plus, Check } from "lucide-react";
-import { useAppDispatch } from "@/store/hooks";
-import { addToCart } from "@/store/cartSlice";
+import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 import type { Product } from "@/types";
 
 interface AddToCartButtonProps {
@@ -12,25 +12,27 @@ interface AddToCartButtonProps {
 }
 
 export function AddToCartButton({ product }: AddToCartButtonProps) {
-  const dispatch = useAppDispatch();
+  const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
   const handleAdd = () => {
-    dispatch(
-      addToCart({
-        productId: product.id,
-        slug: product.slug,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        quantity,
-        categoryName: product.category?.name || "",
-        widthCm: null,
-        heightCm: null,
-        color: null,
-      })
-    );
+    addToCart({
+      productId: product.id,
+      slug: product.slug,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      quantity,
+      categoryName: product.category?.name || "",
+      widthCm: null,
+      heightCm: null,
+      color: null,
+    });
+    track("add_to_list", {
+      item: product.slug,
+      value: product.price * quantity,
+    });
     setAdded(true);
     setTimeout(() => setAdded(false), 4000);
   };
@@ -43,7 +45,7 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
           <button
             type="button"
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
-            className="w-10 h-10 flex items-center justify-center text-muted hover:text-orange transition-colors"
+            className="min-w-11 min-h-11 flex items-center justify-center text-muted hover:text-orange transition-colors"
             aria-label="Azalt"
           >
             <Minus size={16} />
@@ -52,7 +54,7 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
           <button
             type="button"
             onClick={() => setQuantity(quantity + 1)}
-            className="w-10 h-10 flex items-center justify-center text-muted hover:text-orange transition-colors"
+            className="min-w-11 min-h-11 flex items-center justify-center text-muted hover:text-orange transition-colors"
             aria-label="Artır"
           >
             <Plus size={16} />
@@ -69,12 +71,12 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
         {added ? (
           <>
             <Check size={20} />
-            Randevu Sepetine Eklendi
+            Listeye eklendi
           </>
         ) : (
           <>
             <ShoppingCart size={20} />
-            Randevu Sepetine Ekle — {formatPrice(product.price * quantity)}
+            Listeye ekle — {formatPrice(product.price * quantity)}
           </>
         )}
       </button>

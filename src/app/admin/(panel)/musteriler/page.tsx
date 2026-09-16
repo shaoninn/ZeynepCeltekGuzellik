@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -21,12 +22,13 @@ export default async function CustomersPage() {
               <th className="p-3">Telefon</th>
               <th className="p-3">E-posta</th>
               <th className="p-3">Güncelleme</th>
+              <th className="p-3">Talepler</th>
             </tr>
           </thead>
           <tbody>
             {customers.length === 0 ? (
               <tr>
-                <td colSpan={4} className="p-6 text-[#666]">
+                <td colSpan={5} className="p-6 text-[#666]">
                   Henüz müşteri kaydı yok.
                 </td>
               </tr>
@@ -38,6 +40,14 @@ export default async function CustomersPage() {
                   <td className="p-3">{c.email || "—"}</td>
                   <td className="p-3 text-[#888]">
                     {new Date(c.updatedAt).toLocaleString("tr-TR")}
+                  </td>
+                  <td className="p-3">
+                    <Link
+                      href={`/admin/siparisler?q=${encodeURIComponent(c.phone)}`}
+                      className="text-orange hover:underline"
+                    >
+                      Talepler
+                    </Link>
                   </td>
                 </tr>
               ))

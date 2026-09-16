@@ -4,8 +4,7 @@ import dynamic from "next/dynamic";
 import { Calendar, Menu, ShoppingCart } from "lucide-react";
 import { useCallback, useState } from "react";
 import { SiteLink } from "@/components/ui/SiteLink";
-import { useAppSelector } from "@/store/hooks";
-import { selectCartCount } from "@/store/cartSlice";
+import { useCart } from "@/context/CartContext";
 import type {
   MenuCategoryItem,
   MenuLinkItem,
@@ -41,7 +40,7 @@ export function HeaderClient({
   phoneRaw,
   whatsappUrl,
 }: HeaderClientProps) {
-  const cartCount = useAppSelector(selectCartCount);
+  const { count: cartCount } = useCart();
   const [menuMounted, setMenuMounted] = useState(false);
   const [menuOpenRequest, setMenuOpenRequest] = useState(0);
 
@@ -55,10 +54,11 @@ export function HeaderClient({
       <div className="flex items-center gap-1 sm:gap-2 shrink-0">
         <SiteLink
           href="/iletisim"
-          className="hidden md:inline-flex items-center gap-2 h-9 px-4 rounded-sm border border-orange text-orange text-[11px] font-semibold tracking-[0.14em] uppercase hover:bg-orange hover:text-ink transition-colors"
+          className="inline-flex w-11 h-11 lg:w-auto lg:h-9 items-center justify-center lg:gap-2 lg:px-4 rounded-sm border border-orange text-orange text-[11px] font-semibold tracking-[0.14em] uppercase hover:bg-orange hover:text-ink transition-colors"
+          aria-label="Randevu Al"
         >
           <Calendar size={14} />
-          Randevu Al
+          <span className="hidden lg:inline">Randevu Al</span>
         </SiteLink>
 
         <SiteLink

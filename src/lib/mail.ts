@@ -1,4 +1,5 @@
 import { formatPrice } from "@/lib/utils";
+import { getSiteUrl } from "@/lib/seo";
 
 interface OrderEmailItem {
   productName: string;
@@ -24,15 +25,9 @@ interface OrderEmailPayload {
 function orderHtml(order: OrderEmailPayload): string {
   const lines = order.items
     .map((i) => {
-      const dims = [
-        i.widthCm != null ? `${i.widthCm} cm` : null,
-        i.heightCm != null ? `${i.heightCm} cm` : null,
-        i.color || null,
-      ]
-        .filter(Boolean)
-        .join(" · ");
+      const extra = i.color ? `<br/><small>${i.color}</small>` : "";
       return `<tr>
-        <td style="padding:8px;border-bottom:1px solid #eee">${i.productName}${dims ? `<br/><small>${dims}</small>` : ""}</td>
+        <td style="padding:8px;border-bottom:1px solid #eee">${i.productName}${extra}</td>
         <td style="padding:8px;border-bottom:1px solid #eee;text-align:center">${i.quantity}</td>
         <td style="padding:8px;border-bottom:1px solid #eee;text-align:right">${formatPrice(i.lineTotal)}</td>
       </tr>`;
@@ -45,14 +40,14 @@ function orderHtml(order: OrderEmailPayload): string {
     <p>Talebiniz Zeynep Çeltek Güzellik sistemine kaydedildi. En kısa sürede sizinle iletişime geçeceğiz.</p>
     <table style="width:100%;border-collapse:collapse;margin:16px 0">
       <thead><tr>
-        <th style="text-align:left;padding:8px;border-bottom:2px solid #f97316">Ürün</th>
+        <th style="text-align:left;padding:8px;border-bottom:2px solid #f97316">Hizmet</th>
         <th style="padding:8px;border-bottom:2px solid #f97316">Adet</th>
         <th style="text-align:right;padding:8px;border-bottom:2px solid #f97316">Tutar</th>
       </tr></thead>
       <tbody>${lines}</tbody>
     </table>
     <p><strong>Toplam (tahmini):</strong> ${formatPrice(order.total)}</p>
-    <p style="color:#666;font-size:13px">Fiyatlar keşif sonrası netleşir. Online ödeme yoktur; bu bir teklif kaydıdır.</p>
+    <p style="color:#666;font-size:13px">Online ödeme yoktur; bu bir randevu / teklif kaydıdır. Seans planı onayda netleşir.</p>
     <p>Telefon: ${order.phone}${order.address ? `<br/>Adres: ${order.address}` : ""}</p>
   </body></html>`;
 }
@@ -176,8 +171,9 @@ async function deliverMail(opts: {
   return { sent: false, reason: "no-mail-provider" };
 }
 
-/** Atölye / üretici özeti — SiteSetting manufacturer_email veya MAIL_MANUFACTURER */
+/** Salon bildirim özeti — SiteSetting manufacturer_email veya MAIL_MANUFACTURER */
 export async function sendManufacturerBrief(order: {
+  id: string;
   orderNo: string;
   name: string;
   phone: string;
@@ -187,8 +183,6 @@ export async function sendManufacturerBrief(order: {
   items: Array<{
     productName: string;
     quantity: number;
-    widthCm?: number | null;
-    heightCm?: number | null;
     color?: string | null;
     optionsNote?: string | null;
     lineTotal: number;
@@ -206,24 +200,44 @@ export async function sendManufacturerBrief(order: {
 
   const lines = order.items
     .map((i) => {
-      const dims = [
-        i.widthCm != null ? `en ${i.widthCm}` : null,
-        i.heightCm != null ? `boy ${i.heightCm}` : null,
-        i.color || null,
-      ]
+      const extra = [i.color || null, i.optionsNote || null]
         .filter(Boolean)
-        .join(", ");
-      return `• ${i.productName} x${i.quantity}${dims ? ` (${dims})` : ""}${
-        i.optionsNote ? ` | ${i.optionsNote}` : ""
-      }`;
+        .join(" | ");
+      return `• ${i.productName} x${i.quantity}${extra ? ` (${extra})` : ""}`;
     })
     .join("\n");
 
-  const subject = `[Üretim] ${order.orderNo} — ${order.name}`;
-  const text = `Yeni teklif/üretim kartı\n\n${order.orderNo}\nMüşteri: ${order.name} / ${order.phone}\nToplam: ${formatPrice(order.total)}\nNot: ${order.note || "-"}\n\nKalemler:\n${lines}`;
+  const panelUrl = `${getSiteUrl()}/admin/siparisler/${order.id}`;
+  const subject = `[Randevu] ${order.orderNo} — ${order.name}`;
+  const text = `Yeni randevu / teklif talebi\n\n${order.orderNo}\nMüşteri: ${order.name} / ${order.phone}\nToplam: ${formatPrice(order.total)}\nNot: ${order.note || "-"}\nPanel: ${panelUrl}\n\nKalemler:\n${lines}`;
   const html = `<pre style="font-family:sans-serif;white-space:pre-wrap">${text}</pre>`;
 
   return deliverMail({ to, subject, html, text });
+}
+
+export async function sendContactNotify(input: {
+  name: string;
+  phone: string;
+  subject?: string | null;
+  message: string;
+}): Promise<{ sent: boolean; reason?: string }> {
+  const { prisma } = await import("@/lib/db");
+  const row = await prisma.siteSetting.findUnique({
+    where: { key: "manufacturer_email" },
+  });
+  const to =
+    row?.value?.trim() ||
+    process.env.MAIL_MANUFACTURER?.trim() ||
+    process.env.MAIL_FROM_NOTIFY?.trim();
+  if (!to) return { sent: false, reason: "no-manufacturer-email" };
+  const subject = `[İletişim] ${input.name}`;
+  const text = `${input.name} / ${input.phone}\nKonu: ${input.subject || "-"}\n\n${input.message}`;
+  return deliverMail({
+    to,
+    subject,
+    html: `<pre style="font-family:sans-serif;white-space:pre-wrap">${text}</pre>`,
+    text,
+  });
 }
 
 export async function sendCrmReminder(order: {
@@ -235,7 +249,33 @@ export async function sendCrmReminder(order: {
 }): Promise<{ sent: boolean; reason?: string }> {
   if (!order.email) return { sent: false, reason: "no-email" };
   const subject = `Teklifiniz bekliyor — ${order.orderNo}`;
-  const text = `Merhaba ${order.name}, ${order.orderNo} numaralı teklif talebiniz için ölçü/onay görüşmesi yapmak isteriz. Tahmini toplam: ${formatPrice(order.total)}. Telefon: ${order.phone}`;
+  const text = `Merhaba ${order.name}, ${order.orderNo} numaralı teklif talebiniz için randevu teyidi yapmak isteriz. Tahmini toplam: ${formatPrice(order.total)}. Telefon: ${order.phone}`;
   const html = `<p>${text}</p><p>Zeynep Çeltek Güzellik</p>`;
   return deliverMail({ to: order.email, subject, html, text });
+}
+
+/** Günlük özet — bekleyen talepler + okunmamış mesajlar */
+export async function sendStaffDigest(input: {
+  pendingOrders: number;
+  unreadMessages: number;
+}): Promise<{ sent: boolean; reason?: string }> {
+  const { prisma } = await import("@/lib/db");
+  const row = await prisma.siteSetting.findUnique({
+    where: { key: "manufacturer_email" },
+  });
+  const to =
+    row?.value?.trim() ||
+    process.env.MAIL_MANUFACTURER?.trim() ||
+    process.env.MAIL_FROM_NOTIFY?.trim();
+  if (!to) return { sent: false, reason: "no-manufacturer-email" };
+
+  const panel = getSiteUrl();
+  const subject = `[Özet] ${input.pendingOrders} bekleyen talep · ${input.unreadMessages} okunmamış mesaj`;
+  const text = `Zeynep Çeltek Güzellik — günlük özet\n\nBekleyen randevu talepleri: ${input.pendingOrders}\nOkunmamış mesajlar: ${input.unreadMessages}\n\nPanel: ${panel}/admin\nTalepler: ${panel}/admin/siparisler\nMesajlar: ${panel}/admin/mesajlar`;
+  return deliverMail({
+    to,
+    subject,
+    html: `<pre style="font-family:sans-serif;white-space:pre-wrap">${text}</pre>`,
+    text,
+  });
 }

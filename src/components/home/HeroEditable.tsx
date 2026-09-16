@@ -4,7 +4,7 @@ import { Camera, Phone } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { EditableText } from "@/components/editor/EditableText";
 import { EditableImage } from "@/components/editor/EditableImage";
-import { INSTAGRAM_HANDLES } from "@/lib/constants";
+import { INSTAGRAM_HANDLES, WHATSAPP_URL } from "@/lib/constants";
 import {
   DEFAULT_HERO_BODY,
   DEFAULT_HERO_IMAGE,
@@ -20,6 +20,7 @@ export function HeroEditable({
   body,
   image,
   styles,
+  whatsappUrl,
 }: HeroViewProps) {
   const bg = image || DEFAULT_HERO_IMAGE;
   const { before, scriptPart } = splitHeroTitle(
@@ -82,6 +83,14 @@ export function HeroEditable({
                 <Phone size={15} />
                 Bize Ulaşın
               </Button>
+              <a
+                href={whatsappUrl || WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline gap-2 w-full sm:w-auto min-h-11 justify-center"
+              >
+                WhatsApp
+              </a>
             </div>
 
             <div className="animate-hero-delay-2 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">

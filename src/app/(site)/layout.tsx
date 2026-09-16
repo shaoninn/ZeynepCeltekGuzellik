@@ -1,7 +1,9 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingContact } from "@/components/layout/FloatingContact";
-import { StoreProvider } from "@/store/StoreProvider";
+import { CookieConsent } from "@/components/layout/CookieConsent";
+import { Analytics } from "@/components/Analytics";
+import { CartProvider } from "@/context/CartContext";
 import { getNavLinks, getSiteSettings } from "@/lib/site";
 import { getContentMap } from "@/lib/site-content";
 import {
@@ -42,7 +44,7 @@ export default async function SiteLayout({
   }));
 
   return (
-    <StoreProvider>
+    <CartProvider>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-orange focus:text-black focus:px-3 focus:py-2"
@@ -56,7 +58,7 @@ export default async function SiteLayout({
         projects={menuProjects}
         blogPosts={menuPosts}
       />
-      <main id="main-content" className="min-h-screen pt-14 sm:pt-16 pb-[max(5.5rem,env(safe-area-inset-bottom))] md:pb-8 overflow-x-clip">
+      <main id="main-content" className="min-h-screen pt-14 sm:pt-16 pb-[max(7.5rem,calc(env(safe-area-inset-bottom)+6.5rem))] md:pb-8 overflow-x-clip">
         {children}
       </main>
       <Footer
@@ -68,6 +70,8 @@ export default async function SiteLayout({
         phone={settings.phone}
         whatsappUrl={settings.whatsappUrl}
       />
-    </StoreProvider>
+      <CookieConsent />
+      <Analytics />
+    </CartProvider>
   );
 }

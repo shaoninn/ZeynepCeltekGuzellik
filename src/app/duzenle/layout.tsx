@@ -3,7 +3,7 @@ import { EditorChrome } from "@/components/editor/EditorChrome";
 import { EditorHelp } from "@/components/editor/EditorHelp";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { StoreProvider } from "@/store/StoreProvider";
+import { CartProvider } from "@/context/CartContext";
 import { getNavLinks, getSiteSettings } from "@/lib/site";
 import { getContentMap } from "@/lib/site-content";
 import { mapNavToEditor, toEditorHref } from "@/lib/editor-href";
@@ -52,7 +52,7 @@ export default async function EditorLayout({
   return (
     <EditorProvider enabled>
       <EditorChrome>
-        <StoreProvider>
+        <CartProvider>
           <div className="[&_header]:!top-14 [&_header]:z-[60]">
             <Header
               settings={settings}
@@ -74,7 +74,7 @@ export default async function EditorLayout({
             />
           </div>
           <EditorHelp />
-        </StoreProvider>
+        </CartProvider>
       </EditorChrome>
     </EditorProvider>
   );

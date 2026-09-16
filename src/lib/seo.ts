@@ -18,48 +18,78 @@ export function getSiteUrl(): string {
 
 export function localBusinessJsonLd() {
   const url = getSiteUrl();
-  return {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": `${url}/#business`,
-    name: SITE_NAME,
-    description: SITE_TAGLINE,
+  const hours = [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
+      opens: "09:00",
+      closes: "19:00",
+    },
+  ];
+  const gazipasa = {
+    "@type": "BeautySalon",
+    "@id": `${url}/#gazipasa`,
+    name: `${SITE_NAME} — Gazi Paşa`,
     url,
-    telephone: ["+905414570654", "+905454570656", "+903222325952"],
-    ...(EMAIL.trim() ? { email: EMAIL } : {}),
-    image: `${url}/images/logo/logo-nobg.png`,
-    logo: `${url}/images/logo/logo-nobg.png`,
+    telephone: "+905414570654",
     address: {
       "@type": "PostalAddress",
-      streetAddress: ADDRESS,
-      addressLocality: "Adana",
+      streetAddress:
+        "Cemal Paşa Mh. Gazipaşa Bulvarı, 63003. Sk. Tek Apt Kat 4 No 41",
+      addressLocality: "Seyhan",
       addressRegion: "Adana",
+      postalCode: "01120",
       addressCountry: "TR",
     },
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ],
-        opens: "09:00",
-        closes: "19:00",
-      },
-    ],
-    areaServed: {
-      "@type": "AdministrativeArea",
-      name: "Adana",
+    openingHoursSpecification: hours,
+    parentOrganization: { "@id": `${url}/#business` },
+  };
+  const turgut = {
+    "@type": "BeautySalon",
+    "@id": `${url}/#turgutozal`,
+    name: `${SITE_NAME} — Turgut Özal`,
+    url,
+    telephone: ["+905454570656", "+903222325952"],
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Güzelyalı, Turgut Özal Blv. No:102",
+      addressLocality: "Çukurova",
+      addressRegion: "Adana",
+      postalCode: "01170",
+      addressCountry: "TR",
     },
-    sameAs: [
-      ...INSTAGRAM_HANDLES.map((h) => h.href),
-      GOOGLE_BUSINESS_URL,
-    ].filter(Boolean),
-    priceRange: "$$",
+    openingHoursSpecification: hours,
+    parentOrganization: { "@id": `${url}/#business` },
+  };
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${url}/#business`,
+        name: SITE_NAME,
+        description: SITE_TAGLINE,
+        url,
+        telephone: ["+905414570654", "+905454570656", "+903222325952"],
+        ...(EMAIL.trim() ? { email: EMAIL } : {}),
+        image: `${url}/images/logo/logo-nobg.png`,
+        logo: `${url}/images/logo/logo-nobg.png`,
+        sameAs: [
+          ...INSTAGRAM_HANDLES.map((h) => h.href),
+          GOOGLE_BUSINESS_URL,
+        ].filter(Boolean),
+        department: [{ "@id": `${url}/#gazipasa` }, { "@id": `${url}/#turgutozal` }],
+      },
+      gazipasa,
+      turgut,
+    ],
   };
 }
 
@@ -68,6 +98,8 @@ export function siteNavigationJsonLd() {
   const url = getSiteUrl();
   const items = [
     { name: "Hizmetler", path: "/hizmetler" },
+    { name: "Paketler", path: "/paketler" },
+    { name: "Kampanyalar", path: "/kampanyalar" },
     { name: "Galeri", path: "/projeler" },
     { name: "Hakkımızda", path: "/hakkimizda" },
     { name: "Blog", path: "/blog" },
@@ -106,7 +138,7 @@ export function productJsonLd(product: {
 }) {
   return {
     "@context": "https://schema.org",
-    "@type": "Product",
+    "@type": "Service",
     name: product.name,
     description: product.description || undefined,
     image: product.image
@@ -114,14 +146,14 @@ export function productJsonLd(product: {
         ? product.image
         : `${getSiteUrl()}${product.image}`
       : undefined,
-    url: `${getSiteUrl()}/urun/${product.slug}`,
-    brand: { "@type": "Brand", name: SITE_NAME },
+    url: `${getSiteUrl()}/hizmet/${product.slug}`,
+    provider: { "@id": `${getSiteUrl()}/#business` },
     offers: {
       "@type": "Offer",
       priceCurrency: "TRY",
       price: product.price,
-      availability: "https://schema.org/InStock",
-      url: `${getSiteUrl()}/urun/${product.slug}`,
+      availability: "https://schema.org/LimitedAvailability",
+      url: `${getSiteUrl()}/hizmet/${product.slug}`,
     },
   };
 }

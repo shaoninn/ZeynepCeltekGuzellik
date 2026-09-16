@@ -63,7 +63,7 @@ export default async function ServicesPage() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {categories.map((category) => {
-            const Icon = iconMap[category.icon || "egitim"] || GraduationCap;
+            const Icon = iconMap[category.icon || "design"] || Palette;
             return (
               <SiteLink
                 key={category.id}

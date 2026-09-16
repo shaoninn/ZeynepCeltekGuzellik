@@ -65,7 +65,7 @@ export async function PUT(
         { status: 400 }
       );
     }
-    return NextResponse.json({ error: "Ürün güncellenemedi" }, { status: 500 });
+    return NextResponse.json({ error: "Hizmet güncellenemedi" }, { status: 500 });
   }
 }
 
@@ -84,6 +84,6 @@ export async function DELETE(
     await prisma.product.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch {
-    return NextResponse.json({ error: "Ürün silinemedi" }, { status: 500 });
+    return NextResponse.json({ error: "Hizmet silinemedi" }, { status: 500 });
   }
 }

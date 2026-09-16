@@ -1,25 +1,9 @@
 "use client";
 
 import { EditableText } from "@/components/editor/EditableText";
+import { SALON_FAQS } from "@/lib/faq";
 
-const DEFAULT_FAQS = [
-  {
-    q: "Hizmetler kimler için uygun?",
-    a: "Her yaş ve cilt tipine uygun profesyonel uygulamalar sunuyoruz. Size en uygun hizmet için iletişime geçebilirsiniz.",
-  },
-  {
-    q: "Randevu sepeti ne anlama geliyor?",
-    a: "Sitedeki sepet online ödeme değildir. Randevu / teklif listenizdir; talebiniz bize düşer, WhatsApp veya telefonla süreci netleştiririz.",
-  },
-  {
-    q: "Randevu nasıl alınır?",
-    a: "Hizmetleri sepete ekleyip formu gönderin veya WhatsApp / telefon ile doğrudan randevu oluşturun.",
-  },
-  {
-    q: "Salon nerede?",
-    a: "Adana’da Özal ve Gazi Paşa şubelerimiz var. Detaylı adres ve randevu için iletişim sayfasından veya WhatsApp’tan yazabilirsiniz.",
-  },
-];
+const DEFAULT_FAQS = SALON_FAQS;
 
 export function FaqSection({
   sectionTitle,

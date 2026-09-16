@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { EditableText } from "@/components/editor/EditableText";
+import { SiteLink } from "@/components/ui/SiteLink";
 import { toWebpSrc, toWebpSrcMobile } from "@/lib/image-optimize";
 
 interface GallerySectionProps {
@@ -52,7 +53,7 @@ export function GallerySection({
           <button
             type="button"
             onClick={() => scrollBy(-1)}
-            className="absolute left-0 top-1/2 z-10 -translate-y-1/2 -translate-x-1 sm:-translate-x-3 w-11 h-11 rounded-full border border-orange/50 bg-black/70 text-orange flex items-center justify-center hover:bg-orange hover:text-ink transition-colors"
+            className="absolute left-2 top-1/2 z-10 -translate-y-1/2 w-11 h-11 rounded-full border border-orange/50 bg-black/70 text-orange flex items-center justify-center hover:bg-orange hover:text-ink transition-colors"
             aria-label="Önceki"
           >
             <ChevronLeft size={18} />
@@ -60,7 +61,7 @@ export function GallerySection({
           <button
             type="button"
             onClick={() => scrollBy(1)}
-            className="absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-1 sm:translate-x-3 w-11 h-11 rounded-full border border-orange/50 bg-black/70 text-orange flex items-center justify-center hover:bg-orange hover:text-ink transition-colors"
+            className="absolute right-2 top-1/2 z-10 -translate-y-1/2 w-11 h-11 rounded-full border border-orange/50 bg-black/70 text-orange flex items-center justify-center hover:bg-orange hover:text-ink transition-colors"
             aria-label="Sonraki"
           >
             <ChevronRight size={18} />
@@ -68,7 +69,7 @@ export function GallerySection({
 
           <div
             ref={scroller}
-            className="works-slider flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide px-1"
+            className="works-slider flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide px-12"
           >
             {list.map((src, i) => {
               const webp = toWebpSrc(src);
@@ -94,6 +95,15 @@ export function GallerySection({
               );
             })}
           </div>
+        </div>
+
+        <div className="mt-8 text-center">
+          <SiteLink
+            href="/kampanyalar"
+            className="text-orange text-sm font-semibold tracking-wide uppercase hover:underline"
+          >
+            Tüm kampanyaları gör →
+          </SiteLink>
         </div>
       </div>
     </section>

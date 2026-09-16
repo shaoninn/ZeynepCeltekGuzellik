@@ -49,6 +49,10 @@ Kod: auth’lu admin API GET, bot probe 404, health pool+token, menü cache 5dk,
 | `NODE_ENV` | **`production`** (tam küçük harf; `development` yazma) |
 | `JWT_SECRET` | ≥32 karakter rastgele secret |
 | `NEXT_PUBLIC_SITE_URL` | `https://zeynepceltek.com` |
+| `NEXT_PUBLIC_GA_ID` | GA4 ölçüm kimliği (opsiyonel) |
+| `NEXT_PUBLIC_AW_ID` | Google Ads kimliği (opsiyonel) |
+| `NEXT_PUBLIC_AW_SEND_TO` | Ads conversion send_to (opsiyonel) |
+| `NEXT_PUBLIC_META_PIXEL_ID` | Meta Pixel (opsiyonel) |
 | `MYSQL_USER` | Hostinger MySQL kullanıcı adı |
 | `MYSQL_PASSWORD` | Hostinger MySQL şifresi |
 | `MYSQL_HOST` | hPanel → Uzak MySQL hostname (`srv….hstgr.io`; `localhost` değil) |

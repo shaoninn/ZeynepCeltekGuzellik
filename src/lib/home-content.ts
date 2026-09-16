@@ -136,6 +136,8 @@ export async function loadHomePageData() {
       stats: buildStats(map),
       styles,
       sectionFeatureBarOffset: settings.sectionFeatureBarOffset,
+      googleReviewsUrl: settings.googleReviewsUrl,
+      whatsappUrl: settings.whatsappUrl,
       projects,
     };
   } catch (error) {
@@ -152,6 +154,8 @@ export async function loadHomePageData() {
       stats: buildStats({}),
       styles: {} as Record<string, string>,
       sectionFeatureBarOffset: "0",
+      googleReviewsUrl: "",
+      whatsappUrl: "",
       projects: [],
     };
   }

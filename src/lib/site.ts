@@ -22,6 +22,10 @@ export interface SiteSettingsMap {
   address: string;
   instagram: string;
   googleReviewsUrl: string;
+  branchGazipasaPhone: string;
+  branchGazipasaAddress: string;
+  branchTurgutozalPhone: string;
+  branchTurgutozalAddress: string;
   workHoursWeekdays: string;
   workHoursSunday: string;
   /** Header location strip (Adana) */
@@ -86,6 +90,10 @@ function mapSettings(
     address: map.address || ADDRESS,
     instagram: map.instagram || INSTAGRAM,
     googleReviewsUrl: map.google_reviews_url || GOOGLE_BUSINESS_URL,
+    branchGazipasaPhone: map.branch_gazipasa_phone || "",
+    branchGazipasaAddress: map.branch_gazipasa_address || "",
+    branchTurgutozalPhone: map.branch_turgutozal_phone || "",
+    branchTurgutozalAddress: map.branch_turgutozal_address || "",
     workHoursWeekdays: map.work_hours_weekdays || WORK_HOURS.weekdays,
     workHoursSunday: map.work_hours_sunday || WORK_HOURS.sunday,
     locationLabel: map.location_label || LOCATION_LABEL,
@@ -109,6 +117,10 @@ const fallbackSettings = (): SiteSettingsMap => ({
   address: ADDRESS,
   instagram: INSTAGRAM,
   googleReviewsUrl: GOOGLE_BUSINESS_URL,
+  branchGazipasaPhone: "",
+  branchGazipasaAddress: "",
+  branchTurgutozalPhone: "",
+  branchTurgutozalAddress: "",
   workHoursWeekdays: WORK_HOURS.weekdays,
   workHoursSunday: WORK_HOURS.sunday,
   locationLabel: LOCATION_LABEL,

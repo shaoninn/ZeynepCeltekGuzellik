@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/db";
 import { memoryCache } from "@/lib/memory-cache";
 import { getSiteUrl } from "@/lib/seo";
+import { PACKAGES } from "@/lib/constants";
 
 /** Cached sitemap — avoid force-dynamic crawler storms on Hostinger. */
 export const revalidate = 3600;
@@ -14,9 +15,16 @@ async function buildSitemap(): Promise<MetadataRoute.Sitemap> {
     "",
     "/hakkimizda",
     "/hizmetler",
+    "/paketler",
+    "/kampanyalar",
     "/projeler",
     "/blog",
     "/iletisim",
+    "/randevu/lazer-epilasyon-adana",
+    "/randevu/cilt-bakimi-adana",
+    "/randevu/alex-lazer-adana",
+    "/randevu/bolgesel-incelme-adana",
+    "/randevu/kirpik-lifting-adana",
     "/kvkk",
     "/gizlilik-politikasi",
     "/kullanim-kosullari",
@@ -32,9 +40,22 @@ async function buildSitemap(): Promise<MetadataRoute.Sitemap> {
     priority:
       path === ""
         ? 1
-        : path === "/hizmetler" || path === "/projeler" || path === "/iletisim"
+        : path === "/hizmetler" ||
+            path === "/paketler" ||
+            path === "/kampanyalar" ||
+            path === "/projeler" ||
+            path === "/iletisim" ||
+            path.startsWith("/randevu/")
           ? 0.9
-          : 0.6,
+          : path === "/kvkk" ||
+              path === "/gizlilik-politikasi" ||
+              path === "/kullanim-kosullari" ||
+              path === "/mesafeli-satis" ||
+              path === "/iade-politikasi" ||
+              path === "/teslimat" ||
+              path === "/cerez-politikasi"
+            ? 0.3
+            : 0.6,
   }));
 
   try {
@@ -59,6 +80,12 @@ async function buildSitemap(): Promise<MetadataRoute.Sitemap> {
 
     return [
       ...staticRoutes,
+      ...PACKAGES.map((p) => ({
+        url: `${base}/paketler/${p.slug}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.75,
+      })),
       ...categories.map((c) => ({
         url: `${base}/hizmetler/${c.slug}`,
         lastModified: c.updatedAt,
@@ -66,7 +93,7 @@ async function buildSitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.8,
       })),
       ...products.map((p) => ({
-        url: `${base}/urun/${p.slug}`,
+        url: `${base}/hizmet/${p.slug}`,
         lastModified: p.updatedAt,
         changeFrequency: "weekly" as const,
         priority: 0.6,
@@ -86,7 +113,15 @@ async function buildSitemap(): Promise<MetadataRoute.Sitemap> {
     ];
   } catch (error) {
     console.error("sitemap: DB unavailable, returning static routes only", error);
-    return staticRoutes;
+    return [
+      ...staticRoutes,
+      ...PACKAGES.map((p) => ({
+        url: `${base}/paketler/${p.slug}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.75,
+      })),
+    ];
   }
 }
 

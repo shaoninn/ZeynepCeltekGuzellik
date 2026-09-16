@@ -3,6 +3,19 @@
 import { useRouter } from "next/navigation";
 import { apiJson } from "@/components/admin/AdminForm";
 
+function phoneToWaUrl(phone: string): string | null {
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length < 10) return null;
+  const n = digits.startsWith("90")
+    ? digits
+    : digits.startsWith("0")
+      ? `90${digits.slice(1)}`
+      : digits.length === 10
+        ? `90${digits}`
+        : digits;
+  return `https://wa.me/${n}`;
+}
+
 interface Msg {
   id: string;
   name: string;
@@ -50,7 +63,18 @@ export function MessagesClient({ initial }: { initial: Msg[] }) {
                 )}
               </p>
               <p className="text-xs text-[#666]">
-                {m.phone}
+                {phoneToWaUrl(m.phone) ? (
+                  <a
+                    href={phoneToWaUrl(m.phone)!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-orange hover:underline"
+                  >
+                    WhatsApp {m.phone}
+                  </a>
+                ) : (
+                  m.phone
+                )}
                 {m.email ? ` · ${m.email}` : ""} ·{" "}
                 {new Date(m.createdAt).toLocaleString("tr-TR")}
               </p>

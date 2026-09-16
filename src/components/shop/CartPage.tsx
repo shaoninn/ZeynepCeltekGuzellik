@@ -3,49 +3,90 @@
 import { useState, type FormEvent } from "react";
 import { SiteLink } from "@/components/ui/SiteLink";
 import Image from "next/image";
-import { Trash2, Minus, Plus, ShoppingBag, CheckCircle } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import {
-  selectCartItems,
-  selectCartTotal,
-  removeFromCart,
-  updateQuantity,
-  clearCart,
-} from "@/store/cartSlice";
+import { Trash2, Minus, Plus, ShoppingBag } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { CartStepper } from "@/components/shop/CartStepper";
+import {
+  BRANCH_OPTIONS,
+  branchLabel,
+  branchWhatsAppUrl,
+} from "@/lib/constants";
+import { captureUtm, readStoredUtm } from "@/lib/analytics";
+
+const DAY_OPTIONS = [
+  { value: "", label: "Farketmez" },
+  { value: "Bugün", label: "Bugün" },
+  { value: "Yarın", label: "Yarın" },
+  { value: "Hafta içi", label: "Hafta içi" },
+  { value: "Hafta sonu", label: "Hafta sonu" },
+] as const;
+
+const TIME_OPTIONS = [
+  { value: "", label: "Farketmez" },
+  { value: "09:00–12:00", label: "09:00–12:00" },
+  { value: "12:00–15:00", label: "12:00–15:00" },
+  { value: "15:00–19:00", label: "15:00–19:00" },
+] as const;
+
+const SLOT_CHIPS = [
+  { day: "Bugün", label: "Bugün" },
+  { day: "Yarın", label: "Yarın" },
+  { day: "Hafta sonu", label: "Hafta sonu" },
+] as const;
+
+function buildAppointmentNote(input: {
+  branchId: string;
+  preferredDay: string;
+  preferredTime: string;
+  note: string;
+}): string {
+  return [
+    `Şube: ${branchLabel(input.branchId)}`,
+    input.preferredDay ? `Tercih gün: ${input.preferredDay}` : null,
+    input.preferredTime ? `Tercih saat: ${input.preferredTime}` : null,
+    input.note.trim() || null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
 
 export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
-  const dispatch = useAppDispatch();
-  const items = useAppSelector(selectCartItems);
-  const total = useAppSelector(selectCartTotal);
+  const {
+    items,
+    total,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
+  } = useCart();
 
   const [step, setStep] = useState<1 | 2>(1);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
+  const [branchId, setBranchId] = useState("turgutozal");
+  const [preferredDay, setPreferredDay] = useState("");
+  const [preferredTime, setPreferredTime] = useState("");
   const [note, setNote] = useState("");
   const [kvkkAccepted, setKvkkAccepted] = useState(false);
   const [wantPayment, setWantPayment] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [orderNo, setOrderNo] = useState<string | null>(null);
-  const [emailSent, setEmailSent] = useState(false);
 
   function payloadItems() {
     return items.map((i) => ({
       productId: i.productId,
       quantity: i.quantity,
-      widthCm: i.widthCm ?? null,
-      heightCm: i.heightCm ?? null,
-      color: i.color ?? null,
+      widthCm: null,
+      heightCm: null,
+      color: null,
       optionsNote: i.optionsNote ?? null,
     }));
   }
 
   async function createOrder(source: "WEB" | "WHATSAPP") {
+    captureUtm();
     const res = await fetch("/api/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -53,79 +94,29 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
         name,
         phone,
         email,
-        address,
-        note,
+        address: null,
+        note: buildAppointmentNote({
+          branchId,
+          preferredDay,
+          preferredTime,
+          note,
+        }),
         kvkkAccepted,
         wantPayment,
         source,
+        branch: branchId,
+        preferredDay,
+        preferredTime,
+        utm: readStoredUtm(),
         items: payloadItems(),
       }),
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Sipariş oluşturulamadı");
+    if (!res.ok) throw new Error(data.error || "Talep oluşturulamadı");
     return data as {
       order: { orderNo: string };
       emailSent?: boolean;
     };
-  }
-
-  if (orderNo) {
-    const waText = encodeURIComponent(
-      `Merhaba, ${orderNo} numaralı teklif talebimi teyit etmek istiyorum.\nAd: ${name}\nTelefon: ${phone}`
-    );
-    const printUrl = `/teklif/${encodeURIComponent(orderNo)}/yazdir?phone=${encodeURIComponent(phone)}`;
-    return (
-      <div className="text-center py-16 max-w-lg mx-auto">
-        <CartStepper current={3} />
-        <CheckCircle size={64} className="mx-auto text-orange mb-4 mt-8" />
-        <h2 className="font-display text-2xl font-bold text-white mb-2">
-          Teklif Talebiniz Alındı
-        </h2>
-        <p className="text-muted mb-2">
-          Talep numaranız:{" "}
-          <span className="text-orange font-semibold">{orderNo}</span>
-        </p>
-        <p className="text-sm text-muted mb-2">
-          Online ödeme henüz aktif değil; kaydınız teklif talebi olarak alındı.
-          İleride havale / sanal POS buradan bağlanacak.
-        </p>
-        {emailSent && (
-          <p className="text-sm text-orange mb-4">
-            Özet e-posta adresinize gönderildi.
-          </p>
-        )}
-        <div className="rounded-xl border border-border bg-card p-4 text-left text-sm text-muted mb-6 space-y-1">
-          <p className="text-white font-semibold">Ödeme durumu</p>
-          <p>Ödenmedi (teklif aşaması)</p>
-          <p className="text-xs">
-            Onay sonrası size havale bilgisi veya güvenli ödeme linki
-            iletilecek.
-          </p>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap">
-          <a
-            href={`${whatsappUrl}?text=${waText}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary justify-center"
-          >
-            WhatsApp ile Teyit Et
-          </a>
-          <Button href={`/odeme?orderNo=${encodeURIComponent(orderNo)}&phone=${encodeURIComponent(phone)}`} variant="outline">
-            Ödeme bilgisi
-          </Button>
-          <Button href={printUrl} variant="outline">
-            PDF / Yazdır
-          </Button>
-          <Button href="/tekliflerim" variant="outline">
-            Tekliflerim
-          </Button>
-          <Button href="/hizmetler" variant="outline">
-            Alışverişe Devam
-          </Button>
-        </div>
-      </div>
-    );
   }
 
   if (items.length === 0) {
@@ -133,10 +124,10 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
       <div className="text-center py-16">
         <ShoppingBag size={64} className="mx-auto text-muted mb-4" />
         <h2 className="font-display text-2xl font-bold text-white mb-2">
-          Teklif Listeniz Boş
+          Randevu Listeniz Boş
         </h2>
         <p className="text-muted mb-6">
-          Henüz listeye ürün eklemediniz.
+          Henüz listeye hizmet veya paket eklemediniz.
         </p>
         <Button href="/hizmetler">Hizmetleri İncele</Button>
       </div>
@@ -149,12 +140,12 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
     setError(null);
     try {
       const data = await createOrder("WEB");
-      setOrderNo(data.order.orderNo);
-      setEmailSent(Boolean(data.emailSent));
-      dispatch(clearCart());
+      window.location.assign(
+        `/tesekkur/teklif?orderNo=${encodeURIComponent(data.order.orderNo)}&branch=${encodeURIComponent(branchId)}`
+      );
+      clearCart();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Sipariş oluşturulamadı");
-    } finally {
+      setError(err instanceof Error ? err.message : "Talep oluşturulamadı");
       setLoading(false);
     }
   }
@@ -174,26 +165,21 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
       const data = await createOrder("WHATSAPP");
       const orderNoValue = data.order.orderNo;
       const waText = encodeURIComponent(
-        `Merhaba, ${orderNoValue} numaralı teklif talebim:\n\n${items
-          .map((i) => {
-            const dims = [
-              i.widthCm ? `${i.widthCm}cm` : null,
-              i.heightCm ? `${i.heightCm}cm` : null,
-              i.color || null,
-            ]
-              .filter(Boolean)
-              .join(" ");
-            return `- ${i.name} x${i.quantity}${dims ? ` (${dims})` : ""}`;
-          })
-          .join("\n")}\n\nAd: ${name}\nTel: ${phone}\nToplam (tahmini): ${formatPrice(total)}`
+        `Merhaba, ${orderNoValue} numaralı randevu talebim:\n\n${items
+          .map((i) => `- ${i.name} x${i.quantity}`)
+          .join("\n")}\n\nAd: ${name}\nTel: ${phone}\nŞube: ${branchLabel(branchId)}\nToplam (tahmini): ${formatPrice(total)}`
       );
-      dispatch(clearCart());
-      window.open(`${whatsappUrl}?text=${waText}`, "_blank", "noopener,noreferrer");
-      setOrderNo(orderNoValue);
-      setEmailSent(Boolean(data.emailSent));
+      clearCart();
+      window.open(
+        `${branchWhatsAppUrl(branchId)}?text=${waText}`,
+        "_blank",
+        "noopener,noreferrer"
+      );
+      window.location.assign(
+        `/tesekkur/teklif?orderNo=${encodeURIComponent(orderNoValue)}&branch=${encodeURIComponent(branchId)}`
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : "Kayıt oluşturulamadı");
-    } finally {
       setLoading(false);
     }
   }
@@ -220,13 +206,17 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-xs text-orange/30 font-bold">GR</span>
+                        <span className="text-xs text-orange/30 font-bold">ZC</span>
                       </div>
                     )}
                   </div>
                   <div className="flex-1 min-w-0 space-y-2">
                     <SiteLink
-                      href={`/urun/${item.slug}`}
+                      href={
+                        item.productId.startsWith("package:")
+                          ? `/paketler/${item.slug}`
+                          : `/hizmet/${item.slug}`
+                      }
                       className="text-sm font-semibold text-white hover:text-orange transition-colors"
                     >
                       {item.name}
@@ -245,27 +235,23 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                   </div>
                   <div className="flex sm:flex-col items-center sm:items-end justify-between gap-3">
                     <button
-                      onClick={() => dispatch(removeFromCart(item.lineId))}
-                      className="text-muted hover:text-red-400 transition-colors"
+                      onClick={() => removeFromCart(item.lineId)}
+                      className="min-w-11 min-h-11 flex items-center justify-center text-muted hover:text-red-400 transition-colors"
                       aria-label="Kaldır"
                       type="button"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={18} />
                     </button>
                     <div className="flex items-center border border-border">
                       <button
                         type="button"
                         onClick={() =>
-                          dispatch(
-                            updateQuantity({
-                              lineId: item.lineId,
-                              quantity: item.quantity - 1,
-                            })
-                          )
+                          updateQuantity(item.lineId, item.quantity - 1)
                         }
-                        className="w-8 h-8 flex items-center justify-center text-muted hover:text-orange"
+                        className="min-w-11 min-h-11 flex items-center justify-center text-muted hover:text-orange"
+                        aria-label="Azalt"
                       >
-                        <Minus size={14} />
+                        <Minus size={16} />
                       </button>
                       <span className="w-8 text-center text-sm">
                         {item.quantity}
@@ -273,16 +259,12 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                       <button
                         type="button"
                         onClick={() =>
-                          dispatch(
-                            updateQuantity({
-                              lineId: item.lineId,
-                              quantity: item.quantity + 1,
-                            })
-                          )
+                          updateQuantity(item.lineId, item.quantity + 1)
                         }
-                        className="w-8 h-8 flex items-center justify-center text-muted hover:text-orange"
+                        className="min-w-11 min-h-11 flex items-center justify-center text-muted hover:text-orange"
+                        aria-label="Artır"
                       >
-                        <Plus size={14} />
+                        <Plus size={16} />
                       </button>
                     </div>
                   </div>
@@ -292,15 +274,15 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <button
                   type="button"
-                  onClick={() => dispatch(clearCart())}
-                  className="text-sm text-muted hover:text-red-400 transition-colors"
+                  onClick={() => clearCart()}
+                  className="min-h-11 text-sm text-muted hover:text-red-400 transition-colors"
                 >
                   Listeyi Temizle
                 </button>
                 <button
                   type="button"
                   onClick={() => setStep(2)}
-                  className="px-5 py-2.5 rounded-lg bg-orange text-black font-semibold text-sm hover:bg-orange-dark transition-colors"
+                  className="min-h-11 px-5 py-2.5 rounded-lg bg-orange text-black font-semibold text-sm hover:bg-orange-dark transition-colors"
                 >
                   Bilgilere geç
                 </button>
@@ -316,7 +298,7 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="text-sm text-orange hover:underline"
+                className="min-h-11 text-sm text-orange hover:underline"
               >
                 ← Listeye dön
               </button>
@@ -325,9 +307,9 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
         </div>
 
         <div className="lg:col-span-1 space-y-6">
-          <div className="p-6 bg-card border border-border sticky top-24 rounded-xl">
+          <div className="p-6 bg-card border border-border lg:sticky lg:top-[calc(3.5rem+0.5rem)] rounded-xl">
             <h3 className="font-display text-lg font-bold text-white mb-4">
-              Teklif Özeti
+              Randevu özeti
             </h3>
             <div className="space-y-2 mb-4">
               <div className="flex justify-between text-sm">
@@ -335,8 +317,8 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                 <span className="text-white">{formatPrice(total)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted">Randevu / başlangıç</span>
-                <span className="text-white">Teklif ile</span>
+                <span className="text-muted">Randevu</span>
+                <span className="text-white">Onay ile</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted">Ödeme</span>
@@ -356,7 +338,7 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className="w-full py-3 bg-orange text-black text-center font-semibold uppercase tracking-wider hover:bg-orange-dark transition-colors rounded-lg"
+                className="w-full min-h-11 py-3 bg-orange text-black text-center font-semibold uppercase tracking-wider hover:bg-orange-dark transition-colors rounded-lg"
               >
                 Devam — Bilgiler
               </button>
@@ -365,12 +347,12 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="text-xs text-orange hover:underline mb-1"
+                  className="text-xs text-orange hover:underline mb-1 min-h-11"
                 >
                   ← Listeye dön
                 </button>
                 <p className="text-xs text-muted mb-2">
-                  Teklif listesi kaydı (online ödeme yok). E-posta verirseniz özet
+                  Randevu kaydı (online ödeme yok). E-posta verirseniz özet
                   gönderilir.
                 </p>
                 {error && (
@@ -380,7 +362,7 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                 )}
                 <div>
                   <label
-                    className="block text-xs text-muted mb-1"
+                    className="block text-sm text-muted mb-2"
                     htmlFor="o-name"
                   >
                     Ad Soyad *
@@ -388,6 +370,8 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                   <input
                     id="o-name"
                     className="admin-input"
+                    name="name"
+                    autoComplete="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
@@ -395,7 +379,7 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                 </div>
                 <div>
                   <label
-                    className="block text-xs text-muted mb-1"
+                    className="block text-sm text-muted mb-2"
                     htmlFor="o-phone"
                   >
                     Telefon *
@@ -403,6 +387,9 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                   <input
                     id="o-phone"
                     className="admin-input"
+                    type="tel"
+                    name="tel"
+                    autoComplete="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     required
@@ -410,7 +397,86 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                 </div>
                 <div>
                   <label
-                    className="block text-xs text-muted mb-1"
+                    className="block text-sm text-muted mb-2"
+                    htmlFor="o-branch"
+                  >
+                    Şube *
+                  </label>
+                  <select
+                    id="o-branch"
+                    className="admin-input"
+                    value={branchId}
+                    onChange={(e) => setBranchId(e.target.value)}
+                    required
+                  >
+                    {BRANCH_OPTIONS.map((b) => (
+                      <option key={b.id} value={b.id}>
+                        {b.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {SLOT_CHIPS.map((chip) => (
+                    <button
+                      key={chip.day}
+                      type="button"
+                      onClick={() => setPreferredDay(chip.day)}
+                      className={`min-h-11 px-3 text-sm border rounded-sm transition-colors ${
+                        preferredDay === chip.day
+                          ? "border-orange bg-orange text-ink"
+                          : "border-border text-muted hover:text-orange hover:border-orange"
+                      }`}
+                    >
+                      {chip.label}
+                    </button>
+                  ))}
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label
+                      className="block text-sm text-muted mb-2"
+                      htmlFor="o-day"
+                    >
+                      Tercih gün
+                    </label>
+                    <select
+                      id="o-day"
+                      className="admin-input"
+                      value={preferredDay}
+                      onChange={(e) => setPreferredDay(e.target.value)}
+                    >
+                      {DAY_OPTIONS.map((d) => (
+                        <option key={d.label} value={d.value}>
+                          {d.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label
+                      className="block text-sm text-muted mb-2"
+                      htmlFor="o-time"
+                    >
+                      Saat aralığı
+                    </label>
+                    <select
+                      id="o-time"
+                      className="admin-input"
+                      value={preferredTime}
+                      onChange={(e) => setPreferredTime(e.target.value)}
+                    >
+                      {TIME_OPTIONS.map((t) => (
+                        <option key={t.label} value={t.value}>
+                          {t.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    className="block text-sm text-muted mb-2"
                     htmlFor="o-email"
                   >
                     E-posta (özet için önerilir)
@@ -425,21 +491,7 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                 </div>
                 <div>
                   <label
-                    className="block text-xs text-muted mb-1"
-                    htmlFor="o-address"
-                  >
-                    Adres (opsiyonel)
-                  </label>
-                  <input
-                    id="o-address"
-                    className="admin-input"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label
-                    className="block text-xs text-muted mb-1"
+                    className="block text-sm text-muted mb-2"
                     htmlFor="o-note"
                   >
                     Ek not
@@ -451,49 +503,48 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                     onChange={(e) => setNote(e.target.value)}
                   />
                 </div>
-            <label className="flex items-start gap-2 text-xs text-muted cursor-pointer">
-              <input
-                type="checkbox"
-                checked={wantPayment}
-                onChange={(e) => setWantPayment(e.target.checked)}
-                className="mt-0.5"
-              />
-              <span>
-                Onay sonrası havale / ödeme bilgisini de istiyorum (ödeme durumu
-                “bekleniyor” olur).
-              </span>
-            </label>
-            <label className="flex items-start gap-2 text-xs text-muted cursor-pointer">
-              <input
-                type="checkbox"
-                checked={kvkkAccepted}
-                onChange={(e) => setKvkkAccepted(e.target.checked)}
-                className="mt-0.5"
-                required
-              />
-              <span>
-                <SiteLink
-                  href="/kvkk"
-                  className="text-orange hover:underline"
-                >
-                  KVKK metnini
-                </SiteLink>{" "}
-                okudum, teklif iletişimi için verilerimin işlenmesini kabul
-                ediyorum.
-              </span>
-            </label>
+                <label className="flex items-start gap-2 text-sm text-muted leading-relaxed cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={wantPayment}
+                    onChange={(e) => setWantPayment(e.target.checked)}
+                    className="mt-0.5"
+                  />
+                  <span>
+                    Onay sonrası havale / ödeme bilgisini de istiyorum.
+                  </span>
+                </label>
+                <label className="flex items-start gap-2 text-sm text-muted leading-relaxed cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={kvkkAccepted}
+                    onChange={(e) => setKvkkAccepted(e.target.checked)}
+                    className="mt-0.5"
+                    required
+                  />
+                  <span>
+                    <SiteLink
+                      href="/kvkk"
+                      className="text-orange hover:underline"
+                    >
+                      KVKK metnini
+                    </SiteLink>{" "}
+                    okudum, randevu iletişimi için verilerimin işlenmesini kabul
+                    ediyorum.
+                  </span>
+                </label>
                 <button
                   type="submit"
                   disabled={loading || !kvkkAccepted}
-                  className="w-full py-3 bg-orange text-black text-center font-semibold uppercase tracking-wider hover:bg-orange-dark transition-colors disabled:opacity-50 rounded-lg"
+                  className="w-full min-h-11 py-3 bg-orange text-black text-center font-semibold uppercase tracking-wider hover:bg-orange-dark transition-colors disabled:opacity-50 rounded-lg"
                 >
-                  {loading ? "Kaydediliyor..." : "Teklif Talebi Oluştur"}
+                  {loading ? "Kaydediliyor..." : "Randevu Talebi Oluştur"}
                 </button>
                 <button
                   type="button"
                   disabled={loading}
                   onClick={submitWhatsApp}
-                  className="block w-full py-3 border border-border text-center text-sm text-muted hover:text-orange hover:border-orange transition-colors disabled:opacity-50 rounded-lg"
+                  className="block w-full min-h-11 py-3 border border-border text-center text-sm text-muted hover:text-orange hover:border-orange transition-colors disabled:opacity-50 rounded-lg"
                 >
                   Kaydet ve WhatsApp ile aç
                 </button>

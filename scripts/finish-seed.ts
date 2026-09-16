@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { prisma } from "../src/lib/db";
-import { NAV_LINKS } from "../src/lib/constants";
+import { NAV_LINKS, PACKAGES } from "../src/lib/constants";
 
 async function main() {
   // Finish incomplete seed pieces safely (upsert)
@@ -57,8 +57,28 @@ async function main() {
         badgeBestseller: i % 3 === 0,
         badgeSale: i % 5 === 0,
         salePrice: i % 5 === 0 ? 999 : null,
-        shippingLabel: i % 2 === 0 ? "3-5 iş günü" : "Keşif sonrası",
+        shippingLabel: "",
       },
+    });
+  }
+
+  for (const [index, pkg] of PACKAGES.entries()) {
+    await prisma.servicePackage.upsert({
+      where: { slug: pkg.slug },
+      create: {
+        slug: pkg.slug,
+        name: pkg.name,
+        price: pkg.price,
+        sessions: pkg.sessions,
+        featured: pkg.featured,
+        badge: "badge" in pkg ? pkg.badge : null,
+        image: pkg.image,
+        shortDesc: pkg.shortDesc,
+        items: JSON.stringify([...pkg.items]),
+        sortOrder: index,
+        isActive: true,
+      },
+      update: {},
     });
   }
 

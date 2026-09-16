@@ -35,7 +35,7 @@ export function RecentlyViewed({ allProducts }: RecentlyViewedProps) {
   return (
     <section className="mt-12">
       <h2 className="font-display text-xl font-bold text-white mb-4">
-        Son baktıklarınız
+        Son baktığınız hizmetler
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
         {products.slice(0, 6).map((product) => (

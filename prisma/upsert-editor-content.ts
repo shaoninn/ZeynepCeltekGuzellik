@@ -33,61 +33,61 @@ const keys: { key: string; title: string; content: string }[] = [
     title: "Neden Biz Başlık",
     content: "Neden Zeynep Çeltek Salon?",
   },
-  { key: "why_us_1", title: "Neden Biz 1", content: "MEB Onaylı Belge" },
-  { key: "why_us_2", title: "Neden Biz 2", content: "Canlı Manken Uygulaması" },
-  { key: "why_us_3", title: "Neden Biz 3", content: "Birebir Pratik Hizmet" },
-  { key: "why_us_4", title: "Neden Biz 4", content: "Uluslararası Sertifika" },
-  { key: "why_us_5", title: "Neden Biz 5", content: "Uzman Eğitmen Kadrosu" },
-  { key: "why_us_6", title: "Neden Biz 6", content: "Kariyer Danışmanlığı" },
+  { key: "why_us_1", title: "Neden Biz 1", content: "Uzman Kadro" },
+  { key: "why_us_2", title: "Neden Biz 2", content: "Hijyen Garantisi" },
+  { key: "why_us_3", title: "Neden Biz 3", content: "Şeffaf Fiyat" },
+  { key: "why_us_4", title: "Neden Biz 4", content: "Kişiye Özel Bakım" },
+  { key: "why_us_5", title: "Neden Biz 5", content: "Modern Cihazlar" },
+  { key: "why_us_6", title: "Neden Biz 6", content: "Kolay Randevu" },
   {
     key: "feature_bar_1_title",
     title: "Özellik Çubuğu 1",
-    content: "Uzman Eğitmen",
+    content: "Uzman Kadro",
   },
   {
     key: "feature_bar_1_desc",
     title: "Özellik Çubuğu 1 Açıklama",
-    content: "Alanında deneyimli eğitmenlerle birebir rehberlik.",
+    content: "Deneyimli güzellik uzmanlarıyla kişiye özel rehberlik.",
   },
   {
     key: "feature_bar_2_title",
     title: "Özellik Çubuğu 2",
-    content: "Uluslararası Sertifika",
+    content: "Güvenli & Hijyenik",
   },
   {
     key: "feature_bar_2_desc",
     title: "Özellik Çubuğu 2 Açıklama",
-    content: "Geçerliliği yüksek sertifika programları.",
+    content: "Klinik standartlarda steril uygulama ortamı.",
   },
   {
     key: "feature_bar_3_title",
     title: "Özellik Çubuğu 3",
-    content: "Uygulamalı Hizmet",
+    content: "Kişiye Özel Çözümler",
   },
   {
     key: "feature_bar_3_desc",
     title: "Özellik Çubuğu 3 Açıklama",
-    content: "Teori + canlı manken uygulaması odaklı müfredat.",
+    content: "İhtiyaca göre planlanan bakım protokolleri.",
   },
   {
     key: "feature_bar_4_title",
     title: "Özellik Çubuğu 4",
-    content: "7/24 Destek",
+    content: "Seans Sonrası Takip",
   },
   {
     key: "feature_bar_4_desc",
     title: "Özellik Çubuğu 4 Açıklama",
-    content: "Hizmet öncesi ve sonrası danışmanlık hattımız açık.",
+    content: "Her seans sonrası takip ve destek.",
   },
   {
     key: "feature_bar_5_title",
     title: "Özellik Çubuğu 5",
-    content: "MEB Onaylı Belge",
+    content: "Şeffaf Fiyat",
   },
   {
     key: "feature_bar_5_desc",
     title: "Özellik Çubuğu 5 Açıklama",
-    content: "Uygun programlarda resmi belgelendirme süreci.",
+    content: "Güncel fiyat listesiyle net bilgilendirme.",
   },
   {
     key: "footer_blurb",
@@ -99,6 +99,36 @@ const keys: { key: string; title: string; content: string }[] = [
     key: "about_headline",
     title: "Hakkımızda Başlık",
     content: "GÜZELLİĞİ BİLİMLE,\nSANATA DÖNÜŞTÜRÜYORUZ",
+  },
+  {
+    key: "about_intro",
+    title: "Hakkımızda Giriş",
+    content:
+      "Zeynep Çeltek Güzellik, Adana’da Gazi Paşa (Seyhan) ve Turgut Özal (Çukurova) şubelerinde cilt bakımı, lazer epilasyon, bölgesel incelme, kirpik-kaş ve Alex lazer hizmetleri sunar.\n\nAmacımız herkese aynı uygulamayı yapmak değil; cilt tipinize, yaşam tarzınıza ve hedeflerinize uygun protokolü birlikte seçmek. Şeffaf fiyat listesi, hijyenik ortam ve deneyimli kadro ile yanınızdayız.\n\nRandevu için WhatsApp veya telefonla ulaşabilir; hizmet ve paket seçimlerinizi sitemizdeki randevu sepetinden de iletebilirsiniz.",
+  },
+  {
+    key: "about_philosophy",
+    title: "Çalışma İlkelerimiz",
+    content:
+      "Her seansı standart bir işlem değil, planlı bir bakım adımı olarak görürüz. Hijyen, bilgilendirme ve kişiye özel yaklaşım; randevudan önce, uygulama sırasında ve sonrasında tuttuğumuz somut kurallardır.\n\nMisafirlerimize ne yapılacağını ve neden tercih edildiğini net anlatırız.",
+  },
+  {
+    key: "mission",
+    title: "Misyon",
+    content:
+      "Misafirlerimizin kendilerini güvende ve özel hissettiği, hijyenik ve profesyonel bir güzellik deneyimi sunmak.\n\nAdana’daki her iki şubemizde de aynı standartlarla karşılamak; doğru analizi, doğru uygulamayı ve takip edilebilir seans planını bir araya getirmek istiyoruz.",
+  },
+  {
+    key: "vision",
+    title: "Vizyon",
+    content:
+      "Adana’da güvenilir güzellik bakımında referans salon olmak; kişiye özel protokollerle kalıcı memnuniyet yaratmak.\n\nTeknolojiyi ve uzmanlığı birleştirerek sürdürülebilir sonuçlara odaklanan bir marka olarak büyümeyi hedefliyoruz.",
+  },
+  {
+    key: "about_why_us",
+    title: "Neden Zeynep Çeltek",
+    content:
+      "İki şubeli konum avantajı, güncel cihaz parkı ve şeffaf fiyatlandırma ile randevu sürecini sade tutuyoruz. Lazer epilasyondan cilt bakımına kadar aynı çatı altında planlı bakım sunarız.",
   },
   {
     key: "about_image_1",
@@ -192,17 +222,17 @@ const keys: { key: string; title: string; content: string }[] = [
   {
     key: "process_3_desc",
     title: "Süreç 3 Açıklama",
-    content: "Canlı manken üzerinde birebir pratik.",
+    content: "Uzman kadro ile kişiye özel uygulama.",
   },
   {
     key: "process_4_title",
     title: "Süreç 4 Başlık",
-    content: "Belgelendirme",
+    content: "Takip",
   },
   {
     key: "process_4_desc",
     title: "Süreç 4 Açıklama",
-    content: "Sertifika / MEB onaylı belge süreci.",
+    content: "Seans sonrası kontrol ve bakım önerileri.",
   },
   {
     key: "faq_section_title",
@@ -212,24 +242,24 @@ const keys: { key: string; title: string; content: string }[] = [
   {
     key: "faq_1_q",
     title: "SSS 1 Soru",
-    content: "Hizmetler uygulamalı mı?",
+    content: "Randevu nasıl alınır?",
   },
   {
     key: "faq_1_a",
     title: "SSS 1 Cevap",
     content:
-      "Evet. Tüm hizmetlerde canlı manken üzerinde eğitmen ile birebir uygulama yapılır.",
+      "WhatsApp, telefon veya sitedeki randevu sepeti üzerinden teklif / randevu talebi oluşturabilirsiniz.",
   },
   {
     key: "faq_2_q",
     title: "SSS 2 Soru",
-    content: "MEB onaylı belge hangi programlarda var?",
+    content: "Hangi hizmetler sunuluyor?",
   },
   {
     key: "faq_2_a",
     title: "SSS 2 Cevap",
     content:
-      "Protez tırnak, kalıcı makyaj, lazer-iğneli epilasyon ve güzellik uzmanlığı programlarında MEB onaylı belge için sınav süreci uygulanır.",
+      "Cilt bakımı, lazer epilasyon (bayan/erkek), Alex lazer, bölgesel incelme ve kirpik-kaş uygulamaları sunuyoruz.",
   },
   {
     key: "faq_3_q",
@@ -348,7 +378,7 @@ const keys: { key: string; title: string; content: string }[] = [
     key: "services_page_intro",
     title: "Hizmetler Sayfa Açıklama",
     content:
-      "Uluslararası standartlarda uygulamalı güzellik hizmetleri. Canlı manken üzerinde birebir pratik, MEB onaylı belge ve kariyer desteği.",
+      "Adana’da cilt bakımı, lazer epilasyon, bölgesel incelme ve Alex lazer paketleri. Güncel fiyat listesi ve şeffaf bilgilendirme.",
   },
   {
     key: "project_detail_eyebrow",
@@ -454,7 +484,7 @@ const keys: { key: string; title: string; content: string }[] = [
     key: "hero_body",
     title: "Hero Açıklama",
     content:
-      "Uluslararası standartlarda uygulamalı güzellik hizmetleri. Canlı manken üzerinde birebir pratik, MEB onaylı belge ve kariyer desteği.",
+      "Adana Gazi Paşa ve Turgut Özal şubelerinde cilt bakımı, lazer epilasyon ve bölgesel incelme. Şeffaf fiyat, hijyenik ortam, kolay randevu.",
   },
   { key: "works_eyebrow", title: "Çalışmalar Üst Etiket", content: "Galeri" },
   {

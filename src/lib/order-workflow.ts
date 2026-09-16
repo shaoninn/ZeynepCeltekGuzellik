@@ -39,8 +39,6 @@ export function buildAdminWhatsAppMessage(order: {
   items: {
     productName: string;
     quantity: number;
-    widthCm?: number | null;
-    heightCm?: number | null;
     color?: string | null;
     optionsNote?: string | null;
   }[];
@@ -51,20 +49,16 @@ export function buildAdminWhatsAppMessage(order: {
     `Zeynep Çeltek Güzellik teklifiniz (${order.orderNo}) hakkında bilgi:`,
     ``,
     ...order.items.map((item) => {
-      const dims = [
-        item.widthCm != null ? `${item.widthCm}×${item.heightCm ?? "?"} cm` : null,
-        item.color || null,
-      ]
+      const extra = [item.color || null, item.optionsNote || null]
         .filter(Boolean)
         .join(" · ");
-      const extra = dims ? ` (${dims})` : "";
-      const note = item.optionsNote ? ` — ${item.optionsNote}` : "";
-      return `• ${item.productName} × ${item.quantity}${extra}${note}`;
+      const suffix = extra ? ` (${extra})` : "";
+      return `• ${item.productName} × ${item.quantity}${suffix}`;
     }),
     ``,
     `Tahmini toplam: ${formatPrice(order.total)}`,
     ``,
-    `Detay ve ölçü teyidi için dönüş yapabilir misiniz?`,
+    `Randevu teyidi için dönüş yapabilir misiniz?`,
     `Tel: ${order.phone}`,
   ];
   return lines.join("\n");

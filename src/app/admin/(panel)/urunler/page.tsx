@@ -25,17 +25,17 @@ export default async function AdminProductsPage() {
     <div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-6">
         <div>
-          <h1 className="font-display text-2xl sm:text-3xl font-bold">Ürünler</h1>
+          <h1 className="font-display text-2xl sm:text-3xl font-bold">Hizmetler</h1>
           <p className="text-sm text-[#888] mt-1">
             Tabloda fiyat / stok / aktiflik toplu güncelleyin veya Excel ile
-            yükleyin. Detaylı görsel ve özellikler için ürün detayına girin.
+            yükleyin. Detaylı görsel ve özellikler için hizmet detayına girin.
           </p>
         </div>
         <Link
           href="/admin/urunler/yeni"
           className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-orange text-white text-sm font-semibold rounded-lg hover:bg-orange-dark w-full sm:w-auto shrink-0"
         >
-          <Plus size={16} /> Yeni Ürün
+          <Plus size={16} /> Yeni hizmet
         </Link>
       </div>
 

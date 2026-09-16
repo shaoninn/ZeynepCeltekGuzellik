@@ -54,7 +54,7 @@ export default async function ProjectsPage() {
             contentKey="projects_empty"
             value={
               map.projects_empty ||
-              "Henüz yayınlanmış galeri içeriği yok. Öğrenci çalışmaları yakında eklenecek."
+              "Henüz yayınlanmış galeri içeriği yok. Uygulama görselleri yakında eklenecek."
             }
             as="p"
             block
@@ -90,12 +90,17 @@ export default async function ProjectsPage() {
                       </div>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                    {count > 1 && (
+                    {project.imageBefore ? (
+                      <span className="absolute top-3 left-3 px-2 py-1 bg-orange text-ink text-[10px] font-bold uppercase tracking-wider">
+                        Önce / Sonra
+                      </span>
+                    ) : null}
+                    {count > 1 ? (
                       <span className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 bg-black/70 text-xs text-beige border border-border">
                         <Images size={12} />
                         {count}
                       </span>
-                    )}
+                    ) : null}
                     <div className="absolute bottom-0 left-0 right-0 p-4">
                       <h2 className="font-display text-base font-bold text-white uppercase tracking-wider mb-1">
                         {project.title}

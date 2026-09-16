@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 import { z } from "zod";
 
 const productSchema = z.object({
-  name: z.string().min(2, "Ürün adı en az 2 karakter"),
+  name: z.string().min(2, "Hizmet adı en az 2 karakter"),
   slug: z.string().min(2, "Slug en az 2 karakter"),
   description: z.string().optional().nullable(),
   shortDesc: z.string().optional().nullable(),
@@ -83,6 +83,6 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    return NextResponse.json({ error: "Ürün oluşturulamadı" }, { status: 500 });
+    return NextResponse.json({ error: "Hizmet oluşturulamadı" }, { status: 500 });
   }
 }
