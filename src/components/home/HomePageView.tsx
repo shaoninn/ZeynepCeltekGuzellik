@@ -23,6 +23,9 @@ const StatsBar = dynamic(() =>
 const GallerySection = dynamic(() =>
   import("@/components/home/StatsGallery").then((m) => m.GallerySection)
 );
+const FacilitySection = dynamic(() =>
+  import("@/components/home/FacilitySection").then((m) => m.FacilitySection)
+);
 const Testimonials = dynamic(() =>
   import("@/components/home/Testimonials").then((m) => m.Testimonials)
 );
@@ -92,6 +95,12 @@ export async function HomePageView({
         styles={data.styles}
       />
       <StatsBar items={data.stats} />
+      <FacilitySection
+        projects={data.projects}
+        title={data.facilityTitle}
+        body={data.facilityBody}
+        images={data.facilityImages}
+      />
       <GallerySection
         title="Uygulamalarımız"
         images={galleryImages}

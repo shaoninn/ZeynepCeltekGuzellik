@@ -62,7 +62,7 @@ function PublicImg({
   const usePicture = isLocalPublicPath(src) && Boolean(webpSm || webp !== src);
 
   if (usePicture) {
-    const className = `absolute inset-0 h-full w-full ${imgClassName}`;
+    const className = `absolute inset-0 h-full w-full object-cover ${imgClassName}`;
     // Single download via srcSet — do not set desktop src while also listing sm source.
     if (webpSm) {
       return (

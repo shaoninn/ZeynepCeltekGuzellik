@@ -55,6 +55,11 @@ const HOME_CONTENT_KEYS = [
   "stat_3_label",
   "stat_4_value",
   "stat_4_label",
+  "facility_title",
+  "facility_body",
+  "facility_image_1",
+  "facility_image_2",
+  "facility_image_3",
 ] as const;
 
 const STYLE_BASE_KEYS = [
@@ -139,6 +144,13 @@ export async function loadHomePageData() {
       googleReviewsUrl: settings.googleReviewsUrl,
       whatsappUrl: settings.whatsappUrl,
       projects,
+      facilityTitle: map.facility_title || undefined,
+      facilityBody: map.facility_body || undefined,
+      facilityImages: [
+        map.facility_image_1,
+        map.facility_image_2,
+        map.facility_image_3,
+      ].filter(Boolean) as string[],
     };
   } catch (error) {
     console.error("loadHomePageData failed:", error);
@@ -157,6 +169,9 @@ export async function loadHomePageData() {
       googleReviewsUrl: "",
       whatsappUrl: "",
       projects: [],
+      facilityTitle: undefined,
+      facilityBody: undefined,
+      facilityImages: [],
     };
   }
 }
