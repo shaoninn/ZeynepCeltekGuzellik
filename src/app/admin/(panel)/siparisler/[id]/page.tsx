@@ -115,9 +115,13 @@ export default async function AdminOrderDetailPage({
       </div>
 
       <div className="admin-warning mb-6">
-        Bu kayıt teklif talebidir. Online ödeme iskeleti hazır; sanal POS
-        bağlanınca paymentStatus güncellenecek. Şimdilik müşteriyle telefon veya
-        WhatsApp üzerinden iletişime geçin.
+        Bu kayıt randevu / teklif talebidir. Güvenli kart ödemesi PayTR
+        altyapısıyla bağlanır; paymentStatus (PENDING → PAID) callback ile
+        güncellenir. Şimdilik müşteriyle telefon, WhatsApp veya{" "}
+        <Link href="/odeme" className="text-orange hover:underline">
+          /odeme
+        </Link>{" "}
+        üzerinden ilerleyin.
       </div>
 
       <div className="mb-6">

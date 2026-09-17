@@ -39,27 +39,33 @@ export function Footer({ settings, footerBlurb }: FooterProps) {
               <Logo size="md" />
             </div>
             <FooterBlurb value={footerBlurb} />
-            <div className="flex items-center gap-2.5 mt-4">
+            <div className="flex flex-col gap-2 mt-4">
               {INSTAGRAM_HANDLES.map((ig) => (
                 <a
                   key={ig.handle}
                   href={ig.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 flex items-center justify-center rounded-sm border border-border text-muted hover:text-orange hover:border-orange transition-colors"
-                  aria-label={ig.handle}
+                  className="inline-flex items-center gap-2 text-muted hover:text-orange transition-colors group/ig"
+                  aria-label={`Instagram ${ig.handle}`}
                 >
-                  <Camera size={15} />
+                  <span className="w-9 h-9 flex items-center justify-center rounded-sm border border-border group-hover/ig:border-orange transition-colors shrink-0">
+                    <Camera size={15} />
+                  </span>
+                  <span className="text-sm">{ig.handle}</span>
                 </a>
               ))}
               <a
                 href={settings.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 flex items-center justify-center rounded-sm border border-border text-muted hover:text-[#25D366] hover:border-[#25D366] transition-colors"
+                className="inline-flex items-center gap-2 text-muted hover:text-[#25D366] transition-colors group/wa"
                 aria-label="WhatsApp"
               >
-                <WhatsAppIcon size={15} />
+                <span className="w-9 h-9 flex items-center justify-center rounded-sm border border-border group-hover/wa:border-[#25D366] transition-colors shrink-0">
+                  <WhatsAppIcon size={15} />
+                </span>
+                <span className="text-sm">WhatsApp</span>
               </a>
             </div>
           </div>

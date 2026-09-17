@@ -22,11 +22,11 @@ const LANDINGS = {
     priceHint: "Klasik bakım, Hydrafacial ve paket seçenekleri listelenir.",
   },
   "alex-lazer-adana": {
-    title: "Adana Alex Lazer Randevu",
+    title: "Adana Epilyum Alex Lazer Randevu",
     description:
-      "Soğuk hava üflemeli Alex lazer paketleri. 3–4 bölge seçenekleri, şeffaf fiyat.",
+      "Epilyum Alex Alexandrite lazer: güçlü soğutma, cilt-kıl analizi ve kişiye özel protokol. 3–4 bölge paketleri, şeffaf fiyat.",
     href: "/hizmetler/alex-lazer",
-    cta: "Alex paketlerini gör",
+    cta: "Epilyum Alex paketlerini gör",
     priceHint: "Güncel seans ve fiyat hizmet listesinde yer alır.",
   },
   "bolgesel-incelme-adana": {

@@ -10,9 +10,9 @@ export const revalidate = 60;
 
 export const metadata = {
   alternates: { canonical: "/kampanyalar" },
-  title: "Kampanyalar & Uygulamalar | Zeynep Çeltek Güzellik",
+  title: "Galeriler | Zeynep Çeltek Güzellik",
   description:
-    "Adana Zeynep Çeltek Güzellik uygulama vitrini, öne çıkan hizmetler ve paketler. Güncel fiyatlar için hizmetler ve paketler sayfalarını inceleyin.",
+    "Adana Zeynep Çeltek Güzellik salon galerisi: uygulama görselleri, öne çıkan hizmetler ve paket önerileri.",
 };
 
 const GALLERY = [
@@ -39,9 +39,9 @@ export default async function CampaignsPage() {
           eyebrowKey="campaigns_page_eyebrow"
           titleKey="campaigns_page_title"
           introKey="campaigns_page_intro"
-          eyebrow="Kampanyalar"
-          title="Uygulamalar & Öne Çıkanlar"
-          intro="Salonumuzdaki uygulamalardan bir seçki ve öne çıkan hizmet / paket önerileri. Güncel indirim ve fiyatlar için hizmet detaylarına veya paket sayfalarına göz atın."
+          eyebrow="Galeriler"
+          title="Salonumuzdan Kareler"
+          intro="Uygulama alanlarımızdan ve bakım süreçlerimizden bir seçki. Öne çıkan hizmet ve paket önerilerine de buradan ulaşabilirsiniz."
         />
 
         {campaigns.length > 0 ? (
@@ -53,7 +53,7 @@ export default async function CampaignsPage() {
                 className="border border-orange/40 bg-card p-5 hover:border-orange transition-colors"
               >
                 <p className="text-[10px] uppercase tracking-widest text-orange mb-2">
-                  Kampanya
+                  Öne çıkan
                   {offer.endsAt
                     ? ` · ${offer.endsAt.toLocaleDateString("tr-TR")}`
                     : ""}
@@ -69,26 +69,26 @@ export default async function CampaignsPage() {
           </div>
         ) : null}
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-14">
+        <div className="max-w-5xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3 mb-14">
           {GALLERY.map((src, i) => {
             const webp = toWebpSrc(src);
             const sm = toWebpSrcMobile(src);
             return (
               <div
                 key={src}
-                className="relative aspect-[4/5] overflow-hidden border border-border bg-card"
+                className="relative aspect-[3/4] overflow-hidden border border-border bg-card"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={sm || webp}
                   srcSet={sm ? `${sm} 640w, ${webp} 1100w` : undefined}
-                  alt={`Uygulama ${i + 1}`}
-                  width={640}
-                  height={800}
+                  alt={`Galeri ${i + 1}`}
+                  width={480}
+                  height={640}
                   className="absolute inset-0 h-full w-full object-cover"
                   loading="lazy"
                   decoding="async"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 40vw, 280px"
                 />
               </div>
             );

@@ -105,6 +105,8 @@ export default async function ProductPage({ params }: Props) {
     garanti: "Sertifika",
     montaj: "Süre",
     teslimat: "Kontenjan / başlangıç",
+    randevu: "Randevu",
+    konum: "Konum",
   };
   const specOrder = [
     "sure",
@@ -115,6 +117,8 @@ export default async function ProductPage({ params }: Props) {
     "garanti",
     "montaj",
     "teslimat",
+    "randevu",
+    "konum",
   ];
   const specRows = [
     ...specOrder

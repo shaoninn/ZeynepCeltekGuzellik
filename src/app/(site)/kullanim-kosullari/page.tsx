@@ -19,8 +19,8 @@ export default function TermsPage() {
       <p>
         {COMPANY.name}; güzellik salonu hizmetleri, danışmanlık ve bakım
         uygulamaları sunar. Sitede gösterilen fiyatlar örnek / bilgilendirme
-        niteliklidir; kesin randevu koşulları görüşme sonrası netleşir. Online
-        kart ödemesi alınmayabilir; randevu onayı ile ilerlenir.
+        niteliklidir; kesin randevu koşulları görüşme sonrası netleşir. Güvenli
+        kart ödemesi PayTR üzerinden alınabilir; randevu onayı ile ilerlenir.
       </p>
       <h2>İçerik ve fikri mülkiyet</h2>
       <p>

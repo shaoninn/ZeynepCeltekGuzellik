@@ -14,8 +14,8 @@ export default function DistanceSalesPage() {
       <p>
         6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli
         Sözleşmeler Yönetmeliği kapsamında bilgilendirme metnidir.{" "}
-        {COMPANY.name} öncelikle randevu / hizmet teklifi ile çalışır; site
-        üzerinden anlık kart ödemesi alınmayabilir.
+        {COMPANY.name} öncelikle randevu / hizmet teklifi ile çalışır; onay
+        sonrası güvenli kart ödemesi PayTR ile veya havale ile tamamlanabilir.
       </p>
       <h2>Satıcı / hizmet sağlayıcı</h2>
       <p>
@@ -35,8 +35,8 @@ export default function DistanceSalesPage() {
       <p>
         Misafir randevu sepeti veya iletişim formu ile talep iletir.{" "}
         {COMPANY.name} görüşme sonrası yazılı hizmet ve ödeme bilgisi sunar.
-        Ödeme yöntemleri (havale, kapora vb.) teklifte yer alır; web sitesi kart
-        ödemesi almayabilir.
+        Ödeme yöntemleri: güvenli kart (PayTR), havale / EFT veya teklifte
+        belirtilen diğer seçeneklerdir.
       </p>
       <h2>Randevu süreci</h2>
       <p>

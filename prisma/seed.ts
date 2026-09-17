@@ -3,6 +3,7 @@ import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { hashPassword } from "../src/lib/auth";
 import { CATEGORIES, CATALOG_PRODUCTS, PACKAGES } from "../src/lib/constants";
+import { SALON_FAQS } from "../src/lib/faq";
 import { projectData } from "./projects-data";
 import { SAMPLE_BLOG_POSTS } from "./blog-data";
 import { resolveMysqlDatabaseUrl } from "../src/lib/db-url";
@@ -63,21 +64,21 @@ const PRODUCT_IMAGES: Record<string, string[]> = {
 
 const categoryDescriptions: Record<string, string> = {
   "cilt-bakimi":
-    "Klasik ve medikal cilt bakımı, Hydrafacial, karbon maske ve cilt onarım protokolleri.",
+    "Cilt tipinize göre planlanan klasik ve medikal bakım, Hydrafacial derin temizlik, karbon maske, vitamin uygulamaları ve Mikroplus yüz-boyun toparlama. Adana’daki her iki şubemizde hijyenik ortamda, uzman kadroyla uygulanır.",
   "kirpik-kas":
-    "Kirpik lifting, kaş alma ve şekillendirme ile doğal bakışlarınızı öne çıkarın.",
+    "Kirpik lifting ile doğal kıvrım ve bakış açıklığı; kaş alma ve şekillendirme ile yüz hatlarınıza uygun form. Hızlı, hassas ve bakımlı bir görünüm odaklı uygulamalar.",
   "bolgesel-incelme":
-    "G5, Emslim, heykeltıraş ve G8 ile bölgesel incelme / selülit uygulamaları.",
+    "Selülit görünümü, bölgesel yağ ve sıkılık için G5 masajı, Emslim, heykeltıraş ve G8 protokolleri. 10 seanslık paketlerle ölçülebilir, takip edilen bir plan sunarız.",
   "lazer-bayan":
-    "Bayan lazer epilasyon — tek seans ve paket seçenekleri.",
+    "Kadınlara özel lazer epilasyon: tek seans veya 8 seanslık paketler. Bölge seçimi ve seans aralığı cilt-kıl tipine göre belirlenir; hijyenik ortamda uygulanır.",
   "lazer-erkek":
-    "Erkek lazer epilasyon — bölge ve paket uygulamaları.",
+    "Erkek cilt ve kıl yapısına uygun lazer epilasyon. Gıdı, göğüs, sırt, bacak ve kemer üstü paketleriyle net fiyat ve planlı seans takibi.",
   "alex-lazer":
-    "Soğuk hava üflemeli Alex lazer paketleri — kadın ve erkek.",
+    "Epilyum Alex Alexandrite teknolojisi: kamera destekli cilt-kıl analizi ve güçlü soğutma ile konforlu uygulama. Kadın ve erkek için 5–10 seanslık paket seçenekleri.",
 };
 
 function productDescription(name: string, shortDesc: string): string {
-  return `${name} — ${shortDesc} Zeynep Çeltek Güzellik’te hijyenik ortamda ve uzman ellerde uygulanır. Randevu sepetine ekleyerek WhatsApp üzerinden rezervasyon talebi oluşturabilirsiniz; kesin saat telefon veya mesajla netleşir.`;
+  return `${name}. ${shortDesc} Zeynep Çeltek Güzellik’te (Adana — Gazi Paşa ve Turgut Özal) hijyenik ortamda, uzman kadroyla uygulanır. Randevu sepetine ekleyerek talep oluşturabilir; kesin saat WhatsApp veya telefonla netleşir.`;
 }
 
 const siteContent = [
@@ -131,55 +132,55 @@ const siteContent = [
     key: "about_intro",
     title: "Hakkımızda Giriş",
     content:
-      "Zeynep Çeltek Güzellik, Adana’da Gazi Paşa (Seyhan) ve Turgut Özal (Çukurova) şubelerinde cilt bakımı, lazer epilasyon, bölgesel incelme, kirpik-kaş ve Alex lazer hizmetleri sunar.\n\nAmacımız herkese aynı uygulamayı yapmak değil; cilt tipinize, yaşam tarzınıza ve hedeflerinize uygun protokolü birlikte seçmek. Şeffaf fiyat listesi, hijyenik ortam ve deneyimli kadro ile yanınızdayız.\n\nRandevu için WhatsApp veya telefonla ulaşabilir; hizmet ve paket seçimlerinizi sitemizdeki randevu sepetinden de iletebilirsiniz.",
+      "Zeynep Çeltek Güzellik; Adana’da Gazi Paşa (Seyhan) ve Turgut Özal (Çukurova) şubelerinde faaliyet gösteren, 30 yılı aşkın sektör tecrübesini modern cihaz parkı ve kişiye özel protokollerle birleştiren bir güzellik merkezidir. Cilt bakımı, lazer epilasyon, Epilyum Alex Alexandrite uygulamaları, bölgesel incelme ile kirpik ve kaş hizmetlerini aynı çatı altında, şeffaf fiyatlandırma ve hijyen odaklı bir anlayışla sunarız.\n\nBizim için güzellik tek seferlik bir işlem değil; doğru analiz, doğru uygulama ve takip edilebilir seans planından oluşan bir süreçtir. Her misafirimizin cilt tipi, kıl yapısı, yaşam temposu ve hedefleri farklıdır. Bu yüzden “herkese aynı paket” yaklaşımı yerine, ihtiyaca göre şekillenen bakım yolları öneririz.\n\nRandevu sürecini de sade tutarız: WhatsApp veya telefonla hızlı iletişim, sitedeki randevu sepeti ile net talep iletimi; onay sonrası PayTR ile güvenli kart ödemesi veya havale seçenekleri. Amacımız, Adana’da kendinizi güvende hissettiğiniz, neyin neden yapıldığını anladığınız ve sonucunu takip edebildiğiniz bir salon deneyimi sunmaktır.",
   },
   {
     key: "about_philosophy",
     title: "Çalışma İlkelerimiz",
     content:
-      "Her seansı standart bir işlem değil, planlı bir bakım adımı olarak görürüz. Hijyen, bilgilendirme ve kişiye özel yaklaşım; randevudan önce, uygulama sırasında ve sonrasında tuttuğumuz somut kurallardır.\n\nMisafirlerimize ne yapılacağını ve neden tercih edildiğini net anlatırız. Acele etmeden, cihaz ve ürün seçimini ihtiyaca göre belirleriz.",
+      "Çalışma ilkelerimizin özeti nettir: acele etmeden dinlemek, abartısız önermek, uygularken açıklamak ve seans sonrasında da desteklemek.\n\nHer seansı standart bir “menü işlemi” gibi değil; planlı bir bakım adımı olarak görürüz. Randevu öncesinde beklentinizi ve varsa önceki uygulamalarınızı öğreniriz. Uygulama sırasında cihaz, ürün ve seans aralığı seçimini cilt-kıl değerlendirmesine göre yaparız. Seans sonrasında ise nelere dikkat etmeniz gerektiğini açıkça paylaşırız.\n\nHijyen, bilgilendirme ve kişiye özel yaklaşım bizim için slogan değil; günlük iş disiplinimizin parçasıdır. Misafirlerimize ne yapılacağını ve neden tercih edildiğini anlaşılır dilde anlatırız — böylece karar süreci şeffaf, sonuçlar ise daha sürdürülebilir olur.",
   },
   {
     key: "mission",
     title: "Misyon",
     content:
-      "Misafirlerimizin kendilerini güvende ve özel hissettiği, hijyenik ve profesyonel bir güzellik deneyimi sunmak.\n\nAdana’daki her iki şubemizde de aynı standartlarla karşılamak; doğru analizi, doğru uygulamayı ve takip edilebilir seans planını bir araya getirmek istiyoruz.",
+      "Misyonumuz; misafirlerimizin kendilerini güvende, anlaşılmış ve özel hissettiği, klinik hijyen standartlarında profesyonel bir güzellik deneyimi sunmaktır.\n\nAdana’daki her iki şubemizde de aynı kalite çizgisini koruyarak doğru analizi, doğru uygulamayı ve takip edilebilir seans planını bir araya getirmek istiyoruz. Kısa vadeli vaatler yerine, ölçülebilir ilerleme ve dürüst bilgilendirme ile uzun soluklu memnuniyet yaratmayı hedefleriz.\n\nHer protokolde önceliğimiz: güvenli uygulama ortamı, uzman kontrolü ve misafirin bilgilendirilmiş onayıdır.",
   },
   {
     key: "vision",
     title: "Vizyon",
     content:
-      "Adana’da güvenilir güzellik bakımında referans salon olmak; kişiye özel protokollerle kalıcı memnuniyet yaratmak.\n\nTeknolojiyi ve uzmanlığı birleştirerek, kısa vadeli vaatler yerine sürdürülebilir sonuçlara odaklanan bir marka olarak büyümeyi hedefliyoruz.",
+      "Vizyonumuz; Adana’da güvenilir güzellik bakımının referans adreslerinden biri olmak ve kişiye özel protokollerle kalıcı memnuniyet üreten bir marka olarak büyümektir.\n\nTeknolojiyi (güncel lazer ve bakım cihazları) uzman kadro deneyimiyle birleştirerek; hızlı ama yüzeysel çözümler yerine sürdürülebilir sonuçlara odaklanıyoruz. İki şubeli yapımızı, hizmet çeşitliliğimizi ve şeffaf iletişimimizi güçlendirerek hem yeni misafirlere hem de düzenli bakım planı olan misafirlerimize tutarlı bir standart sunmayı amaçlıyoruz.\n\nUzun vadede hedefimiz; “ne yapılırsa yapılsın” değil, “size ne uygunsa o yapılsın” anlayışının Adana’daki en bilinen temsilcilerinden biri olmaktır.",
   },
   {
     key: "about_why_us",
     title: "Neden Zeynep Çeltek",
     content:
-      "İki şubeli konum avantajı, güncel cihaz parkı ve şeffaf fiyatlandırma ile randevu sürecini sade tutuyoruz. Popüler paketlerimizi ve hizmet kategorilerimizi net listeleriz; böylece neye karar verdiğinizi bilirsiniz.\n\nLazer epilasyondan cilt bakımına, bölgesel incelmeden kirpik-kaş uygulamalarına kadar aynı çatı altında planlı bakım sunarız. İhtiyacınızı dinler, abartısız önerir, sonuçları takip ederiz.",
+      "Zeynep Çeltek’i tercih etmenizin birkaç somut nedeni vardır. Birincisi konum: Seyhan (Gazi Paşa) ve Çukurova (Turgut Özal) şubeleriyle şehrin iki yakasında aynı standartta hizmet veririz. İkincisi şeffaflık: güncel fiyat listesi, paket içerikleri ve seans planı nettir; sürpriz ücret yerine onaylı teklif sunarız.\n\nÜçüncüsü kapsam: cilt bakımı (Hydrafacial, medikal bakım, karbon maske, Mikroplus yüz-boyun toparlama), kadın ve erkek lazer epilasyon, Epilyum Alex soğutmalı Alexandrite paketleri, bölgesel incelme (G5, Emslim, heykeltıraş, G8) ile kirpik-kaş uygulamalarını tek çatı altında bulursunuz. Dördüncüsü süreç yönetimi: ihtiyacınızı dinler, abartısız önerir, randevuyu planlar ve sonuçları takip ederiz.\n\nKısaca; trendy vaatler yerine ölçülebilir bakım, hızlı satış yerine doğru protokol — Adana’da planlı güzellik bakımı arayanlar için tasarlanmış bir salon deneyimi.",
   },
   {
     key: "values_hygiene",
     title: "Hijyenik Ortam",
     content:
-      "Klinik standartlarda temiz uygulama alanı. Her seans öncesi steril protokoller ve düzenli alan kontrolü ile hijyeni önceliklendiririz.",
+      "Uygulama alanlarımızı klinik hijyen anlayışıyla yönetiriz. Her seans öncesi yüzey ve ekipman kontrolü, tek kullanımlık veya sterilize edilmiş malzemeler ve düzenli alan denetimi ile misafir güvenliğini önceliklendiririz. Temizlik bizim için ek hizmet değil, temel çalışma koşuludur.",
   },
   {
     key: "values_team",
     title: "Uzman Kadro",
     content:
-      "Deneyimli güzellik uzmanlarıyla kişiye özel uygulama. Cilt tipinize ve hedeflerinize göre protokol seçer, seansları takip ederiz.",
+      "Deneyimli güzellik uzmanlarımız; cilt tipi, kıl yapısı ve hedefinize göre protokol seçer. Lazer parametrelerinden bakım ürünlerine kadar kararlar rastgele değil, değerlendirme sonrası alınır. Seans aralıkları ve ilerleme takibi de aynı özenle planlanır.",
   },
   {
     key: "values_products",
     title: "Şeffaf Fiyat",
     content:
-      "Güncel fiyat listesi ve paket içerikleriyle net bilgilendirme. Sürpriz ücret yerine şeffaf teklif ve randevu planı sunarız.",
+      "Fiyatları güncel listede açıkça paylaşırız. Paket içerikleri, seans sayıları ve ödeme seçenekleri (PayTR güvenli kart ödemesi veya havale) randevu teyidinde netleşir. Sürpriz ek ücret yerine şeffaf teklif ve yazılı / mesajlı onay ile ilerleriz.",
   },
   {
     key: "values_personal",
     title: "Kişiye Özel",
     content:
-      "Tek tip menü değil; cilt ve ihtiyaca göre planlanan protokoller. Analiz sonrası sizin için en uygun adımları birlikte belirleriz.",
+      "Tek tip menü dayatmayız. Analiz sonrası sizin için en uygun adımları birlikte belirleriz: tek seans deneme, paket programı veya kombine bakım. Yaşam temposunuza ve bütçenize uygun, gerçekçi bir plan çıkarmak önceliğimizdir.",
   },
   {
     key: "cta_title",
@@ -257,12 +258,12 @@ const siteContent = [
     title: "Özellik 4 Açıklama",
     content: "Her seans sonrası takip ve destek.",
   },
-  { key: "stat_1_value", title: "İstatistik 1", content: "4.677+" },
-  { key: "stat_1_label", title: "İstatistik 1 Etiket", content: "Gönderi" },
-  { key: "stat_2_value", title: "İstatistik 2", content: "1M+" },
-  { key: "stat_2_label", title: "İstatistik 2 Etiket", content: "Takipçi" },
-  { key: "stat_3_value", title: "İstatistik 3", content: "1.547+" },
-  { key: "stat_3_label", title: "İstatistik 3 Etiket", content: "Takip" },
+  { key: "stat_1_value", title: "İstatistik 1", content: "2" },
+  { key: "stat_1_label", title: "İstatistik 1 Etiket", content: "Şube" },
+  { key: "stat_2_value", title: "İstatistik 2", content: "30+" },
+  { key: "stat_2_label", title: "İstatistik 2 Etiket", content: "Yıl Deneyim" },
+  { key: "stat_3_value", title: "İstatistik 3", content: "6" },
+  { key: "stat_3_label", title: "İstatistik 3 Etiket", content: "Hizmet Alanı" },
   { key: "stat_4_value", title: "İstatistik 4", content: "WA" },
   {
     key: "stat_4_label",
@@ -277,7 +278,23 @@ const siteContent = [
   {
     key: "gallery_section_title",
     title: "Galeri Başlık",
-    content: "Kampanyalar & Uygulamalarımız",
+    content: "Galerilerimiz",
+  },
+  {
+    key: "campaigns_page_eyebrow",
+    title: "Galeriler Üst",
+    content: "Galeriler",
+  },
+  {
+    key: "campaigns_page_title",
+    title: "Galeriler Başlık",
+    content: "Salonumuzdan Kareler",
+  },
+  {
+    key: "campaigns_page_intro",
+    title: "Galeriler Açıklama",
+    content:
+      "Uygulama alanlarımızdan ve bakım süreçlerimizden bir seçki. Öne çıkan hizmet ve paket önerilerine de buradan ulaşabilirsiniz.",
   },
   {
     key: "packages_section_title",
@@ -287,13 +304,13 @@ const siteContent = [
   {
     key: "campaign_title",
     title: "Kampanya Başlık",
-    content: "Bu Haftaya Özel: Alex 3 Bölge",
+    content: "Bu Haftaya Özel: Epilyum Alex 3 Bölge",
   },
   {
     key: "campaign_desc",
     title: "Kampanya Açıklama",
     content:
-      "Soğuk hava üflemeli Alex — bacak, kolaltı ve genital 5 seans. Kontenjan sınırlıdır.",
+      "Epilyum Alex — bacak, kolaltı ve genital 5 seans. Kontenjan sınırlıdır.",
   },
   {
     key: "campaign_price",
@@ -303,57 +320,38 @@ const siteContent = [
   {
     key: "faq_eyebrow",
     title: "SSS Üst",
-    content: "Sıkça sorulanlar",
+    content: "SSS",
   },
   {
     key: "faq_title",
     title: "SSS Başlık",
-    content: "Hizmetler hakkında",
+    content: "Sık sorulan sorular",
   },
   {
-    key: "faq_1_q",
-    title: "SSS 1 Soru",
-    content: "Randevu nasıl alınır?",
+    key: "faq_section_eyebrow",
+    title: "SSS Üst (bölüm)",
+    content: "SSS",
   },
   {
-    key: "faq_1_a",
-    title: "SSS 1 Cevap",
-    content:
-      "WhatsApp, telefon veya sitedeki randevu sepeti ile talebinizi iletebilirsiniz; saat teyidi mesajla yapılır.",
+    key: "faq_section_title",
+    title: "SSS Başlık (bölüm)",
+    content: "Sık sorulan sorular",
   },
-  {
-    key: "faq_2_q",
-    title: "SSS 2 Soru",
-    content: "Hangi hizmetleri sunuyorsunuz?",
-  },
-  {
-    key: "faq_2_a",
-    title: "SSS 2 Cevap",
-    content:
-      "Cilt bakımı, kirpik & kaş, bölgesel incelme, bayan/erkek lazer epilasyon ve soğuk hava üflemeli Alex paketleri.",
-  },
-  {
-    key: "faq_3_q",
-    title: "SSS 3 Soru",
-    content: "Fiyatlar güncel mi?",
-  },
-  {
-    key: "faq_3_a",
-    title: "SSS 3 Cevap",
-    content:
-      "Sitedeki fiyat listesi salondaki güncel listeden aktarılmıştır. Kampanya ve paket detayları için bizi arayın.",
-  },
-  {
-    key: "faq_4_q",
-    title: "SSS 4 Soru",
-    content: "Şubeleriniz nerede?",
-  },
-  {
-    key: "faq_4_a",
-    title: "SSS 4 Cevap",
-    content:
-      "Adana’da Özal ve Gazi Paşa şubelerimiz bulunmaktadır. Yol tarifi için iletişim sayfamızı veya WhatsApp hattımızı kullanın.",
-  },
+  ...SALON_FAQS.flatMap((item, i) => {
+    const n = i + 1;
+    return [
+      {
+        key: `faq_${n}_q`,
+        title: `SSS ${n} Soru`,
+        content: item.q,
+      },
+      {
+        key: `faq_${n}_a`,
+        title: `SSS ${n} Cevap`,
+        content: item.a,
+      },
+    ];
+  }),
   {
     key: "testimonial_section_title",
     title: "Yorumlar Başlık",
@@ -464,7 +462,7 @@ const navItems = [
   { label: "ANA SAYFA", href: "/", sortOrder: 0 },
   { label: "HİZMETLERİMİZ", href: "/hizmetler", sortOrder: 1 },
   { label: "PAKETLER", href: "/#paketler", sortOrder: 2 },
-  { label: "KAMPANYALAR", href: "/#kampanyalar", sortOrder: 3 },
+  { label: "GALERİLER", href: "/#galeriler", sortOrder: 3 },
   { label: "HAKKIMIZDA", href: "/hakkimizda", sortOrder: 4 },
   { label: "İLETİŞİM", href: "/iletisim", sortOrder: 5 },
 ];
@@ -540,7 +538,7 @@ async function main() {
           inStock: true,
           specs: JSON.stringify({
             randevu: "Zorunlu",
-            konum: "Adana",
+            konum: "Adana — Gazi Paşa / Turgut Özal",
           }),
         },
       });
@@ -635,7 +633,18 @@ async function main() {
         sortOrder: index,
         isActive: true,
       },
-      update: {},
+      update: {
+        name: pkg.name,
+        price: pkg.price,
+        sessions: pkg.sessions,
+        featured: pkg.featured,
+        badge: "badge" in pkg ? pkg.badge : null,
+        image: pkg.image,
+        shortDesc: pkg.shortDesc,
+        items: JSON.stringify([...pkg.items]),
+        sortOrder: index,
+        isActive: true,
+      },
     });
   }
 

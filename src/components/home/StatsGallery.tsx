@@ -20,7 +20,7 @@ const FALLBACKS = [
 ];
 
 export function GallerySection({
-  title = "Kampanyalar & Uygulamalarımız",
+  title = "Galerilerimiz",
   images,
 }: GallerySectionProps) {
   const scroller = useRef<HTMLDivElement>(null);
@@ -29,11 +29,11 @@ export function GallerySection({
   function scrollBy(dir: -1 | 1) {
     const el = scroller.current;
     if (!el) return;
-    el.scrollBy({ left: dir * Math.min(360, el.clientWidth * 0.8), behavior: "smooth" });
+    el.scrollBy({ left: dir * Math.min(300, el.clientWidth * 0.7), behavior: "smooth" });
   }
 
   return (
-    <section id="kampanyalar" className="scroll-mt-24 py-12 sm:py-14 lg:py-16 bg-marble">
+    <section id="galeriler" className="scroll-mt-24 py-12 sm:py-14 lg:py-16 bg-marble">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-10">
           <EditableText
@@ -42,7 +42,7 @@ export function GallerySection({
             as="h2"
             block
             className="section-title text-xl sm:text-2xl lg:text-3xl text-cream"
-            help="Galeri / kampanya başlığı"
+            help="Galeriler bölüm başlığı"
           />
           <div className="section-ornament">
             <span className="section-ornament-dot" />
@@ -69,7 +69,7 @@ export function GallerySection({
 
           <div
             ref={scroller}
-            className="works-slider flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide px-12"
+            className="works-slider flex gap-2.5 sm:gap-3 overflow-x-auto scrollbar-hide px-12"
           >
             {list.map((src, i) => {
               const webp = toWebpSrc(src);
@@ -77,19 +77,19 @@ export function GallerySection({
               return (
                 <div
                   key={`${src}-${i}`}
-                  className="relative shrink-0 w-[78%] sm:w-[42%] lg:w-[30%] aspect-[4/5] overflow-hidden border border-border bg-card"
+                  className="relative shrink-0 w-[64%] sm:w-[34%] lg:w-[22%] aspect-[3/4] overflow-hidden border border-border bg-card"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={sm || webp}
                     srcSet={sm ? `${sm} 640w, ${webp} 1100w` : undefined}
-                    alt={`Uygulama ${i + 1}`}
-                    width={640}
-                    height={800}
+                    alt={`Galeri ${i + 1}`}
+                    width={480}
+                    height={640}
                     className="absolute inset-0 h-full w-full object-cover"
                     loading="lazy"
                     decoding="async"
-                    sizes="(max-width: 640px) 78vw, (max-width: 1024px) 42vw, 30vw"
+                    sizes="(max-width: 640px) 64vw, (max-width: 1024px) 34vw, 22vw"
                   />
                 </div>
               );
@@ -102,7 +102,7 @@ export function GallerySection({
             href="/kampanyalar"
             className="text-orange text-sm font-semibold tracking-wide uppercase hover:underline"
           >
-            Tüm kampanyaları gör →
+            Tüm galeriyi gör →
           </SiteLink>
         </div>
       </div>

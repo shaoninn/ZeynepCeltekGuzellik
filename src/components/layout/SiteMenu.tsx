@@ -38,7 +38,7 @@ const PRIMARY_SET = new Set<string>(PRIMARY_NAV_HREFS);
 const DRAWER_LINKS: { href: string; label: string; sub?: SubPanel }[] = [
   { href: "/hizmetler", label: "Hizmetlerimiz", sub: "categories" },
   { href: "/paketler", label: "Paketler" },
-  { href: "/kampanyalar", label: "Kampanyalar" },
+  { href: "/kampanyalar", label: "Galeriler" },
   { href: "/hakkimizda", label: "Hakkımızda" },
   { href: "/iletisim", label: "İletişim" },
   { href: "/sepet", label: "Randevu Sepeti" },

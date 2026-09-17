@@ -30,9 +30,8 @@ export default async function AdminOrdersPage({
     <div>
       <h1 className="font-display text-3xl font-bold mb-2">Randevu talepleri</h1>
       <p className="text-sm text-[#888] mb-2">
-        Ödeme henüz aktif değil. Bu kayıtlar randevu / teklif talepleridir.
-        Tarih ve durum ile filtreleyin; eski kayıtları silerek karışıklığı
-        azaltın.
+        Ödeme PayTR (kart) ve havale ile alınabilir. Bu kayıtlar randevu /
+        teklif talepleridir; tarih ve durum ile filtreleyin.
       </p>
       <p className="mb-6">
         <a

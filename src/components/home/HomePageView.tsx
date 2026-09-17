@@ -102,7 +102,7 @@ export async function HomePageView({
         images={data.facilityImages}
       />
       <GallerySection
-        title="Uygulamalarımız"
+        title="Galerilerimiz"
         images={galleryImages}
       />
       <Testimonials

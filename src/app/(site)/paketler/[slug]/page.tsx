@@ -109,11 +109,12 @@ export default async function PackageDetailPage({ params }: Props) {
             </div>
 
             <p className="mt-4 text-xs text-muted">
-              Ödeme online alınmaz; sepete ekledikten sonra{" "}
+              Listeye ekledikten sonra{" "}
               <SiteLink href="/sepet" className="text-orange hover:underline">
                 randevu sepetinden
               </SiteLink>{" "}
-              teklif / randevu talebi oluşturursunuz.
+              talep oluşturursunuz; onay sonrası PayTR ile güvenli kart ödemesi
+              veya havale seçenekleri sunulur.
             </p>
           </div>
         </div>

@@ -10,7 +10,7 @@ export const metadata = {
   alternates: { canonical: "/hakkimizda" },
   title: "Hakkımızda | Zeynep Çeltek Güzellik Adana",
   description:
-    "Adana Gazi Paşa ve Turgut Özal şubelerinde Zeynep Çeltek Güzellik: cilt bakımı, lazer epilasyon, bölgesel incelme. Misyon, vizyon, değerler ve şube bilgileri.",
+    "Zeynep Çeltek Güzellik — Adana Gazi Paşa ve Turgut Özal şubelerinde 30+ yıl tecrübe, kişiye özel cilt bakımı, lazer epilasyon ve Epilyum Alex. Misyon, vizyon, çalışma ilkeleri ve şube bilgileri.",
 };
 
 export default async function AboutPage() {

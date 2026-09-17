@@ -3,6 +3,7 @@ import { generateOrderNo } from "@/lib/api";
 import { sendOrderConfirmation, sendManufacturerBrief } from "@/lib/mail";
 import { writeAuditLog } from "@/lib/audit";
 import { getPackageBySlug } from "@/lib/constants";
+import { isPaytrConfigured } from "@/lib/paytr";
 
 export interface QuoteItemInput {
   productId: string;
@@ -195,7 +196,11 @@ export async function createQuoteOrder(input: {
       utm: input.utm || null,
       status: "PENDING",
       paymentStatus: input.wantPayment ? "PENDING" : "UNPAID",
-      paymentProvider: input.wantPayment ? "BANK_TRANSFER" : null,
+      paymentProvider: input.wantPayment
+        ? isPaytrConfigured()
+          ? "PAYTR"
+          : "BANK_TRANSFER"
+        : null,
       invoiceNo: `F-${Date.now().toString(36).toUpperCase()}`,
       reminderAt,
       kvkkAcceptedAt: new Date(),

@@ -99,7 +99,7 @@ export function siteNavigationJsonLd() {
   const items = [
     { name: "Hizmetler", path: "/hizmetler" },
     { name: "Paketler", path: "/paketler" },
-    { name: "Kampanyalar", path: "/kampanyalar" },
+    { name: "Galeriler", path: "/kampanyalar" },
     { name: "Galeri", path: "/projeler" },
     { name: "Hakkımızda", path: "/hakkimizda" },
     { name: "Blog", path: "/blog" },

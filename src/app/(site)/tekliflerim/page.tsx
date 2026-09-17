@@ -206,7 +206,7 @@ export default function TekliflerimPage() {
                 href={`/odeme?orderNo=${encodeURIComponent(result.orderNo)}&phone=${encodeURIComponent(phone)}`}
                 className="text-xs px-3 py-2 border border-orange/50 rounded-lg text-orange hover:bg-orange/10"
               >
-                Ödeme bilgisi
+                Ödeme (PayTR / havale)
               </SiteLink>
             </div>
 

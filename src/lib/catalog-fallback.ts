@@ -2,14 +2,17 @@ import { CATEGORIES, CATALOG_PRODUCTS } from "@/lib/constants";
 
 const DESCRIPTIONS: Record<string, string> = {
   "cilt-bakimi":
-    "Klasik ve medikal cilt bakımı, Hydrafacial, karbon maske ve cilt onarım protokolleri.",
+    "Cilt tipinize göre planlanan klasik ve medikal bakım, Hydrafacial derin temizlik, karbon maske, vitamin uygulamaları ve Mikroplus yüz-boyun toparlama. Adana’daki her iki şubemizde hijyenik ortamda, uzman kadroyla uygulanır.",
   "kirpik-kas":
-    "Kirpik lifting, kaş alma ve şekillendirme uygulamaları.",
+    "Kirpik lifting ile doğal kıvrım ve bakış açıklığı; kaş alma ve şekillendirme ile yüz hatlarınıza uygun form. Hızlı, hassas ve bakımlı bir görünüm odaklı uygulamalar.",
   "bolgesel-incelme":
-    "G5, Emslim, heykeltıraş ve G8 ile bölgesel incelme.",
-  "lazer-bayan": "Bayan lazer epilasyon — tek seans ve paketler.",
-  "lazer-erkek": "Erkek lazer epilasyon — bölge ve paketler.",
-  "alex-lazer": "Soğuk hava üflemeli Alex lazer paketleri.",
+    "Selülit görünümü, bölgesel yağ ve sıkılık için G5 masajı, Emslim, heykeltıraş ve G8 protokolleri. 10 seanslık paketlerle ölçülebilir, takip edilen bir plan sunarız.",
+  "lazer-bayan":
+    "Kadınlara özel lazer epilasyon: tek seans veya 8 seanslık paketler. Bölge seçimi ve seans aralığı cilt-kıl tipine göre belirlenir; hijyenik ortamda uygulanır.",
+  "lazer-erkek":
+    "Erkek cilt ve kıl yapısına uygun lazer epilasyon. Gıdı, göğüs, sırt, bacak ve kemer üstü paketleriyle net fiyat ve planlı seans takibi.",
+  "alex-lazer":
+    "Epilyum Alex Alexandrite teknolojisi: kamera destekli cilt-kıl analizi ve güçlü soğutma ile konforlu uygulama. Kadın ve erkek için 5–10 seanslık paket seçenekleri.",
 };
 
 const IMAGES: Record<string, string[]> = {
@@ -135,7 +138,7 @@ export function getFallbackProductsByCategorySlug(slug: string): FallbackProduct
         name: p.name,
         slug: p.slug,
         shortDesc: p.shortDesc,
-        description: `${p.name} — ${p.shortDesc}`,
+        description: `${p.name}. ${p.shortDesc}`,
         price: p.price,
         image: img,
         images: JSON.stringify(pool),
@@ -150,7 +153,10 @@ export function getFallbackProductsByCategorySlug(slug: string): FallbackProduct
         salePrice: null,
         nightImage: null,
         campaignEndsAt: null,
-        specs: JSON.stringify({ randevu: "Zorunlu", konum: "Adana" }),
+        specs: JSON.stringify({
+          randevu: "Zorunlu",
+          konum: "Adana — Gazi Paşa / Turgut Özal",
+        }),
         shippingLabel: null,
         createdAt: now,
         updatedAt: now,

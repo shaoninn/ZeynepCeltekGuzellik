@@ -2,13 +2,15 @@ import { SiteLink } from "@/components/ui/SiteLink";
 import { prisma } from "@/lib/db";
 import { formatPrice } from "@/lib/utils";
 import { getSiteSettings } from "@/lib/site";
+import { isPaytrConfigured, isPaytrUiEnabled } from "@/lib/paytr";
+import { PaytrCheckoutButton } from "@/components/payments/PaytrCheckoutButton";
 
 export const dynamic = "force-dynamic";
 
 export const metadata = {
   alternates: { canonical: "/odeme" },
   robots: { index: false, follow: false },
-  title: "Ödeme Bilgileri",
+  title: "Ödeme",
 };
 
 interface Props {
@@ -23,6 +25,7 @@ export default async function PaymentPage({ searchParams }: Props) {
       key: {
         in: [
           "payment_enabled",
+          "paytr_ui_enabled",
           "bank_name",
           "bank_iban",
           "bank_holder",
@@ -32,7 +35,12 @@ export default async function PaymentPage({ searchParams }: Props) {
     },
   });
   const map = Object.fromEntries(rows.map((r) => [r.key, r.value]));
-  const enabled = map.payment_enabled === "1" || map.payment_enabled === "true";
+  const bankPanel =
+    map.payment_enabled === "1" || map.payment_enabled === "true";
+  const paytrReady = isPaytrUiEnabled(
+    map.paytr_ui_enabled || process.env.PAYTR_UI_ENABLED
+  );
+  const paytrConfigured = isPaytrConfigured();
 
   let order: {
     orderNo: string;
@@ -40,6 +48,7 @@ export default async function PaymentPage({ searchParams }: Props) {
     paymentStatus: string;
     invoiceNo: string | null;
     name: string;
+    phone: string;
   } | null = null;
 
   if (orderNo && phone) {
@@ -56,6 +65,7 @@ export default async function PaymentPage({ searchParams }: Props) {
         paymentStatus: found.paymentStatus,
         invoiceNo: found.invoiceNo,
         name: found.name,
+        phone: found.phone,
       };
     }
   }
@@ -67,14 +77,15 @@ export default async function PaymentPage({ searchParams }: Props) {
           Ödeme
         </h1>
         <p className="text-muted text-sm mb-8">
-          Hazır ürün / onaylı teklifler için havale bilgisi. Sanal POS sonraki
-          adımda bağlanabilir; şimdilik güvenli havale iskeleti aktif.
+          Randevu talebi sonrası güvenli kart ödemesi PayTR ile yapılır.
+          İsterseniz havale / EFT bilgisini de kullanabilirsiniz.
         </p>
 
-        {!enabled && (
+        {!paytrConfigured && (
           <div className="rounded-xl border border-border bg-card p-5 text-sm text-muted mb-6">
-            Online ödeme paneli henüz açılmadı. Teklif onayı sonrası ekibimiz
-            size havale veya link iletecek. İletişim:{" "}
+            Kart ödemesi altyapısı hazır; PayTR mağaza anahtarları bağlandığında
+            burada 3D Secure formu açılır. Şimdilik onay sonrası ekibimiz ödeme
+            linki veya havale bilgisi iletir. İletişim:{" "}
             <a href={`tel:${settings.phoneRaw}`} className="text-orange">
               {settings.phone}
             </a>
@@ -98,9 +109,25 @@ export default async function PaymentPage({ searchParams }: Props) {
           </div>
         )}
 
-        {map.bank_iban ? (
+        {order && paytrReady && order.paymentStatus !== "PAID" && (
+          <div className="mb-6">
+            <PaytrCheckoutButton
+              orderNo={order.orderNo}
+              phone={phone || order.phone}
+              totalLabel={formatPrice(order.total)}
+            />
+          </div>
+        )}
+
+        {order?.paymentStatus === "PAID" && (
+          <div className="rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-5 text-sm text-emerald-300 mb-6">
+            Bu talep için ödeme alındı. Teşekkürler.
+          </div>
+        )}
+
+        {(bankPanel || map.bank_iban) && map.bank_iban ? (
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-sm">
-            <p className="font-semibold text-white">Havale / EFT</p>
+            <p className="font-semibold text-white">Havale / EFT (alternatif)</p>
             <p>
               <span className="text-muted">Banka:</span>{" "}
               {map.bank_name || "—"}
@@ -115,19 +142,30 @@ export default async function PaymentPage({ searchParams }: Props) {
             </p>
             <p className="text-xs text-muted">
               {map.payment_note ||
-                "Açıklamaya teklif numaranızı yazın. Dekontu WhatsApp’tan iletin."}
+                "Açıklamaya talep numaranızı yazın. Dekontu WhatsApp’tan iletin."}
             </p>
           </div>
         ) : (
           <div className="rounded-xl border border-border bg-card p-5 text-sm text-muted">
-            Havale bilgisi henüz yayınlanmadı. Onay sonrası ekibimiz IBAN’ı
-            WhatsApp veya telefonla iletir.
+            Havale bilgisi yayınlanmadıysa onay sonrası ekibimiz IBAN’ı WhatsApp
+            veya telefonla iletir. Kart ödemesi için PayTR formu yukarıda
+            görünür (yapılandırma tamamlanınca).
           </div>
+        )}
+
+        {!order && (
+          <p className="mt-6 text-sm text-muted">
+            Ödeme için talep no ve telefon ile{" "}
+            <SiteLink href="/tekliflerim" className="text-orange hover:underline">
+              Taleplerim
+            </SiteLink>{" "}
+            sayfasından devam edin.
+          </p>
         )}
 
         <p className="mt-6 text-sm">
           <SiteLink href="/tekliflerim" className="text-orange hover:underline">
-            ← Tekliflerime dön
+            ← Taleplerime dön
           </SiteLink>
         </p>
       </div>

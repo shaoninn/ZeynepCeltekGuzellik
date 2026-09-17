@@ -27,7 +27,7 @@ export const metadata = {
   alternates: { canonical: "/hizmetler" },
   title: "Hizmetler | Zeynep Çeltek Güzellik",
   description:
-    "Adana’da güzellik hizmetleri: cilt bakımı, lazer epilasyon, bölgesel incelme ve Alex lazer paketleri.",
+    "Adana’da güzellik hizmetleri: cilt bakımı, lazer epilasyon, bölgesel incelme ve Epilyum Alex lazer paketleri.",
 };
 
 export default async function ServicesPage() {
@@ -51,7 +51,7 @@ export default async function ServicesPage() {
           title={map.services_page_title || "Güzellik Hizmetlerimiz"}
           intro={
             map.services_page_intro ||
-            "Profesyonel uygulamalarla kendinizi şımartın. Hizmet içerikleri ve fiyatlar için detaylara göz atın."
+            "Cilt bakımı, lazer epilasyon, bölgesel incelme, kirpik-kaş ve Epilyum Alex. Her kategoride içerik, seans seçenekleri ve güncel fiyatları inceleyebilirsiniz."
           }
         />
 

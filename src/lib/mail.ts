@@ -47,7 +47,7 @@ function orderHtml(order: OrderEmailPayload): string {
       <tbody>${lines}</tbody>
     </table>
     <p><strong>Toplam (tahmini):</strong> ${formatPrice(order.total)}</p>
-    <p style="color:#666;font-size:13px">Online ödeme yoktur; bu bir randevu / teklif kaydıdır. Seans planı onayda netleşir.</p>
+    <p style="color:#666;font-size:13px">Bu bir randevu / teklif kaydıdır. Güvenli kart ödemesi PayTR ile yapılabilir; seans planı onayda netleşir.</p>
     <p>Telefon: ${order.phone}${order.address ? `<br/>Adres: ${order.address}` : ""}</p>
   </body></html>`;
 }

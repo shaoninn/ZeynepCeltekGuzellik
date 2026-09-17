@@ -42,8 +42,8 @@ export default async function AdminProductsPage() {
       <div className="admin-warning mb-6">
         Silme işlemi geri alınamaz. Excel&apos;de{" "}
         <code className="text-orange">categorySlug</code> sütunu mevcut kategori
-        slug&apos;ı ile eşleşmelidir. Online ödeme yoktur — fiyatlar teklif
-        referansıdır.
+        slug&apos;ı ile eşleşmelidir. Fiyatlar randevu / teklif ve PayTR ödemesi
+        için referanstır; kesin tutar onayda netleşebilir.
       </div>
 
       <ProductsAdminClient initial={initial} />

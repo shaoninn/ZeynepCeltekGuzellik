@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     template: "%s | Zeynep Çeltek Güzellik",
   },
   description:
-    "Adana'da Zeynep Çeltek Güzellik Salonu. Cilt bakımı, lazer epilasyon, bölgesel incelme ve Alex lazer paketleri. Randevu alın.",
+    "Adana'da Zeynep Çeltek Güzellik Salonu. Cilt bakımı, lazer epilasyon, bölgesel incelme ve Epilyum Alex lazer paketleri. Randevu alın.",
   keywords: [
     "zeynep çeltek güzellik",
     "adana güzellik salonu",

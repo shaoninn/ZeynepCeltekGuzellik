@@ -38,7 +38,7 @@ Randevu için WhatsApp veya sitedeki randevu sepetini kullanabilirsiniz.`,
 
 ## Neden birden fazla seans?
 
-Kıllar aynı anda aynı fazda değildir. Bir seansta aktif fazdaki kıllar hedeflenir; dinlenme fazındakiler sonraki seanslarda ele alınır. Bu yüzden 6–8 seanslık paketler (ve Alex paketleri) sık tercih edilir.
+Kıllar aynı anda aynı fazda değildir. Bir seansta aktif fazdaki kıllar hedeflenir; dinlenme fazındakiler sonraki seanslarda ele alınır. Bu yüzden 6–8 seanslık paketler (ve Epilyum Alex paketleri) sık tercih edilir.
 
 ## Planlamada dikkat ettiğimiz noktalar
 
@@ -56,21 +56,23 @@ Kıllar aynı anda aynı fazda değildir. Bir seansta aktif fazdaki kıllar hede
 Doğru planlama = daha öngörülebilir sonuç. Ücretsiz ön görüşme için iletişime geçin.`,
   },
   {
-    title: "Alex Lazer 3 Bölge Paketi Kimler İçin Uygun?",
+    title: "Epilyum Alex Lazer 3 Bölge Paketi Kimler İçin Uygun?",
     slug: "alex-lazer-3-bolge-paketi",
     excerpt:
-      "Bacak + kolaltı + genital bölgeler için 5 veya 10 seanslık Alex paketleri; soğuk hava üflemeli konfor arayanlar için.",
+      "Bacak + kolaltı + genital bölgeler için 5 veya 10 seanslık Epilyum Alex paketleri; soğutmalı Alexandrite konforu arayanlar için.",
     image: "/images/products/alex-lazer/1.jpg",
-    content: `Soğuk hava üflemeli Alex lazer, birçok misafirin “daha konforlu seans” arayışına yanıt verir. Özellikle 3 bölge paketleri (bacak, kolaltı, genital) hem pratik hem ekonomik bir plan sunar.
+    content: `Epilyum Alex, Alexandrite (755 nm) teknolojisi ve güçlü soğutma ile konforlu seans hedefleyen bir lazer epilasyon cihazıdır. Kamera destekli cilt-kıl analizi ve otomatik parametre desteğiyle kişiye özel protokol planlanır; kişiye özel antibakteriyel başlık hijyen standardını yükseltir.
+
+Özellikle 3 bölge paketleri (bacak, kolaltı, genital) hem pratik hem ekonomik bir plan sunar. Seans aralığı ve toplam seans ihtiyacı kıl tipi, cilt tipi ve bölgeye göre değişir; kesin plan ön görüşmede netleşir.
 
 ## 5 seans mı, 10 seans mı?
 
 - **5 seans:** Düzenli devam edebilecek, belirli bir hedefe odaklanan misafirler
 - **10 seans:** Daha uzun dönemli, kıl yoğunluğu yüksek veya kalıcılık hedefi güçlü olanlar
 
-Tek seans ve 4 bölge seçenekleri de listemizdedir. Erkekler için kemer üstü Alex paketleri ayrıca tanımlanmıştır.
+Tek seans ve 4 bölge seçenekleri de listemizdedir. Erkekler için kemer üstü Epilyum Alex paketleri ayrıca tanımlanmıştır.
 
-Paket içeriği ve güncel fiyat Hizmetler → Alex Lazer altında yer alır. Randevu sepetine ekleyip WhatsApp ile onaylatabilirsiniz.`,
+Paket içeriği ve güncel fiyat Hizmetler → Epilyum Alex Lazer altında yer alır. Randevu sepetine ekleyip WhatsApp ile onaylatabilirsiniz.`,
   },
   {
     title: "Bölgesel İncelmede G5, Emslim ve G8 Farkı",

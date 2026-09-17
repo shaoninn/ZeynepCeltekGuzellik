@@ -352,8 +352,8 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                   ← Listeye dön
                 </button>
                 <p className="text-xs text-muted mb-2">
-                  Randevu kaydı (online ödeme yok). E-posta verirseniz özet
-                  gönderilir.
+                  Randevu kaydı oluşturulur. İsterseniz PayTR ile güvenli kart
+                  ödemesi veya havale bilgisini de talep edebilirsiniz.
                 </p>
                 {error && (
                   <p className="text-sm text-red-400 border border-red-500/30 bg-red-500/10 p-2">
@@ -511,7 +511,8 @@ export function CartPage({ whatsappUrl }: { whatsappUrl: string }) {
                     className="mt-0.5"
                   />
                   <span>
-                    Onay sonrası havale / ödeme bilgisini de istiyorum.
+                    Onay sonrası güvenli kart ödemesi (PayTR) / havale bilgisini
+                    de istiyorum.
                   </span>
                 </label>
                 <label className="flex items-start gap-2 text-sm text-muted leading-relaxed cursor-pointer">

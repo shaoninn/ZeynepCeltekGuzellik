@@ -320,6 +320,8 @@ export function ProductForm({ categories, initial }: ProductFormProps) {
             ["garanti", "Sertifika"],
             ["montaj", "Süre (eski)"],
             ["teslimat", "Kontenjan / başlangıç"],
+            ["randevu", "Randevu"],
+            ["konum", "Konum"],
           ] as const
         ).map(([key, label]) => (
           <AdminField key={key} label={label}>

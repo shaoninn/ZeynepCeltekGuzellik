@@ -37,9 +37,18 @@ export default async function ThanksQuotePage({
         ) : null}
         <p className="text-muted mb-8">
           {branchLabel(branch || "turgutozal")} ekibi en kısa sürede dönüş yapacak.
-          Online ödeme yoktur.
+          Güvenli kart ödemesi için PayTR altyapısı hazırdır; ödeme linki veya
+          havale bilgisi onay sürecinde iletilir.
         </p>
         <div className="flex flex-col gap-3">
+          {orderNo ? (
+            <SiteLink
+              href={`/tekliflerim`}
+              className="btn-outline justify-center"
+            >
+              Ödeme / talep takibi
+            </SiteLink>
+          ) : null}
           <a
             href={`${wa}?text=${waText}`}
             target="_blank"

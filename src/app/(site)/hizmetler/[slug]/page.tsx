@@ -93,7 +93,8 @@ export default async function CategoryPage({ params }: Props) {
               Kim için
             </p>
             <p className="text-sm text-muted">
-              Cilt tipi ve hedefinize göre uzman yönlendirir; ilk görüşmede netleşir.
+              Cilt tipi, kıl yapısı ve hedefinize göre uzman yönlendirir; ilk
+              görüşmede protokol netleşir.
             </p>
           </div>
           <div className="border border-border bg-card/40 p-4">
@@ -101,7 +102,8 @@ export default async function CategoryPage({ params }: Props) {
               Süre
             </p>
             <p className="text-sm text-muted">
-              Seans süresi uygulamaya göre değişir; randevu teyidinde paylaşılır.
+              Seans süresi uygulamaya göre değişir; kesin süre randevu
+              teyidinde paylaşılır.
             </p>
           </div>
           <div className="border border-border bg-card/40 p-4">
@@ -109,7 +111,8 @@ export default async function CategoryPage({ params }: Props) {
               Not
             </p>
             <p className="text-sm text-muted">
-              Online ödeme yoktur. WhatsApp veya telefonla randevu kesinleşir.
+              Randevu WhatsApp veya telefonla kesinleşir. Güvenli kart ödemesi
+              PayTR ile tamamlanabilir. Konum: Adana — Gazi Paşa / Turgut Özal.
             </p>
           </div>
         </div>
