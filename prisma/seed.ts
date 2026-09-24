@@ -3,6 +3,7 @@ import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { hashPassword } from "../src/lib/auth";
 import { CATEGORIES, CATALOG_PRODUCTS, PACKAGES } from "../src/lib/constants";
+import { PRODUCT_CAMPAIGN_IMAGES } from "../src/lib/catalog-fallback";
 import { SALON_FAQS } from "../src/lib/faq";
 import { projectData } from "./projects-data";
 import { SAMPLE_BLOG_POSTS } from "./blog-data";
@@ -25,9 +26,11 @@ const LOGO = "/images/logo/logo-nobg.png";
 
 const CATEGORY_IMAGES: Record<string, string> = {
   "cilt-bakimi": "/images/products/cilt-bakimi/1.jpg",
-  "kirpik-kas": "/images/products/kirpik-kas/1.jpg",
-  "bolgesel-incelme": "/images/products/bolgesel-incelme/1.jpg",
-  "lazer-bayan": "/images/products/lazer-bayan/1.jpg",
+  "kirpik-kas": "/images/campaigns/ipek-kirpik.jpg",
+  "kalici-makyaj": "/images/campaigns/dudak-renklendirme.jpg",
+  "protez-tirnak": "/images/campaigns/protez-tirnak.jpg",
+  "bolgesel-incelme": "/images/campaigns/popo-lift.jpg",
+  "lazer-bayan": "/images/campaigns/lazer-paket.jpg",
   "lazer-erkek": "/images/products/lazer-erkek/1.jpg",
   "alex-lazer": "/images/products/alex-lazer/1.jpg",
 };
@@ -40,14 +43,25 @@ const PRODUCT_IMAGES: Record<string, string[]> = {
     "/images/products/cilt-bakimi/4.jpg",
   ],
   "kirpik-kas": [
+    "/images/campaigns/ipek-kirpik.jpg",
     "/images/products/kirpik-kas/1.jpg",
     "/images/products/kirpik-kas/2.jpg",
   ],
+  "kalici-makyaj": [
+    "/images/campaigns/dudak-renklendirme.jpg",
+    "/images/campaigns/kas-microblading-pudralama.jpg",
+    "/images/campaigns/kalici-dipliner.jpg",
+    "/images/campaigns/kalici-eyeliner.jpg",
+  ],
+  "protez-tirnak": ["/images/campaigns/protez-tirnak.jpg"],
   "bolgesel-incelme": [
+    "/images/campaigns/popo-lift.jpg",
+    "/images/campaigns/gogus-toparlama.jpg",
     "/images/products/bolgesel-incelme/1.jpg",
     "/images/products/bolgesel-incelme/2.jpg",
   ],
   "lazer-bayan": [
+    "/images/campaigns/lazer-paket.jpg",
     "/images/products/lazer-bayan/1.jpg",
     "/images/products/lazer-bayan/2.jpg",
   ],
@@ -66,9 +80,13 @@ const categoryDescriptions: Record<string, string> = {
   "cilt-bakimi":
     "Cilt tipinize göre planlanan klasik ve medikal bakım, Hydrafacial derin temizlik, karbon maske, vitamin uygulamaları ve Mikroplus yüz-boyun toparlama. Adana’daki her iki şubemizde hijyenik ortamda, uzman kadroyla uygulanır.",
   "kirpik-kas":
-    "Kirpik lifting ile doğal kıvrım ve bakış açıklığı; kaş alma ve şekillendirme ile yüz hatlarınıza uygun form. Hızlı, hassas ve bakımlı bir görünüm odaklı uygulamalar.",
+    "Kirpik lifting, ipek kirpik ve kaş şekillendirme. Doğal bakış ve kişiye özel yoğunluk planı.",
+  "kalici-makyaj":
+    "Dudak renklendirme, microblading & kaş pudralama, kalıcı dipliner ve eyeliner. Yaklaşık 3 yıllık kullanım hedefiyle kişiye özel tasarım.",
+  "protez-tirnak":
+    "Kampanyalı protez tırnak uygulamaları. Şekil ve bakım randevuda netleşir.",
   "bolgesel-incelme":
-    "Selülit görünümü, bölgesel yağ ve sıkılık için G5 masajı, Emslim, heykeltıraş ve G8 protokolleri. 10 seanslık paketlerle ölçülebilir, takip edilen bir plan sunarız.",
+    "Popo Lift, göğüs toparlama, G5, Emslim, heykeltıraş ve G8 ile bölgesel şekillendirme ve sıkılık.",
   "lazer-bayan":
     "Kadınlara özel lazer epilasyon: tek seans veya 8 seanslık paketler. Bölge seçimi ve seans aralığı cilt-kıl tipine göre belirlenir; hijyenik ortamda uygulanır.",
   "lazer-erkek":
@@ -522,7 +540,9 @@ async function main() {
     });
 
     for (const [pIndex, product] of products.entries()) {
-      const img = productPool[pIndex % productPool.length];
+      const img =
+        PRODUCT_CAMPAIGN_IMAGES[product.slug] ||
+        productPool[pIndex % productPool.length]!;
       await prisma.product.create({
         data: {
           name: product.name,
@@ -531,11 +551,14 @@ async function main() {
           description: productDescription(product.name, product.shortDesc),
           price: product.price,
           image: img,
-          images: JSON.stringify(productPool),
+          images: JSON.stringify([img, ...productPool]),
           categoryId: category.id,
           sortOrder: pIndex,
           isActive: true,
-          inStock: true,
+          inStock: product.price > 0,
+          badgeSale:
+            product.slug === "protez-tirnak-kampanya" ||
+            product.slug.includes("kampanya"),
           specs: JSON.stringify({
             randevu: "Zorunlu",
             konum: "Adana — Gazi Paşa / Turgut Özal",

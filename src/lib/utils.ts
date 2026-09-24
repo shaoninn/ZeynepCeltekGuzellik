@@ -19,6 +19,7 @@ export function slugify(text: string): string {
 }
 
 export function formatPrice(price: number): string {
+  if (!price || price <= 0) return "Fiyat için yazın";
   return new Intl.NumberFormat("tr-TR", {
     style: "currency",
     currency: "TRY",

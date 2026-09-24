@@ -255,6 +255,8 @@ export const WHY_US = [
 export const CATEGORIES = [
   { name: "Cilt Bakımı", slug: "cilt-bakimi", icon: "design" },
   { name: "Kirpik & Kaş", slug: "kirpik-kas", icon: "design" },
+  { name: "Kalıcı Makyaj", slug: "kalici-makyaj", icon: "quality" },
+  { name: "Protez Tırnak", slug: "protez-tirnak", icon: "design" },
   { name: "Bölgesel İncelme", slug: "bolgesel-incelme", icon: "support" },
   { name: "Lazer Epilasyon (Bayan)", slug: "lazer-bayan", icon: "production" },
   { name: "Lazer Epilasyon (Erkek)", slug: "lazer-erkek", icon: "production" },
@@ -368,9 +370,17 @@ export const CATALOG_PRODUCTS: {
     categorySlug: "kirpik-kas",
     name: "Kirpik Lifting",
     slug: "kirpik-lifting",
-    price: 750,
+    price: 900,
     shortDesc:
-      "Kirpikleri kökten kaldırıp kıvrım kazandıran lifting uygulaması. Maskara etkisi yaratmadan bakışı açar; doğal ve bakımlı bir görünüm sunar.",
+      "Doğal kirpiklere kıvrım ve belirginlik kazandıran lifting uygulaması. Daha kalkık kirpikler, daha açık bakışlar — 900 TL.",
+  },
+  {
+    categorySlug: "kirpik-kas",
+    name: "İpek Kirpik Uygulaması",
+    slug: "ipek-kirpik",
+    price: 1250,
+    shortDesc:
+      "1.250 TL’den başlayan fiyatlarla. Yoğunluğa ve hacme göre fiyat değişir; kişiye özel plan için randevuda netleşir.",
   },
   {
     categorySlug: "kirpik-kas",
@@ -388,7 +398,65 @@ export const CATALOG_PRODUCTS: {
     shortDesc:
       "Kaş şekillendirme ile üst dudak (bıyık) bölgesinin birlikte düzenlenmesi. Tek seansda yüz çerçevesi netleştirilir.",
   },
+  // Kalıcı makyaj
+  {
+    categorySlug: "kalici-makyaj",
+    name: "Dudak Renklendirme",
+    slug: "dudak-renklendirme",
+    price: 6000,
+    shortDesc:
+      "Solgun dudaklara doğal ve canlı ton. Kişiye özel renk, eşit tonlu bakımlı görünüm. Kullanım süresi yaklaşık 3 yıl.",
+  },
+  {
+    categorySlug: "kalici-makyaj",
+    name: "Microblading & Kaş Pudralama",
+    slug: "microblading-kas-pudralama",
+    price: 5000,
+    shortDesc:
+      "Microblading ile kıl görünümü veya pudralama ile yumuşak dolgun etki. Kişiye özel kaş tasarımı. Kullanım süresi yaklaşık 3 yıl.",
+  },
+  {
+    categorySlug: "kalici-makyaj",
+    name: "Kalıcı Dipliner",
+    slug: "kalici-dipliner",
+    price: 2500,
+    shortDesc:
+      "Kirpik diplerinde doğal belirginlik; her gün eyeliner derdine son. Zarif ve bakımlı bakışlar. Kullanım süresi yaklaşık 3 yıl.",
+  },
+  {
+    categorySlug: "kalici-makyaj",
+    name: "Kalıcı Eyeliner",
+    slug: "kalici-eyeliner",
+    price: 3500,
+    shortDesc:
+      "Göz yapınıza özel kalıcı eyeliner; makyajsızken bile belirgin bakışlar. Net ve zarif tasarım. Kullanım süresi yaklaşık 3 yıl.",
+  },
+  // Protez tırnak
+  {
+    categorySlug: "protez-tirnak",
+    name: "Protez Tırnak (Kampanya)",
+    slug: "protez-tirnak-kampanya",
+    price: 900,
+    shortDesc:
+      "Kampanyalı fiyat: 900 TL. Profesyonel protez tırnak uygulaması; şekil ve bakım randevuda netleşir.",
+  },
   // Bölgesel incelme
+  {
+    categorySlug: "bolgesel-incelme",
+    name: "Popo Lift",
+    slug: "popo-lift",
+    price: 0,
+    shortDesc:
+      "Daha sıkı, toparlanmış ve şekilli görünüm için Popo Lift. Vücut hatlarını destekleyen uygulama — fiyat için randevu / WhatsApp.",
+  },
+  {
+    categorySlug: "bolgesel-incelme",
+    name: "Göğüs Toparlama",
+    slug: "gogus-toparlama",
+    price: 0,
+    shortDesc:
+      "Göğüs bölgesinde daha diri ve formda görünümü destekleyen toparlama uygulaması. Fiyat için randevu / WhatsApp.",
+  },
   {
     categorySlug: "bolgesel-incelme",
     name: "10 Seans G5 Masajı",
@@ -690,9 +758,9 @@ export const PACKAGES = [
     price: 2750,
     sessions: "TOPLAM 3 SEANS",
     featured: false,
-    image: "/images/products/cilt-bakimi/1.jpg",
+    image: "/images/campaigns/baslangic-paket.jpg",
     shortDesc:
-      "Cilt bakımına ilk adım: 3 seanslık karbon maske protokolüyle gözenek temizliği, mat görünümün yumuşatılması ve cildin düzenli bakıma hazırlanması. Yeni başlayanlar ve kısa dönemli net bir plan isteyenler için tasarlandı.",
+      "Cilt bakımına ilk adım: 3 seanslık karbon maske protokolüyle gözenek temizliği, mat görünümün yumuşatılması ve cildin düzenli bakıma hazırlanması. Yeni başlayanlar için net bir giriş planı.",
     items: [
       "3 seans karbon maske uygulaması",
       "Cilt tipi değerlendirmesi ve bakım yönlendirmesi",
@@ -703,34 +771,18 @@ export const PACKAGES = [
     id: "guzellik-paketi",
     slug: "guzellik-paketi",
     name: "Güzellik Paketi",
-    price: 8000,
-    sessions: "TOPLAM 10 SEANS",
-    featured: true,
-    badge: "En Çok Tercih Edilen",
-    image: "/images/products/cilt-bakimi/2.jpg",
-    shortDesc:
-      "Yoğun bakım arayanlar için 10 seanslık Mikroplus yüz ve boyun toparlama programı. Kontur kaybı, sarkma hissi ve yorgun görünüm hedeflenir; her adım uzman takibiyle planlanır.",
-    items: [
-      "10 seans Mikroplus yüz-boyun toparlama",
-      "Kişiye özel seans aralığı ve uygulama planı",
-      "Ara kontrol ile ilerleme takibi",
-      "Seans sonrası bakım önerileri",
-    ],
-  },
-  {
-    id: "vip",
-    slug: "vip",
-    name: "VIP Paket",
     price: 4500,
     sessions: "TOPLAM 5 SEANS",
-    featured: false,
-    image: "/images/products/cilt-bakimi/4.jpg",
+    featured: true,
+    badge: "En Çok Tercih Edilen",
+    image: "/images/campaigns/guzellik-paket.jpg",
     shortDesc:
-      "5 seanslık karbon maske odaklı dengeli bakım programı. Düzenli aralıklarla uygulanan protokol; cilt temizliği, ışıltı ve bakım sürekliliği isteyen misafirler için orta yoğunlukta bir seçenektir.",
+      "Cilt bakımı, karbon maske, yüz-boyun toparlama ve Vitamin Complex’i bir araya getiren dengeli güzellik programı. Işıltı, temizlik ve toparlanma hedefleyen misafirler için.",
     items: [
-      "5 seans karbon maske uygulaması",
-      "Cilt bakım desteği ve ürün/uygulama önerisi",
-      "Seans takibi ve randevu planlaması",
+      "2 seans cilt bakımı",
+      "1 seans karbon maske",
+      "1 seans yüz-boyun toparlama",
+      "1 seans Vitamin Complex",
     ],
   },
   {
@@ -740,13 +792,30 @@ export const PACKAGES = [
     price: 3500,
     sessions: "8 SEANS · 3 BÖLGE",
     featured: false,
-    image: "/images/products/lazer-bayan/1.jpg",
+    image: "/images/campaigns/lazer-paket.jpg",
     shortDesc:
-      "Kadın 3 bölge lazer epilasyon için 8 seanslık planlı paket. Kalıcı azalma hedefiyle seans aralıkları kıl döngüsüne göre belirlenir; şeffaf fiyat ve hijyenik uygulama ortamı sunulur.",
+      "Kadın 3 bölge lazer epilasyon için 8 seanslık planlı paket. Kalıcı azalma hedefiyle seans aralıkları kıl döngüsüne göre belirlenir; şeffaf fiyat ve hijyenik uygulama ortamı.",
     items: [
       "8 seans 3 bölge lazer epilasyon (kadın)",
       "Cilt-kıl değerlendirmesi ve seans planı",
       "Randevu takibi ve seans sonrası bilgilendirme",
+    ],
+  },
+  {
+    id: "vip",
+    slug: "vip",
+    name: "VIP Paket",
+    price: 8000,
+    sessions: "TOPLAM 10 SEANS",
+    featured: false,
+    image: "/images/campaigns/vip-paket.jpg",
+    shortDesc:
+      "Yoğun bakım arayanlar için 10 seanslık Mikroplus yüz ve boyun toparlama programı. Kontur, sarkma hissi ve yorgun görünüm hedeflenir; uzman takibiyle ilerlenir.",
+    items: [
+      "10 seans Mikroplus yüz-boyun toparlama",
+      "Kişiye özel seans aralığı ve uygulama planı",
+      "Ara kontrol ile ilerleme takibi",
+      "Seans sonrası bakım önerileri",
     ],
   },
 ] as const;

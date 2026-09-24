@@ -4,9 +4,13 @@ const DESCRIPTIONS: Record<string, string> = {
   "cilt-bakimi":
     "Cilt tipinize göre planlanan klasik ve medikal bakım, Hydrafacial derin temizlik, karbon maske, vitamin uygulamaları ve Mikroplus yüz-boyun toparlama. Adana’daki her iki şubemizde hijyenik ortamda, uzman kadroyla uygulanır.",
   "kirpik-kas":
-    "Kirpik lifting ile doğal kıvrım ve bakış açıklığı; kaş alma ve şekillendirme ile yüz hatlarınıza uygun form. Hızlı, hassas ve bakımlı bir görünüm odaklı uygulamalar.",
+    "Kirpik lifting, ipek kirpik ve kaş şekillendirme. Doğal bakış ve kişiye özel yoğunluk planı.",
+  "kalici-makyaj":
+    "Dudak renklendirme, microblading & kaş pudralama, kalıcı dipliner ve eyeliner. Yaklaşık 3 yıllık kullanım hedefiyle kişiye özel tasarım.",
+  "protez-tirnak":
+    "Kampanyalı protez tırnak uygulamaları. Şekil ve bakım randevuda netleşir.",
   "bolgesel-incelme":
-    "Selülit görünümü, bölgesel yağ ve sıkılık için G5 masajı, Emslim, heykeltıraş ve G8 protokolleri. 10 seanslık paketlerle ölçülebilir, takip edilen bir plan sunarız.",
+    "Popo Lift, göğüs toparlama, G5, Emslim, heykeltıraş ve G8 ile bölgesel şekillendirme ve sıkılık.",
   "lazer-bayan":
     "Kadınlara özel lazer epilasyon: tek seans veya 8 seanslık paketler. Bölge seçimi ve seans aralığı cilt-kıl tipine göre belirlenir; hijyenik ortamda uygulanır.",
   "lazer-erkek":
@@ -23,14 +27,25 @@ const IMAGES: Record<string, string[]> = {
     "/images/products/cilt-bakimi/4.jpg",
   ],
   "kirpik-kas": [
+    "/images/campaigns/ipek-kirpik.jpg",
     "/images/products/kirpik-kas/1.jpg",
     "/images/products/kirpik-kas/2.jpg",
   ],
+  "kalici-makyaj": [
+    "/images/campaigns/dudak-renklendirme.jpg",
+    "/images/campaigns/kas-microblading-pudralama.jpg",
+    "/images/campaigns/kalici-dipliner.jpg",
+    "/images/campaigns/kalici-eyeliner.jpg",
+  ],
+  "protez-tirnak": ["/images/campaigns/protez-tirnak.jpg"],
   "bolgesel-incelme": [
+    "/images/campaigns/popo-lift.jpg",
+    "/images/campaigns/gogus-toparlama.jpg",
     "/images/products/bolgesel-incelme/1.jpg",
     "/images/products/bolgesel-incelme/2.jpg",
   ],
   "lazer-bayan": [
+    "/images/campaigns/lazer-paket.jpg",
     "/images/products/lazer-bayan/1.jpg",
     "/images/products/lazer-bayan/2.jpg",
   ],
@@ -43,6 +58,19 @@ const IMAGES: Record<string, string[]> = {
     "/images/products/alex-lazer/2.jpg",
     "/images/products/alex-lazer/3.jpg",
   ],
+};
+
+/** Slug → kampanya / özel görsel */
+export const PRODUCT_CAMPAIGN_IMAGES: Record<string, string> = {
+  "kirpik-lifting": "/images/products/kirpik-kas/1.jpg",
+  "ipek-kirpik": "/images/campaigns/ipek-kirpik.jpg",
+  "dudak-renklendirme": "/images/campaigns/dudak-renklendirme.jpg",
+  "microblading-kas-pudralama": "/images/campaigns/kas-microblading-pudralama.jpg",
+  "kalici-dipliner": "/images/campaigns/kalici-dipliner.jpg",
+  "kalici-eyeliner": "/images/campaigns/kalici-eyeliner.jpg",
+  "protez-tirnak-kampanya": "/images/campaigns/protez-tirnak.jpg",
+  "popo-lift": "/images/campaigns/popo-lift.jpg",
+  "gogus-toparlama": "/images/campaigns/gogus-toparlama.jpg",
 };
 
 export type FallbackCategory = {
@@ -132,7 +160,8 @@ export function getFallbackProductsByCategorySlug(slug: string): FallbackProduct
   const now = new Date(0);
   return CATALOG_PRODUCTS.filter((p) => p.categorySlug === slug).map(
     (p, i) => {
-      const img = pool[i % pool.length]!;
+      const img =
+        PRODUCT_CAMPAIGN_IMAGES[p.slug] || pool[i % pool.length]!;
       return {
         id: `fallback-product-${p.slug}`,
         name: p.name,
@@ -141,15 +170,15 @@ export function getFallbackProductsByCategorySlug(slug: string): FallbackProduct
         description: `${p.name}. ${p.shortDesc}`,
         price: p.price,
         image: img,
-        images: JSON.stringify(pool),
+        images: JSON.stringify([img, ...pool.filter((x) => x !== img)]),
         categoryId: cat.id,
         sortOrder: i,
         isActive: true,
-        inStock: true,
+        inStock: p.price > 0,
         isFeatured: i < 2,
         badgeNew: false,
         badgeBestseller: false,
-        badgeSale: false,
+        badgeSale: p.slug.includes("kampanya") || p.slug === "protez-tirnak-kampanya",
         salePrice: null,
         nightImage: null,
         campaignEndsAt: null,
