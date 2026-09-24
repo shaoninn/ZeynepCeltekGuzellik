@@ -26,11 +26,11 @@ const LOGO = "/images/logo/logo-nobg.png";
 
 const CATEGORY_IMAGES: Record<string, string> = {
   "cilt-bakimi": "/images/products/cilt-bakimi/1.jpg",
-  "kirpik-kas": "/images/campaigns/ipek-kirpik.jpg",
-  "kalici-makyaj": "/images/campaigns/dudak-renklendirme.jpg",
+  "kirpik-kas": "/images/campaigns/kirpik-kas-cover.jpg",
+  "kalici-makyaj": "/images/campaigns/kalici-makyaj-cover.jpg",
   "protez-tirnak": "/images/campaigns/protez-tirnak.jpg",
-  "bolgesel-incelme": "/images/campaigns/popo-lift.jpg",
-  "lazer-bayan": "/images/campaigns/lazer-paket.jpg",
+  "bolgesel-incelme": "/images/campaigns/bolgesel-cover.jpg",
+  "lazer-bayan": "/images/campaigns/lazer-bayan-cover.jpg",
   "lazer-erkek": "/images/products/lazer-erkek/1.jpg",
   "alex-lazer": "/images/products/alex-lazer/1.jpg",
 };

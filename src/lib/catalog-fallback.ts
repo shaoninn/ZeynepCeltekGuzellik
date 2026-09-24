@@ -27,11 +27,13 @@ const IMAGES: Record<string, string[]> = {
     "/images/products/cilt-bakimi/4.jpg",
   ],
   "kirpik-kas": [
+    "/images/campaigns/kirpik-kas-cover.jpg",
     "/images/campaigns/ipek-kirpik.jpg",
+    "/images/campaigns/kirpik-lifting.jpg",
     "/images/products/kirpik-kas/1.jpg",
-    "/images/products/kirpik-kas/2.jpg",
   ],
   "kalici-makyaj": [
+    "/images/campaigns/kalici-makyaj-cover.jpg",
     "/images/campaigns/dudak-renklendirme.jpg",
     "/images/campaigns/kas-microblading-pudralama.jpg",
     "/images/campaigns/kalici-dipliner.jpg",
@@ -39,12 +41,13 @@ const IMAGES: Record<string, string[]> = {
   ],
   "protez-tirnak": ["/images/campaigns/protez-tirnak.jpg"],
   "bolgesel-incelme": [
+    "/images/campaigns/bolgesel-cover.jpg",
     "/images/campaigns/popo-lift.jpg",
     "/images/campaigns/gogus-toparlama.jpg",
     "/images/products/bolgesel-incelme/1.jpg",
-    "/images/products/bolgesel-incelme/2.jpg",
   ],
   "lazer-bayan": [
+    "/images/campaigns/lazer-bayan-cover.jpg",
     "/images/campaigns/lazer-paket.jpg",
     "/images/products/lazer-bayan/1.jpg",
     "/images/products/lazer-bayan/2.jpg",
@@ -62,7 +65,7 @@ const IMAGES: Record<string, string[]> = {
 
 /** Slug → kampanya / özel görsel */
 export const PRODUCT_CAMPAIGN_IMAGES: Record<string, string> = {
-  "kirpik-lifting": "/images/products/kirpik-kas/1.jpg",
+  "kirpik-lifting": "/images/campaigns/kirpik-lifting.jpg",
   "ipek-kirpik": "/images/campaigns/ipek-kirpik.jpg",
   "dudak-renklendirme": "/images/campaigns/dudak-renklendirme.jpg",
   "microblading-kas-pudralama": "/images/campaigns/kas-microblading-pudralama.jpg",

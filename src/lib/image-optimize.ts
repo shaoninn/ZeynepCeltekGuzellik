@@ -14,24 +14,45 @@ const LOCAL_WEBP_SM: Record<string, string> = {
   "/images/hero/hero-1.webp": "/images/hero/hero-1-sm.webp",
 };
 
+/**
+ * Directories that always ship sibling .webp for jpg/png sources.
+ * Other folders (e.g. raw uploads) keep the original extension.
+ */
+const WEBP_BAKED_PREFIXES = [
+  "/images/products/",
+  "/images/gallery/",
+  "/images/about/",
+  "/images/projects/",
+  "/images/facility/",
+  "/images/hero/",
+  "/images/campaigns/",
+] as const;
+
 /** Bust immutable /images cache after the unique-photo bake. */
-const IMAGE_REV = "v=2";
+const IMAGE_REV = "v=6";
 
 function withRev(src: string): string {
   if (!src.startsWith("/images/")) return src;
-  if (src.includes("v=2")) return src;
+  if (src.includes("v=")) return src;
   return src.includes("?") ? `${src}&${IMAGE_REV}` : `${src}?${IMAGE_REV}`;
+}
+
+function hasBakedWebpSibling(pathOnly: string): boolean {
+  return WEBP_BAKED_PREFIXES.some((p) => pathOnly.startsWith(p));
 }
 
 export function toWebpSrc(src: string): string {
   if (!src || src.startsWith("data:") || src.startsWith("blob:")) return src;
   const pathOnly = src.split("?")[0] || src;
   if (LOCAL_WEBP_MAP[pathOnly]) return withRev(LOCAL_WEBP_MAP[pathOnly]);
-  // Generic: /images/foo.jpg → /images/foo.webp when we bake siblings at build
-  if (/\.(jpe?g|png)$/i.test(pathOnly) && pathOnly.startsWith("/images/")) {
+  if (
+    /\.(jpe?g|png)$/i.test(pathOnly) &&
+    pathOnly.startsWith("/images/") &&
+    hasBakedWebpSibling(pathOnly)
+  ) {
     return withRev(pathOnly.replace(/\.(jpe?g|png)$/i, ".webp"));
   }
-  if (pathOnly.startsWith("/images/") && pathOnly.endsWith(".webp")) {
+  if (pathOnly.startsWith("/images/")) {
     return withRev(pathOnly);
   }
   return src;
@@ -46,9 +67,14 @@ export function toWebpSrcMobile(src: string): string | null {
     pathOnly.startsWith("/images/gallery/") ||
     pathOnly.startsWith("/images/products/") ||
     pathOnly.startsWith("/images/about/") ||
-    pathOnly.startsWith("/images/projects/")
+    pathOnly.startsWith("/images/projects/") ||
+    pathOnly.startsWith("/images/campaigns/")
   ) {
     const webp = pathOnly.replace(/\.(jpe?g|png|webp)$/i, ".webp");
+    // campaigns: use full webp as mobile too (no -sm bake yet)
+    if (pathOnly.startsWith("/images/campaigns/")) {
+      return withRev(webp);
+    }
     return withRev(webp.replace(/\.webp$/i, "-sm.webp"));
   }
   return null;

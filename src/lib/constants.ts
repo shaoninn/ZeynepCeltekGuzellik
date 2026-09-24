@@ -370,9 +370,9 @@ export const CATALOG_PRODUCTS: {
     categorySlug: "kirpik-kas",
     name: "Kirpik Lifting",
     slug: "kirpik-lifting",
-    price: 900,
+    price: 0,
     shortDesc:
-      "Doğal kirpiklere kıvrım ve belirginlik kazandıran lifting uygulaması. Daha kalkık kirpikler, daha açık bakışlar — 900 TL.",
+      "Doğal kirpiklere kıvrım, belirginlik ve etkileyici görünüm. Daha kalkık kirpikler, daha açık ve canlı bakışlar — doğal ama dikkat çekici sonuç.",
   },
   {
     categorySlug: "kirpik-kas",
@@ -380,7 +380,7 @@ export const CATALOG_PRODUCTS: {
     slug: "ipek-kirpik",
     price: 1250,
     shortDesc:
-      "1.250 TL’den başlayan fiyatlarla. Yoğunluğa ve hacme göre fiyat değişir; kişiye özel plan için randevuda netleşir.",
+      "İpek kirpik uygulaması 1.250 TL’den başlayan fiyatlarla. Yoğunluğuna göre fiyat değişir; kişiye özel plan randevuda netleşir.",
   },
   {
     categorySlug: "kirpik-kas",
@@ -405,7 +405,7 @@ export const CATALOG_PRODUCTS: {
     slug: "dudak-renklendirme",
     price: 6000,
     shortDesc:
-      "Solgun dudaklara doğal ve canlı ton. Kişiye özel renk, eşit tonlu bakımlı görünüm. Kullanım süresi yaklaşık 3 yıl.",
+      "Solgun dudaklara veda, doğal ve canlı tonlara merhaba. Doğal ton geçişleri, kişiye özel renk seçimi, bakımlı ve belirgin dudak görünümü. Kullanım süresi yaklaşık 3 yıl.",
   },
   {
     categorySlug: "kalici-makyaj",
@@ -413,7 +413,7 @@ export const CATALOG_PRODUCTS: {
     slug: "microblading-kas-pudralama",
     price: 5000,
     shortDesc:
-      "Microblading ile kıl görünümü veya pudralama ile yumuşak dolgun etki. Kişiye özel kaş tasarımı. Kullanım süresi yaklaşık 3 yıl.",
+      "Yüz hatlarınıza uygun, doğal ve dengeli kaş tasarımı. Microblading ile kıl görünümü; pudralama ile yumuşak ve dolgun etki. Kullanım süresi yaklaşık 3 yıl.",
   },
   {
     categorySlug: "kalici-makyaj",
@@ -421,7 +421,7 @@ export const CATALOG_PRODUCTS: {
     slug: "kalici-dipliner",
     price: 2500,
     shortDesc:
-      "Kirpik diplerinde doğal belirginlik; her gün eyeliner derdine son. Zarif ve bakımlı bakışlar. Kullanım süresi yaklaşık 3 yıl.",
+      "Kirpik diplerinde doğal belirginlik, bakışlarda daha etkileyici ifade. Doğal ve zarif görünüm; her gün eyeliner derdine son. Kullanım süresi yaklaşık 3 yıl.",
   },
   {
     categorySlug: "kalici-makyaj",
@@ -429,7 +429,7 @@ export const CATALOG_PRODUCTS: {
     slug: "kalici-eyeliner",
     price: 3500,
     shortDesc:
-      "Göz yapınıza özel kalıcı eyeliner; makyajsızken bile belirgin bakışlar. Net ve zarif tasarım. Kullanım süresi yaklaşık 3 yıl.",
+      "Göz yapınıza özel kalıcı eyeliner ile makyajsızken bile gözleriniz ön planda. Net ve zarif görünüm, gün boyu bakımlı bakışlar. Kullanım süresi yaklaşık 3 yıl.",
   },
   // Protez tırnak
   {
@@ -438,7 +438,7 @@ export const CATALOG_PRODUCTS: {
     slug: "protez-tirnak-kampanya",
     price: 900,
     shortDesc:
-      "Kampanyalı fiyat: 900 TL. Profesyonel protez tırnak uygulaması; şekil ve bakım randevuda netleşir.",
+      "Kampanyalı fiyat 900 TL. Profesyonel protez tırnak uygulaması; şekil ve bakım randevuda netleşir.",
   },
   // Bölgesel incelme
   {
@@ -447,7 +447,7 @@ export const CATALOG_PRODUCTS: {
     slug: "popo-lift",
     price: 0,
     shortDesc:
-      "Daha sıkı, toparlanmış ve şekilli görünüm için Popo Lift. Vücut hatlarını destekleyen uygulama — fiyat için randevu / WhatsApp.",
+      "Daha sıkı, daha toparlanmış ve daha şekilli bir görünüm. Popo Lift ile vücut hatlarını destekle, daha fit bir görünüm kazan. Fiyat için randevu / WhatsApp.",
   },
   {
     categorySlug: "bolgesel-incelme",
@@ -455,7 +455,7 @@ export const CATALOG_PRODUCTS: {
     slug: "gogus-toparlama",
     price: 0,
     shortDesc:
-      "Göğüs bölgesinde daha diri ve formda görünümü destekleyen toparlama uygulaması. Fiyat için randevu / WhatsApp.",
+      "Daha sıkı, daha toparlanmış ve daha formda bir görünüm. Göğüs bölgesinin daha diri ve estetik görünümünü destekler. Fiyat için randevu / WhatsApp.",
   },
   {
     categorySlug: "bolgesel-incelme",
@@ -771,18 +771,18 @@ export const PACKAGES = [
     id: "guzellik-paketi",
     slug: "guzellik-paketi",
     name: "Güzellik Paketi",
-    price: 4500,
-    sessions: "TOPLAM 5 SEANS",
+    price: 8000,
+    sessions: "TOPLAM 10 SEANS",
     featured: true,
     badge: "En Çok Tercih Edilen",
     image: "/images/campaigns/guzellik-paket.jpg",
     shortDesc:
-      "Cilt bakımı, karbon maske, yüz-boyun toparlama ve Vitamin Complex’i bir araya getiren dengeli güzellik programı. Işıltı, temizlik ve toparlanma hedefleyen misafirler için.",
+      "Yoğun bakım arayanlar için 10 seanslık Mikroplus yüz ve boyun toparlama programı. Kontur kaybı, sarkma hissi ve yorgun görünüm hedeflenir; her adım uzman takibiyle planlanır.",
     items: [
-      "2 seans cilt bakımı",
-      "1 seans karbon maske",
-      "1 seans yüz-boyun toparlama",
-      "1 seans Vitamin Complex",
+      "10 seans Mikroplus yüz-boyun toparlama",
+      "Kişiye özel seans aralığı ve uygulama planı",
+      "Ara kontrol ile ilerleme takibi",
+      "Seans sonrası bakım önerileri",
     ],
   },
   {
@@ -805,17 +805,17 @@ export const PACKAGES = [
     id: "vip",
     slug: "vip",
     name: "VIP Paket",
-    price: 8000,
-    sessions: "TOPLAM 10 SEANS",
+    price: 4500,
+    sessions: "TOPLAM 5 SEANS",
     featured: false,
     image: "/images/campaigns/vip-paket.jpg",
     shortDesc:
-      "Yoğun bakım arayanlar için 10 seanslık Mikroplus yüz ve boyun toparlama programı. Kontur, sarkma hissi ve yorgun görünüm hedeflenir; uzman takibiyle ilerlenir.",
+      "2 seans cilt bakımı, karbon maske, yüz-boyun toparlama ve Vitamin Complex’i bir araya getiren 5 seanslık VIP program. Işıltı, temizlik ve toparlanma hedefleyen misafirler için.",
     items: [
-      "10 seans Mikroplus yüz-boyun toparlama",
-      "Kişiye özel seans aralığı ve uygulama planı",
-      "Ara kontrol ile ilerleme takibi",
-      "Seans sonrası bakım önerileri",
+      "2 seans cilt bakımı",
+      "1 seans karbon maske",
+      "1 seans yüz-boyun toparlama",
+      "1 seans Vitamin Complex",
     ],
   },
 ] as const;
