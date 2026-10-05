@@ -39,5 +39,8 @@ console.log(`[build] NODE_OPTIONS=${buildEnv.NODE_OPTIONS}`);
 let code = run("npx", ["prisma", "generate"], buildEnv);
 if (code !== 0) process.exit(code);
 
-code = run("npx", ["next", "build"], buildEnv);
+// Hostinger: `next build` (Turbopack) panics in the PostCSS worker
+// ("node process exited before we could connect") on globals.css.
+// Webpack stays in one process and fits the raised build heap.
+code = run("npx", ["next", "build", "--webpack"], buildEnv);
 process.exit(code);
