@@ -128,11 +128,7 @@ export function Testimonials({
               Google yorumları →
             </a>
           </p>
-        ) : (
-          <p className="text-center mt-8 text-xs text-muted">
-            Örnek yorumlar. Google İşletme linki Ayarlar’dan eklenebilir.
-          </p>
-        )}
+        ) : null}
       </div>
     </section>
   );

@@ -18,16 +18,16 @@ export function CookieConsent() {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-x-0 z-[80] p-3 sm:p-4 pointer-events-none bottom-[max(7.5rem,calc(env(safe-area-inset-bottom)+6.5rem))] md:bottom-4">
-      <div className="pointer-events-auto mx-auto max-w-3xl border border-border bg-card px-4 py-4 sm:px-5">
-        <p className="text-sm text-muted leading-relaxed mb-3">
-          Ölçüm ve reklam dönüşümleri için çerez kullanırız. Kabul etmezseniz
-          yalnızca zorunlu çerezler kalır.{" "}
+    <div className="border-b border-border bg-card">
+      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:px-6 lg:px-8">
+        <p className="min-w-0 flex-1 text-sm leading-relaxed text-muted">
+          Ölçüm için çerez kullanırız. Reddederseniz yalnızca zorunlu çerezler
+          kalır.{" "}
           <SiteLink href="/cerez-politikasi" className="text-orange hover:underline">
             Çerez politikası
           </SiteLink>
         </p>
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex shrink-0 gap-2">
           <button
             type="button"
             className="min-h-11 px-4 bg-orange text-ink font-semibold text-sm"

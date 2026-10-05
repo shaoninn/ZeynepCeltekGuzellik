@@ -25,7 +25,7 @@ const cormorant = Cormorant_Garamond({
   variable: "--font-display",
   display: "swap",
   adjustFontFallback: true,
-  preload: false,
+  preload: true,
 });
 
 const greatVibes = Great_Vibes({

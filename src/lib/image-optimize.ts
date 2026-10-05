@@ -29,7 +29,7 @@ const WEBP_BAKED_PREFIXES = [
 ] as const;
 
 /** Bust immutable /images cache after the unique-photo bake. */
-const IMAGE_REV = "v=6";
+const IMAGE_REV = "v=7";
 
 function withRev(src: string): string {
   if (!src.startsWith("/images/")) return src;
@@ -71,10 +71,6 @@ export function toWebpSrcMobile(src: string): string | null {
     pathOnly.startsWith("/images/campaigns/")
   ) {
     const webp = pathOnly.replace(/\.(jpe?g|png|webp)$/i, ".webp");
-    // campaigns: use full webp as mobile too (no -sm bake yet)
-    if (pathOnly.startsWith("/images/campaigns/")) {
-      return withRev(webp);
-    }
     return withRev(webp.replace(/\.webp$/i, "-sm.webp"));
   }
   return null;

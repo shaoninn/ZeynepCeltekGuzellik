@@ -2,7 +2,7 @@ import { SiteLink } from "@/components/ui/SiteLink";
 import { EditableText } from "@/components/editor/EditableText";
 import { PackageAddToCartButton } from "@/components/shop/PackageAddToCartButton";
 import { PACKAGES } from "@/lib/constants";
-import { toWebpSrc } from "@/lib/image-optimize";
+import { toWebpSrc, toWebpSrcMobile } from "@/lib/image-optimize";
 import { formatPrice } from "@/lib/utils";
 import type { PackageRecord } from "@/lib/packages";
 
@@ -44,6 +44,7 @@ export function PackagesCampaignSection({
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-4 items-stretch">
           {list.map((pkg) => {
             const img = toWebpSrc(pkg.image);
+            const imgSm = toWebpSrcMobile(pkg.image);
             return (
               <article
                 key={pkg.id}
@@ -65,7 +66,10 @@ export function PackagesCampaignSection({
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={img}
+                    src={imgSm || img}
+                    srcSet={
+                      imgSm ? `${imgSm} 720w, ${img} 1400w` : undefined
+                    }
                     alt={pkg.name}
                     width={640}
                     height={440}

@@ -59,6 +59,7 @@ export default async function SiteLayout({
         blogPosts={menuPosts}
       />
       <main id="main-content" className="min-h-screen pt-14 sm:pt-16 pb-[max(7.5rem,calc(env(safe-area-inset-bottom)+6.5rem))] md:pb-8 overflow-x-clip">
+        <CookieConsent />
         {children}
       </main>
       <Footer
@@ -70,7 +71,6 @@ export default async function SiteLayout({
         phone={settings.phone}
         whatsappUrl={settings.whatsappUrl}
       />
-      <CookieConsent />
       <Analytics />
     </CartProvider>
   );

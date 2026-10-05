@@ -2,7 +2,7 @@ import { SiteLink } from "@/components/ui/SiteLink";
 import { PackageAddToCartButton } from "@/components/shop/PackageAddToCartButton";
 import { getPackages } from "@/lib/packages";
 import { formatPrice } from "@/lib/utils";
-import { toWebpSrc } from "@/lib/image-optimize";
+import { toWebpSrc, toWebpSrcMobile } from "@/lib/image-optimize";
 import { PageIntro } from "@/components/editor/PageIntro";
 
 export const revalidate = 60;
@@ -31,6 +31,7 @@ export default async function PackagesPage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-4 items-stretch">
           {packages.map((pkg) => {
             const img = toWebpSrc(pkg.image);
+            const imgSm = toWebpSrcMobile(pkg.image);
             return (
               <article
                 key={pkg.slug}
@@ -52,7 +53,10 @@ export default async function PackagesPage() {
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={img}
+                    src={imgSm || img}
+                    srcSet={
+                      imgSm ? `${imgSm} 720w, ${img} 1400w` : undefined
+                    }
                     alt={pkg.name}
                     width={640}
                     height={440}

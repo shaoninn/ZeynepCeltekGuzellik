@@ -39,6 +39,7 @@ const BATCH_DIRS = [
   "images/products/lazer-bayan",
   "images/products/lazer-erkek",
   "images/products/alex-lazer",
+  "images/campaigns",
 ];
 
 async function writeWebp(inputPath, outputPath, width, quality) {
@@ -75,10 +76,15 @@ async function main() {
       const rel = path.join(dir, name).replace(/\\/g, "/");
       const webpRel = rel.replace(/\.(png|jpe?g)$/i, ".webp");
       const webpSmRel = rel.replace(/\.(png|jpe?g)$/i, "-sm.webp");
-      await writeWebp(path.join(publicDir, rel), webpRel, 1200, 75);
-      // Gallery / cards: mobile-friendly width for image delivery audit
-      if (dir.includes("gallery") || dir.includes("products")) {
-        await writeWebp(path.join(publicDir, rel), webpSmRel, 640, 70);
+      const fullWidth = dir.includes("campaigns") ? 1600 : 1200;
+      await writeWebp(path.join(publicDir, rel), webpRel, fullWidth, 82);
+      if (
+        dir.includes("gallery") ||
+        dir.includes("products") ||
+        dir.includes("campaigns")
+      ) {
+        const smWidth = dir.includes("campaigns") ? 720 : 640;
+        await writeWebp(path.join(publicDir, rel), webpSmRel, smWidth, 72);
       }
     }
   }
