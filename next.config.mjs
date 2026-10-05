@@ -1,3 +1,8 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const root = path.dirname(fileURLToPath(import.meta.url));
+
 /** @type {import('next').NextConfig} */
 const securityHeaders = [
   { key: "X-DNS-Prefetch-Control", value: "on" },
@@ -38,6 +43,13 @@ const staticAssetCache = [
 const nextConfig = {
   poweredByHeader: false,
   compress: true,
+  // Webpack follows instrumentation → db into the Edge graph and then
+  // tries to bundle the MariaDB driver (fs, crypto, stream). Leave it on Node.
+  serverExternalPackages: [
+    "@prisma/client",
+    "@prisma/adapter-mariadb",
+    "mariadb",
+  ],
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
@@ -96,6 +108,19 @@ const nextConfig = {
   },
   // No app-level redirects for index.html/php — Hostinger already does
   // http→https (and optionally www). Extra hops hurt Lighthouse "redirects".
+  webpack(config, { nextRuntime, webpack }) {
+    // instrumentation.ts dynamically imports db.ts. Webpack still traces that
+    // into the Edge graph, then fails on mariadb's fs/crypto/stream requires.
+    if (nextRuntime === "edge") {
+      config.plugins.push(
+        new webpack.NormalModuleReplacementPlugin(
+          /[\\/]src[\\/]lib[\\/]db\.ts$/,
+          path.join(root, "src/lib/db.edge-stub.ts")
+        )
+      );
+    }
+    return config;
+  },
   async redirects() {
     return [
       {
