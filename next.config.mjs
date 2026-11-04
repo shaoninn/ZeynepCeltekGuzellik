@@ -52,6 +52,10 @@ const nextConfig = {
   ],
   experimental: {
     optimizePackageImports: ["lucide-react"],
+    // Hostinger containers advertise many CPUs but hit thread limits
+    // ("OS can't spawn worker thread") during "Collecting page data".
+    cpus: 1,
+    workerThreads: false,
   },
   // Hostinger: runtime /_next/image sharp often 404s / spikes CPU.
   // Serve originals + pre-baked WebP from scripts/optimize-images.mjs.

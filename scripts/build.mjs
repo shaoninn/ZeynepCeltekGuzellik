@@ -34,6 +34,10 @@ function run(cmd, args, env = process.env) {
 // Images: `prebuild` already runs optimize-images — skip duplicate here.
 
 const buildEnv = withBuildHeap(process.env, 1536);
+// Cap static/page workers — Hostinger reports ~64 CPUs then fails with
+// "OS can't spawn worker thread: Resource temporarily unavailable".
+buildEnv.CIRCLE_NODE_TOTAL = "2";
+buildEnv.NEXT_WEBPACK_PARALLELISM = "1";
 console.log(`[build] NODE_OPTIONS=${buildEnv.NODE_OPTIONS}`);
 
 let code = run("npx", ["prisma", "generate"], buildEnv);
