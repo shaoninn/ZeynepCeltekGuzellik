@@ -1,6 +1,10 @@
 import { SiteLink } from "@/components/ui/SiteLink";
 import { formatPrice } from "@/lib/utils";
-import { toWebpSrc, toWebpSrcMobile } from "@/lib/image-optimize";
+import {
+  campaignObjectPosition,
+  toWebpSrc,
+  toWebpSrcMobile,
+} from "@/lib/image-optimize";
 import { getFeaturedProducts } from "@/lib/catalog";
 import { getActiveCampaigns } from "@/lib/campaigns";
 import { getPackages } from "@/lib/packages";
@@ -30,7 +34,7 @@ export default async function CampaignsPage() {
     getActiveCampaigns(),
     getPackages(),
   ]);
-  const showcase = featured.slice(0, 6);
+  const showcase = featured.slice(0, 9);
 
   return (
     <section className="py-12 sm:py-14 lg:py-16">
@@ -98,7 +102,7 @@ export default async function CampaignsPage() {
         {showcase.length > 0 ? (
           <div className="mb-14">
             <h2 className="font-display text-2xl font-semibold text-cream mb-6">
-              Öne çıkan hizmetler
+              Kampanyalı uygulamalar
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {showcase.map((product) => {
@@ -111,12 +115,12 @@ export default async function CampaignsPage() {
                     href={`/hizmet/${product.slug}`}
                     className="group border border-border bg-card overflow-hidden hover:border-orange/40 transition-colors"
                   >
-                    <div className="relative aspect-[16/10] bg-surface">
+                    <div className="relative aspect-[4/5] bg-surface">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={img}
                         alt={product.name}
-                        className="absolute inset-0 h-full w-full object-cover"
+                        className={`absolute inset-0 h-full w-full object-cover ${campaignObjectPosition(product.image)}`}
                         loading="lazy"
                       />
                     </div>

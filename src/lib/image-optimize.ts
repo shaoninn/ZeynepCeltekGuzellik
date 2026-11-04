@@ -29,7 +29,34 @@ const WEBP_BAKED_PREFIXES = [
 ] as const;
 
 /** Bust immutable /images cache after the unique-photo bake. */
-const IMAGE_REV = "v=7";
+const IMAGE_REV = "v=8";
+
+/**
+ * Portrait campaign shots sit in landscape/square cards — keep the subject
+ * (face, eye, hand) in frame instead of a naive center crop.
+ */
+const CAMPAIGN_OBJECT_POSITION: Record<string, string> = {
+  "/images/campaigns/baslangic-paket.jpg": "object-[center_18%]",
+  "/images/campaigns/guzellik-paket.jpg": "object-[center_22%]",
+  "/images/campaigns/lazer-paket.jpg": "object-[center_45%]",
+  "/images/campaigns/vip-paket.jpg": "object-center",
+  "/images/campaigns/protez-tirnak.jpg": "object-[center_40%]",
+  "/images/campaigns/ipek-kirpik.jpg": "object-[center_35%]",
+  "/images/campaigns/popo-lift.jpg": "object-center",
+  "/images/campaigns/gogus-toparlama.jpg": "object-center",
+  "/images/campaigns/dudak-renklendirme.jpg": "object-[center_55%]",
+  "/images/campaigns/kas-microblading-pudralama.jpg": "object-[center_30%]",
+  "/images/campaigns/kalici-dipliner.jpg": "object-center",
+  "/images/campaigns/kalici-eyeliner.jpg": "object-[center_40%]",
+  "/images/campaigns/kirpik-lifting.jpg": "object-[center_35%]",
+};
+
+export function campaignObjectPosition(src: string | null | undefined): string {
+  if (!src) return "object-center";
+  const pathOnly = src.split("?")[0] || src;
+  const jpgKey = pathOnly.replace(/\.(webp|png)$/i, ".jpg").replace(/-sm(?=\.jpg$)/i, "");
+  return CAMPAIGN_OBJECT_POSITION[jpgKey] || "object-center";
+}
 
 function withRev(src: string): string {
   if (!src.startsWith("/images/")) return src;

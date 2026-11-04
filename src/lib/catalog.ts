@@ -135,14 +135,14 @@ async function loadFeaturedProducts() {
     where: { isActive: true, inStock: true, isFeatured: true },
     include: { category: true },
     orderBy: [{ sortOrder: "asc" }, { updatedAt: "desc" }],
-    take: 8,
+    take: 12,
   });
   if (featured.length > 0) return featured;
   return prisma.product.findMany({
     where: { isActive: true, inStock: true },
     include: { category: true },
     orderBy: [{ sortOrder: "asc" }, { updatedAt: "desc" }],
-    take: 8,
+    take: 12,
   });
 }
 

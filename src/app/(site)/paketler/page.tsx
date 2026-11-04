@@ -2,7 +2,11 @@ import { SiteLink } from "@/components/ui/SiteLink";
 import { PackageAddToCartButton } from "@/components/shop/PackageAddToCartButton";
 import { getPackages } from "@/lib/packages";
 import { formatPrice } from "@/lib/utils";
-import { toWebpSrc, toWebpSrcMobile } from "@/lib/image-optimize";
+import {
+  campaignObjectPosition,
+  toWebpSrc,
+  toWebpSrcMobile,
+} from "@/lib/image-optimize";
 import { PageIntro } from "@/components/editor/PageIntro";
 
 export const revalidate = 60;
@@ -49,7 +53,7 @@ export default async function PackagesPage() {
 
                 <SiteLink
                   href={`/paketler/${pkg.slug}`}
-                  className="relative aspect-[16/11] overflow-hidden bg-surface block"
+                  className="relative aspect-[4/5] overflow-hidden bg-surface block"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -59,8 +63,8 @@ export default async function PackagesPage() {
                     }
                     alt={pkg.name}
                     width={640}
-                    height={440}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    height={800}
+                    className={`absolute inset-0 h-full w-full object-cover ${campaignObjectPosition(pkg.image)}`}
                     loading="lazy"
                     decoding="async"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

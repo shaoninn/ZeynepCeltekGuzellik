@@ -5,7 +5,7 @@ import { formatPrice, parseJsonArray } from "@/lib/utils";
 import { ProductBadges } from "@/components/shop/ProductBadges";
 import { ProductCardAddButton } from "@/components/shop/ProductCardAddButton";
 import { parseProductSpecs } from "@/lib/catalog-meta";
-import { toWebpSrc } from "@/lib/image-optimize";
+import { campaignObjectPosition, toWebpSrc } from "@/lib/image-optimize";
 import type { Product } from "@/types";
 
 interface ProductCardProps {
@@ -57,7 +57,7 @@ export function ProductCard({ product }: ProductCardProps) {
               src={toWebpSrc(product.image)}
               alt={product.name}
               fill
-              className={`object-cover transition-all duration-500 ${
+              className={`object-cover ${campaignObjectPosition(product.image)} transition-all duration-500 ${
                 hoverImage ? "group-hover:opacity-0" : "group-hover:scale-105"
               }`}
               sizes="(max-width:640px) 50vw, 280px"
@@ -67,7 +67,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 src={toWebpSrc(hoverImage)}
                 alt=""
                 fill
-                className="object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                className={`object-cover ${campaignObjectPosition(hoverImage)} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
                 sizes="(max-width:640px) 50vw, 280px"
               />
             ) : null}

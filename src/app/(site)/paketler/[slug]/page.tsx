@@ -4,7 +4,7 @@ import { PackageAddToCartButton } from "@/components/shop/PackageAddToCartButton
 import { getPackageBySlug, getPackages } from "@/lib/packages";
 import { WHATSAPP_URL } from "@/lib/constants";
 import { formatPrice } from "@/lib/utils";
-import { toWebpSrc } from "@/lib/image-optimize";
+import { campaignObjectPosition, toWebpSrc } from "@/lib/image-optimize";
 import { WhatsAppIcon } from "@/components/brand/WhatsAppIcon";
 
 export const revalidate = 60;
@@ -51,14 +51,14 @@ export default async function PackageDetailPage({ params }: Props) {
         </p>
 
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-          <div className="relative aspect-[4/3] overflow-hidden border border-border bg-card">
+          <div className="relative aspect-[4/5] overflow-hidden border border-border bg-card sm:aspect-[3/4]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={img}
               alt={pkg.name}
               width={960}
-              height={720}
-              className="absolute inset-0 h-full w-full object-cover"
+              height={1200}
+              className={`absolute inset-0 h-full w-full object-cover ${campaignObjectPosition(pkg.image)}`}
               loading="eager"
               decoding="async"
             />
