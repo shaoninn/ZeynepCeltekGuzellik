@@ -29,15 +29,6 @@ async function uploadFile(
   return data.url;
 }
 
-/** Client-side bg removal (WASM) — no API key; first run downloads model. */
-async function clientRemoveBackground(file: File): Promise<File> {
-  const { removeBackground } = await import("@imgly/background-removal");
-  const blob = await removeBackground(file);
-  return new File([blob], file.name.replace(/\.\w+$/, "") + "-nobg.png", {
-    type: "image/png",
-  });
-}
-
 function DropZone({
   disabled,
   multiple,
@@ -122,19 +113,9 @@ async function prepareAndUpload(
   file: File,
   removeBg: boolean
 ): Promise<string> {
-  let toSend = file;
-  let serverRemoveBg = false;
-
-  if (removeBg) {
-    try {
-      toSend = await clientRemoveBackground(file);
-    } catch (error) {
-      console.warn("[bg-removal] client failed, trying server:", error);
-      serverRemoveBg = true;
-    }
-  }
-
-  return uploadFile(toSend, { removeBg: serverRemoveBg });
+  // Hostinger webpack cannot resolve onnxruntime-web from
+  // @imgly/background-removal — keep bg removal on the upload API.
+  return uploadFile(file, { removeBg });
 }
 
 /** Tek görsel — sürükle-bırak veya tıkla-seç. */
